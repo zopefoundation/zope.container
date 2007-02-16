@@ -18,13 +18,10 @@ $Id$
 
 import os
 
-try:
-    from setuptools import setup, Extension
-except ImportError, e:
-    from distutils.core import setup, Extension
+from setuptools import setup, find_packages, Extension
 
 setup(name='zope.app.container',
-      version='3.4-dev',
+      version='3.4dev',
       url='http://svn.zope.org/zope.app.container',
       license='ZPL 2.1',
       description='Zope container',
@@ -34,13 +31,7 @@ setup(name='zope.app.container',
                        "container components, and provides"
                        "sample container implementations.",
 
-      packages=['zope', 'zope.app', 'zope.app.container',
-                'zope.app.container.tests',
-                'zope.app.container.ftests',
-                'zope.app.container.browser',
-                'zope.app.container.browser.tests',
-                'zope.app.container.browser.ftests'
-                ],
+      packages=find_packages('src'),
       package_dir = {'': 'src'},
 
       ext_modules=[Extension("zope.app.container._zope_app_container_contained",
