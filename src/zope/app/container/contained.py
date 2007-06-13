@@ -277,7 +277,7 @@ def containedEvent(object, container, name=None):
         >>> event.oldName
         u'foo'
 
-    If the `object` implements `ILocation`, but not `IContained`, set it's
+    If the `object` implements `ILocation`, but not `IContained`, set its
     `__parent__` and `__name__` attributes *and* declare that it
     implements `IContained`:
 
