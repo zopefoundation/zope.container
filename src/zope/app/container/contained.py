@@ -325,9 +325,7 @@ def containedEvent(object, container, name=None):
 
     if not IContained.providedBy(object):
         if ILocation.providedBy(object):
-            zope.interface.directlyProvides(
-                object, IContained,
-                zope.interface.directlyProvidedBy(object))
+            zope.interface.alsoProvides(object, IContained)
         else:
             object = ContainedProxy(object)
 
