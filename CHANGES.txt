@@ -1,8 +1,8 @@
 Changes for zope.app.container
 ==============================
 
-Version 3.5.0a1
-===============
+2007/06/29 3.5.0a1
+==================
 
 - updated bootstrap to current version
 
