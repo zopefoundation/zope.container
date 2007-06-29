@@ -21,7 +21,7 @@ import os
 from setuptools import setup, find_packages, Extension
 
 setup(name='zope.app.container',
-      version = '3.4.0b1',
+      version = '3.5.0a1',
       url='http://svn.zope.org/zope.app.container',
       license='ZPL 2.1',
       description='Zope container',

@@ -1,2 +1,11 @@
-zope.app.apidoc Package Changelog
-=================================
+Changes for zope.app.container
+==============================
+
+Version 3.5.0a1
+===============
+
+- updated bootstrap to current version
+
+- Store length of BTreeContainer in its own Length object for faster
+  __len__ implementation of huge containers.
+

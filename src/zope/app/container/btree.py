@@ -24,7 +24,10 @@ __docformat__ = 'restructuredtext'
 
 from persistent import Persistent
 from BTrees.OOBTree import OOBTree
+from BTrees.Length import Length
+
 from zope.app.container.sample import SampleContainer
+from zope.cachedescriptors.property import Lazy
 
 class BTreeContainer(SampleContainer, Persistent):
 
@@ -35,6 +38,10 @@ class BTreeContainer(SampleContainer, Persistent):
     # provided by that base class are just slower replacements for
     # operations on the BTree itself.  It would probably be clearer to
     # just delegate those methods directly to the btree.
+
+    def __init__(self):
+        super(BTreeContainer, self).__init__()
+        self.__len = Length()
 
     def _newContainerData(self):
         """Construct an item-data container
@@ -63,5 +70,32 @@ class BTreeContainer(SampleContainer, Persistent):
         '''
         return key in self._SampleContainer__data
 
+    @Lazy
+    def _BTreeContainer__len(self):
+        import logging
+        log = logging.getLogger('zope.app.container.btree')
+        l=Length()
+        ol = super(BTreeContainer, self).__len__()
+        if ol>0:
+            l.change(ol)
+        self._p_changed=True
+        log.info("Storing length of %r" % self)
+        return l
+
+    def __len__(self):
+        #import pdb;pdb.set_trace()
+        return self.__len()
+
+    def __setitem__(self, key, value):
+        # make sure our lazy property gets set
+        l = self.__len
+        super(BTreeContainer, self).__setitem__(key, value)
+        l.change(1)
+
+    def __delitem__(self, key):
+        # make sure our lazy property gets set
+        l = self.__len
+        super(BTreeContainer, self).__delitem__(key)
+        l.change(-1)
+
     has_key = __contains__
-        

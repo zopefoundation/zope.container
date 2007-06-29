@@ -19,17 +19,32 @@ from unittest import TestCase, main, makeSuite, TestSuite
 from zope.testing.doctestunit import DocTestSuite
 from zope.app.testing import placelesssetup
 from test_icontainer import TestSampleContainer
+from zope.app.container.btree import BTreeContainer
 
 class TestBTreeContainer(TestSampleContainer, TestCase):
 
     def makeTestObject(self):
-        from zope.app.container.btree import BTreeContainer
         return BTreeContainer()
+
+class TestBTreeLength(TestCase):
+
+    def testStoredLength(self):
+        #This is lazy for backward compatibility. If the len is not
+        #stored already we set it to the length of the underlying
+        #btree.
+        bc = BTreeContainer()
+        self.assertEqual(bc.__dict__['_BTreeContainer__len'](), 0)
+        del bc.__dict__['_BTreeContainer__len']
+        self.failIf(bc.__dict__.has_key('_BTreeContainer__len'))
+        bc['1'] = 1
+        self.assertEqual(len(bc), 1)
+        self.assertEqual(bc.__dict__['_BTreeContainer__len'](), 1)
 
 
 def test_suite():
     return TestSuite((
         makeSuite(TestBTreeContainer),
+        makeSuite(TestBTreeLength),
         DocTestSuite('zope.app.container.btree',
                      setUp=placelesssetup.setUp,
                      tearDown=placelesssetup.tearDown),
