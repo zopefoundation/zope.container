@@ -27,9 +27,7 @@ setup(name='zope.app.container',
       description='Zope container',
       author='Zope Corporation and Contributors',
       author_email='zope3-dev@zope.org',
-      long_description="This package define interfaces of"
-                       "container components, and provides"
-                       "sample container implementations.",
+      long_description=open('README.txt').read(),
 
       packages=find_packages('src'),
       package_dir = {'': 'src'},
