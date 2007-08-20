@@ -20,7 +20,7 @@ from setuptools import setup, find_packages, Extension
 
 setup(name='zope.app.container',
       version = '3.5.0a2',
-      url='http://svn.zope.org/zope.app.container',
+      url='http://cheeseshop.python.org/pypi/zope.app.container',
       license='ZPL 2.1',
       description='Zope container',
       author='Zope Corporation and Contributors',
