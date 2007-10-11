@@ -18,18 +18,40 @@ $Id$
 import os
 from setuptools import setup, find_packages, Extension
 
+def read(*rnames):
+    return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
+
 setup(name='zope.app.container',
-      version = '3.5.0a2',
-      url='http://cheeseshop.python.org/pypi/zope.app.container',
-      license='ZPL 2.1',
-      description='Zope container',
+      version = '3.5.0',
       author='Zope Corporation and Contributors',
       author_email='zope3-dev@zope.org',
-      long_description=open('README.txt').read(),
-
+      description='Zope Container',
+      long_description=(
+          read('README.txt')
+          + '\n\n' +
+          'Detailed Documentation\n'
+          '**********************\n'
+          + '\n\n' +
+          read('src', 'zope', 'app', 'container', 'constraints.txt')
+          + '\n\n' +
+          read('CHANGES.txt')
+          ),
+      keywords = "zope3 container",
+      classifiers = [
+          'Development Status :: 5 - Production/Stable',
+          'Environment :: Web Environment',
+          'Intended Audience :: Developers',
+          'License :: OSI Approved :: Zope Public License',
+          'Programming Language :: Python',
+          'Natural Language :: English',
+          'Operating System :: OS Independent',
+          'Topic :: Internet :: WWW/HTTP',
+          'Framework :: Zope3'],
+      url='http://cheeseshop.python.org/pypi/zope.app.container',
+      license='ZPL 2.1',
       packages=find_packages('src'),
       package_dir = {'': 'src'},
-
+      namespace_packages=['zope', 'zope.app'],
       ext_modules=[Extension("zope.app.container._zope_app_container_contained",
                              [os.path.join("src", "zope", "app", "container",
                                            "_zope_app_container_contained.c")
@@ -40,7 +62,6 @@ setup(name='zope.app.container',
                                 'zope.app.securitypolicy',
                                 'zope.app.zcmlfiles',
                                 'zope.app.file']),
-      namespace_packages=['zope', 'zope.app'],
       install_requires=['setuptools',
                         'zope.interface',
                         'zope.deprecation',
@@ -66,6 +87,5 @@ setup(name='zope.app.container',
                         'ZODB3',
                         ],
       include_package_data = True,
-
       zip_safe = False,
       )

@@ -7,7 +7,7 @@ containers an item can be placed in.  We express these constraints in
 interfaces.  Let's define some container and item interfaces:
 
     >>> from zope.app.container.interfaces import IContainer, IContained
-    >>> from zope.app.container.constraints import containers, contains    
+    >>> from zope.app.container.constraints import containers, contains
 
     >>> class IBuddyFolder(IContainer):
     ...     contains('.IBuddy')
@@ -22,7 +22,7 @@ define IBuddy, we can use IBuddyFolder directly:
     >>> class IBuddy(IContained):
     ...     containers(IBuddyFolder)
 
- 
+
 Now, with these interfaces in place, we can define Buddy and
 BuddyFolder classes and verify that we can put buddies in buddy
 folders:
@@ -93,5 +93,5 @@ could have defined these in the opposite order:
 
     >>> checkFactory(Contacts(), 'x', Factory(Buddy))
     False
-    
+
 
