@@ -2,6 +2,12 @@
 CHANGES
 =======
 
+3.5.1 (2007-10-31)
+------------------
+
+- Resolve ``ZopeSecurityPolicy`` and ``IRolePermissionManager`` deprecation
+  warning.
+
 3.5.0 (2007-10-11)
 ------------------
 

@@ -23,7 +23,7 @@ from zope.security.interfaces import Unauthorized
 from zope.app.testing.functional import BrowserTestCase
 from zope.app.file import File
 from zope.dublincore.interfaces import IZopeDublinCore
-from zope.app.securitypolicy.interfaces import IRolePermissionManager
+from zope.securitypolicy.interfaces import IRolePermissionManager
 from zope.app.container.testing import AppContainerLayer
 
 class Tests(BrowserTestCase):
