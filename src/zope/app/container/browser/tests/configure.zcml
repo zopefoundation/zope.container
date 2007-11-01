@@ -2,7 +2,7 @@
    xmlns="http://namespaces.zope.org/zope"
    xmlns:browser="http://namespaces.zope.org/browser">
 
-  <class class=".test_contents.ReadOnlyContainer">
+  <class class=".test_contents_functional.ReadOnlyContainer">
     <require
         permission="zope.ManageContent"
         interface="zope.app.container.interfaces.IReadContainer"

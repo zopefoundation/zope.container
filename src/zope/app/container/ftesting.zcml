@@ -8,7 +8,7 @@
   <!-- used for functional testing setup -->
 
   <include package="zope.app.zcmlfiles" />
-  <include package="zope.app.container.browser.ftests" />
+  <include package="zope.app.container.browser.tests" />
   <include package="zope.app.file"/>
   <include package="zope.app.authentication" />
 
