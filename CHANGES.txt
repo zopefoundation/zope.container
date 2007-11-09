@@ -2,6 +2,14 @@
 CHANGES
 =======
 
+3.5.3 (2007-11-09)
+------------------
+
+- Send ``IObjectModifiedEvent`` when changing the title through the
+  ``@@contents.html`` view.
+
+  This fixes https://bugs.edge.launchpad.net/zope3/+bug/98483.
+
 3.5.2 (2007-11-01)
 ------------------
 

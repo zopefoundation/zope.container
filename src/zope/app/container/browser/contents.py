@@ -19,6 +19,7 @@ __docformat__ = 'restructuredtext'
 
 import urllib
 
+from zope.event import notify
 from zope.exceptions.interfaces import UserError
 from zope.security.interfaces import Unauthorized
 from zope.security import canWrite
@@ -31,6 +32,7 @@ from zope.copypastemove.interfaces import IPrincipalClipboard
 from zope.copypastemove.interfaces import IObjectCopier, IObjectMover
 from zope.copypastemove.interfaces import IContainerItemRenamer
 from zope.annotation.interfaces import IAnnotations
+from zope.lifecycleevent import ObjectModifiedEvent, Attributes
 
 from zope.app import zapi
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
@@ -218,7 +220,8 @@ class Contents(BrowserView):
         item = self.context[id]
         dc = IDCDescriptiveProperties(item)
         dc.title = new
-
+        notify(ObjectModifiedEvent(item, Attributes(IZopeDublinCore, 'title')))
+        
     def hasAdding(self):
         """Returns true if an adding view is available."""
         adding = zapi.queryMultiAdapter((self.context, self.request), name="+")

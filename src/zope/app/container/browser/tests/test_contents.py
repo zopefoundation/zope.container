@@ -20,6 +20,9 @@ from unittest import TestCase, TestSuite, main, makeSuite
 from zope.interface import Interface, implements
 from zope.security import checker
 from zope.traversing.api import traverse
+
+from zope.component.eventtesting import getEvents
+
 from zope.annotation.interfaces import IAnnotations
 from zope.copypastemove import ContainerItemRenamer
 from zope.copypastemove import ObjectMover, ObjectCopier
@@ -157,6 +160,45 @@ class BaseTestContentsBrowserView(PlacefulSetup):
 
         urls = map(lambda x: x['url'], info_list)
         self.assert_('subcontainer' in urls)
+
+    def testChangeTitle(self):
+        container = self._TestView__newContext()
+        document = Document()
+        container['document'] = document
+
+        from zope.dublincore.interfaces import IDCDescriptiveProperties
+        class FauxDCDescriptiveProperties(object):
+            implements(IDCDescriptiveProperties)
+
+            __Security_checker__ = checker.Checker(
+                {"title": "zope.Public",
+                 },
+                {"title": "zope.app.dublincore.change"})
+
+            def __init__(self, context):
+                self.context = context
+
+            def setTitle(self, title):
+                self.context.title = title
+                
+            def getTitle(self):
+                return self.context.title
+                
+            title = property(getTitle, setTitle)
+
+        ztapi.provideAdapter(IDocument, IDCDescriptiveProperties, FauxDCDescriptiveProperties)
+        
+        fc = self._TestView__newView(container)
+
+        dc = IDCDescriptiveProperties(document)
+        
+        fc.request.form.update({'retitle_id': 'document', 'new_value': 'new'})
+        fc.changeTitle()
+        events = getEvents()
+        self.assertEquals(dc.title, 'new')
+        self.failIf('title' not in events[-1].descriptions[0].attributes)
+
+
 
 class IDocument(Interface):
     pass
