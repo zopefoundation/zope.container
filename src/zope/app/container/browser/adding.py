@@ -22,22 +22,25 @@ $Id$
 __docformat__ = 'restructuredtext'
 
 import zope.security.checker
+from zope.component import getMultiAdapter
+from zope.component import getUtility
+from zope.component import queryMultiAdapter
+from zope.component import queryUtility
 from zope.component.interfaces import IFactory
 from zope.event import notify
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
 from zope.publisher.browser import BrowserView
 from zope.security.proxy import removeSecurityProxy
+from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.exceptions.interfaces import UserError
 from zope.location import LocationProxy
 from zope.lifecycleevent import ObjectCreatedEvent
 
+from zope.app.container.constraints import checkFactory, checkObject
+from zope.app.container.i18n import ZopeMessageFactory as _
 from zope.app.container.interfaces import IAdding, INameChooser
 from zope.app.container.interfaces import IContainerNamesContainer
-from zope.app.container.constraints import checkFactory, checkObject
-
-from zope.app import zapi
-from zope.app.container.i18n import ZopeMessageFactory as _
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.app.publisher.browser.menu import getMenu
 
@@ -77,7 +80,7 @@ class Adding(BrowserView):
 
     def nextURL(self):
         """See zope.app.container.interfaces.IAdding"""
-        return zapi.absoluteURL(self.context, self.request) + '/@@contents.html'
+        return absoluteURL(self.context, self.request) + '/@@contents.html'
 
     # set in BrowserView.__init__
     request = None
@@ -91,18 +94,18 @@ class Adding(BrowserView):
 
             if view_name.startswith('@@'):
                 view_name = view_name[2:]
-            return zapi.getMultiAdapter((self, request), name=view_name)
+            return getMultiAdapter((self, request), name=view_name)
 
         if name.startswith('@@'):
             view_name = name[2:]
         else:
             view_name = name
 
-        view = zapi.queryMultiAdapter((self, request), name=view_name)
+        view = queryMultiAdapter((self, request), name=view_name)
         if view is not None:
             return view
 
-        factory = zapi.queryUtility(IFactory, name)
+        factory = queryUtility(IFactory, name)
         if factory is None:
             return super(Adding, self).publishTraverse(request, name)
 
@@ -120,10 +123,10 @@ class Adding(BrowserView):
         else:
             view_name = type_name
 
-        if zapi.queryMultiAdapter((self, self.request),
+        if queryMultiAdapter((self, self.request),
                                   name=view_name) is not None:
             url = "%s/%s=%s" % (
-                zapi.absoluteURL(self, self.request), type_name, id)
+                absoluteURL(self, self.request), type_name, id)
             self.request.response.redirect(url)
             return
 
@@ -135,7 +138,7 @@ class Adding(BrowserView):
         #       original's checker info gets lost. No factory that was
         #       registered via ZCML and was used via addMenuItem worked
         #       here. (SR)
-        factory = zapi.getUtility(IFactory, type_name)
+        factory = getUtility(IFactory, type_name)
         if not type(factory) is zope.security.checker.Proxy:
             factory = LocationProxy(factory, self, type_name)
             factory = zope.security.checker.ProxyFactory(factory)
@@ -174,7 +177,7 @@ class Adding(BrowserView):
                 if extra:
                     factory = extra.get('factory')
                     if factory:
-                        factory = zapi.getUtility(IFactory, factory)
+                        factory = getUtility(IFactory, factory)
                         if not checkFactory(container, None, factory):
                             continue
                         elif item['extra']['factory'] != item['action']:
