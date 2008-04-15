@@ -87,7 +87,7 @@ class Adding(BrowserView):
     context = None
 
     def publishTraverse(self, request, name):
-        """See zope.app.container.interfaces.IAdding"""
+        """See zope.publisher.interfaces.IPublishTraverse"""
         if '=' in name:
             view_name, content_name = name.split("=", 1)
             self.contentName = content_name
