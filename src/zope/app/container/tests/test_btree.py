@@ -29,9 +29,9 @@ class TestBTreeContainer(TestSampleContainer, TestCase):
 class TestBTreeLength(TestCase):
 
     def testStoredLength(self):
-        #This is lazy for backward compatibility. If the len is not
-        #stored already we set it to the length of the underlying
-        #btree.
+        # This is lazy for backward compatibility.  If the len is not
+        # stored already we set it to the length of the underlying
+        # btree.
         bc = BTreeContainer()
         self.assertEqual(bc.__dict__['_BTreeContainer__len'](), 0)
         del bc.__dict__['_BTreeContainer__len']
