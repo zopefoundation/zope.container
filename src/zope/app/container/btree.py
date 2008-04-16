@@ -74,11 +74,11 @@ class BTreeContainer(SampleContainer, Persistent):
     def _BTreeContainer__len(self):
         import logging
         log = logging.getLogger('zope.app.container.btree')
-        l=Length()
+        l = Length()
         ol = super(BTreeContainer, self).__len__()
-        if ol>0:
+        if ol > 0:
             l.change(ol)
-        self._p_changed=True
+        self._p_changed = True
         log.info("Storing length of %r" % self)
         return l
 
