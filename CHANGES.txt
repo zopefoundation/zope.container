@@ -2,6 +2,14 @@
 CHANGES
 =======
 
+3.6.0 (unreleased)
+------------------
+
+- Added an ``IBTreeContainer`` interface that allows an argument to the
+  ``items``, ``keys``, and ``values`` methods with the same semantics as for
+  a BTree object.  The extended interface is implemented by the
+  ``BTreeContainer`` class.
+
 3.5.3 (2007-11-09)
 ------------------
 

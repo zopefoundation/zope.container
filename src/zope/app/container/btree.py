@@ -26,12 +26,15 @@ from persistent import Persistent
 from BTrees.OOBTree import OOBTree
 from BTrees.Length import Length
 
+from zope.app.container.interfaces import IBTreeContainer
 from zope.app.container.sample import SampleContainer
 from zope.cachedescriptors.property import Lazy
+from zope.interface import implements
+
 
 class BTreeContainer(SampleContainer, Persistent):
 
-    # implements(what my base classes implement)
+    implements(IBTreeContainer)
 
     # TODO: It appears that BTreeContainer uses SampleContainer only to
     # get the implementation of __setitem__().  All the other methods
@@ -99,3 +102,21 @@ class BTreeContainer(SampleContainer, Persistent):
         l.change(-1)
 
     has_key = __contains__
+
+    def items(self, key=None):
+        if key is None:
+            return super(BTreeContainer, self).items()
+        else:
+            return self._SampleContainer__data.items(key)
+
+    def keys(self, key=None):
+        if key is None:
+            return super(BTreeContainer, self).keys()
+        else:
+            return self._SampleContainer__data.keys(key)
+
+    def values(self, key=None):
+        if key is None:
+            return super(BTreeContainer, self).values()
+        else:
+            return self._SampleContainer__data.values(key)
