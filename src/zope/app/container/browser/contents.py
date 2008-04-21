@@ -19,6 +19,7 @@ __docformat__ = 'restructuredtext'
 
 import urllib
 
+from zope.component import queryMultiAdapter
 from zope.event import notify
 from zope.exceptions.interfaces import UserError
 from zope.security.interfaces import Unauthorized
@@ -33,8 +34,8 @@ from zope.copypastemove.interfaces import IObjectCopier, IObjectMover
 from zope.copypastemove.interfaces import IContainerItemRenamer
 from zope.annotation.interfaces import IAnnotations
 from zope.lifecycleevent import ObjectModifiedEvent, Attributes
+from zope.traversing.api import getName, getPath, joinPath, traverse
 
-from zope.app import zapi
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.app.container.i18n import ZopeMessageFactory as _
 
@@ -158,7 +159,7 @@ class Contents(BrowserView):
         info['retitle'] = id == retitle_id
 
 
-        zmi_icon = zapi.queryMultiAdapter((obj, self.request), name='zmi_icon')
+        zmi_icon = queryMultiAdapter((obj, self.request), name='zmi_icon')
         if zmi_icon is None:
             info['icon'] = None
         else:
@@ -221,10 +222,10 @@ class Contents(BrowserView):
         dc = IDCDescriptiveProperties(item)
         dc.title = new
         notify(ObjectModifiedEvent(item, Attributes(IZopeDublinCore, 'title')))
-        
+
     def hasAdding(self):
         """Returns true if an adding view is available."""
-        adding = zapi.queryMultiAdapter((self.context, self.request), name="+")
+        adding = queryMultiAdapter((self.context, self.request), name="+")
         return (adding is not None)
 
     def addObject(self):
@@ -234,7 +235,7 @@ class Contents(BrowserView):
         else:
             new = request["new_value"]
 
-        adding = zapi.queryMultiAdapter((self.context, self.request), name="+")
+        adding = queryMultiAdapter((self.context, self.request), name="+")
         if adding is None:
             adding = Adding(self.context, request)
         else:
@@ -267,7 +268,7 @@ class Contents(BrowserView):
             self.error = _("You didn't specify any ids to copy.")
             return
 
-        container_path = zapi.getPath(self.context)
+        container_path = getPath(self.context)
 
         # For each item, check that it can be copied; if so, save the
         # path of the object for later copying when a destination has
@@ -289,7 +290,7 @@ class Contents(BrowserView):
                     self.error = _("Object '${name}' cannot be copied",
                                    mapping=m)
                 return
-            items.append(zapi.joinPath(container_path, id))
+            items.append(joinPath(container_path, id))
 
         # store the requested operation in the principal annotations:
         clipboard = getPrincipalClipboard(self.request)
@@ -304,7 +305,7 @@ class Contents(BrowserView):
             self.error = _("You didn't specify any ids to cut.")
             return
 
-        container_path = zapi.getPath(self.context)
+        container_path = getPath(self.context)
 
         # For each item, check that it can be moved; if so, save the
         # path of the object for later moving when a destination has
@@ -326,7 +327,7 @@ class Contents(BrowserView):
                     self.error = _("Object '${name}' cannot be moved",
                                    mapping=m)
                 return
-            items.append(zapi.joinPath(container_path, id))
+            items.append(joinPath(container_path, id))
 
         # store the requested operation in the principal annotations:
         clipboard = getPrincipalClipboard(self.request)
@@ -342,7 +343,7 @@ class Contents(BrowserView):
         items = clipboard.getContents()
         for item in items:
             try:
-                obj = zapi.traverse(target, item['target'])
+                obj = traverse(target, item['target'])
             except TraversalError:
                 pass
             else:
@@ -373,7 +374,7 @@ class Contents(BrowserView):
         for item in items:
             duplicated_id = False
             try:
-                obj = zapi.traverse(target, item['target'])
+                obj = traverse(target, item['target'])
             except TraversalError:
                 pass
             else:
@@ -394,7 +395,7 @@ class Contents(BrowserView):
                     raise
 
             if duplicated_id:
-                not_pasteable_ids.append(zapi.getName(obj))
+                not_pasteable_ids.append(getName(obj))
 
         if moved:
             # Clear the clipboard if we do a move, but not if we only do a copy
@@ -421,7 +422,7 @@ class Contents(BrowserView):
         items = clipboard.getContents()
         for item in items:
             try:
-                zapi.traverse(self.context, item['target'])
+                traverse(self.context, item['target'])
             except TraversalError:
                 pass
             else:

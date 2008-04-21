@@ -20,10 +20,10 @@ $Id$
 """
 __docformat__ = 'restructuredtext'
 
-from zope.app import zapi
 from zope.i18nmessageid import Message
 from zope.app.container.i18n import ZopeMessageFactory as _
 from zope.app.dependable.interfaces import IDependable, DependencyError
+from zope.traversing.api import getPath
 
 exception_msg = _("""
 Removal of object (${object}) which has dependents (${dependents})
@@ -39,7 +39,7 @@ def CheckDependency(event):
         dependents = dependency.dependents()
         if dependents:
             mapping = {
-                "object": zapi.getPath(object),
+                "object": getPath(object),
                 "dependents": ", ".join(dependents)
                 }
             raise DependencyError(Message(exception_msg, mapping=mapping))

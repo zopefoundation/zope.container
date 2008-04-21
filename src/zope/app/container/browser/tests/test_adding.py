@@ -28,11 +28,12 @@ from zope.publisher.browser import BrowserView
 from zope.security.interfaces import ForbiddenAttribute
 from zope.testing.doctestunit import DocTestSuite
 from zope.exceptions.interfaces import UserError
+from zope.traversing.api import getParent
 from zope.traversing.browser import AbsoluteURL
+from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.traversing.browser.interfaces import IAbsoluteURL
 from zope.traversing.interfaces import IContainmentRoot
 
-from zope.app import zapi
 from zope.app.testing import ztapi
 from zope.app.testing.placelesssetup import PlacelessSetup, setUp, tearDown
 from zope.app.publisher.interfaces.browser import AddMenu
@@ -83,7 +84,7 @@ class AbsoluteURL(BrowserView):
         if IContainmentRoot.providedBy(self.context):
             return ''
         name = self.context.__name__
-        url = zapi.absoluteURL(zapi.getParent(self.context), self.request)
+        url = absoluteURL(getParent(self.context), self.request)
         url += '/' + name
         return url
 
