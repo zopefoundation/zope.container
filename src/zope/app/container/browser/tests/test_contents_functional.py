@@ -337,6 +337,30 @@ class Test(BrowserTestCase):
         body = response.getBody()
         self.assert_("cannot be moved" in body)
 
+    def test_copy_then_delete_with_unicode_name(self):
+        """Tests unicode on object copied then deleted (#238579)."""
+
+        # create a file with an accentuated unicode name
+        root = self.getRootFolder()
+        root[u'voil\xe0'] = File()
+        transaction.commit()
+
+        # copy the object
+        response = self.publish('/@@contents.html', basic='mgr:mgrpw', form={
+            'ids' : (u'voil\xe0',),
+            'container_copy_button' : '' })
+        self.assertEqual(response.getStatus(), 302)
+        self.assertEqual(response.getHeader('Location'),
+            'http://localhost/@@contents.html')
+        response = self.publish('/@@contents.html', basic='mgr:mgrpw')
+        self.assertEqual(response.getStatus(), 200)
+
+        # delete the object
+        del root[u'voil\xe0']
+        transaction.commit()
+        response = self.publish('/@@contents.html', basic='mgr:mgrpw')
+        self.assertEqual(response.getStatus(), 200)
+
 
 def test_suite():
     suite = unittest.TestSuite()

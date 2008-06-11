@@ -95,7 +95,14 @@ class ContainerTraversable(object):
 
         v = container.get(name, _marker)
         if v is _marker:
-            v = getattr(container, name, _marker)
+            try:
+                # Note that if name is a unicode string, getattr will
+                # implicitly try to encode it using the system
+                # encoding (usually ascii). Failure to encode means
+                # invalid attribute name.
+                v = getattr(container, name, _marker)
+            except UnicodeEncodeError:
+                raise TraversalError(container, name)
             if v is _marker:
                 raise TraversalError(container, name)
 
