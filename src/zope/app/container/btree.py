@@ -114,3 +114,25 @@ class BTreeContainer(Contained, Persistent):
 
     def values(self, key=None):
         return self.__data.values(key)
+
+    # transparent backward compatibility
+    # since BTreeContainer does not inherit from SampleContainer
+    def _get__data(self):
+        try:
+            return self._BTreeContainer__data
+        except:
+            return self._SampleContainer__data
+    def _set__data(self, value):
+        try:
+            self._BTreeContainer__data = value
+        except:
+            self._SampleContainer__data = value
+    def _del_data(self):
+        try:
+            del self._BTreeContainer__data
+        except:
+            del self._SampleContainer__data
+    __data = property(_get__data, _set__data, _del_data)
+
+
+
