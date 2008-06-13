@@ -287,7 +287,8 @@ class INameChooser(Interface):
         """
 
     def chooseName(name, object):
-        """Choose a unique valid name for the object
+        """Choose a unique valid name for the object.
+        This method is expected to always choose a valid name without error.
 
         The given name and object may be taken into account when
         choosing the name.

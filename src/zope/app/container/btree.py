@@ -86,7 +86,6 @@ class BTreeContainer(SampleContainer, Persistent):
         return l
 
     def __len__(self):
-        #import pdb;pdb.set_trace()
         return self.__len()
 
     def __setitem__(self, key, value):

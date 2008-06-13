@@ -705,7 +705,45 @@ class NameChooser(object):
         self.context = context
 
     def checkName(self, name, object):
-        "See zope.app.container.interfaces.INameChooser"
+        """See zope.app.container.interfaces.INameChooser
+
+        We create and populate a dummy container
+
+        >>> from zope.app.container.sample import SampleContainer
+        >>> container = SampleContainer()
+        >>> container['foo'] = 'bar'
+        >>> from zope.app.container.contained import NameChooser
+
+        All these names are invalid:
+
+        >>> NameChooser(container).checkName('+foo', object())
+        Traceback (most recent call last):
+        ...
+        UserError: Names cannot begin with '+' or '@' or contain '/'
+        >>> NameChooser(container).checkName('@foo', object())
+        Traceback (most recent call last):
+        ...
+        UserError: Names cannot begin with '+' or '@' or contain '/'
+        >>> NameChooser(container).checkName('f/oo', object())
+        Traceback (most recent call last):
+        ...
+        UserError: Names cannot begin with '+' or '@' or contain '/'
+        >>> NameChooser(container).checkName('foo', object())
+        Traceback (most recent call last):
+        ...
+        UserError: The given name is already being used
+        >>> NameChooser(container).checkName(2, object())
+        Traceback (most recent call last):
+        ...
+        TypeError: ('Invalid name type', <type 'int'>)
+
+        This one is ok:
+
+        >>> NameChooser(container).checkName('2', object())
+        True
+
+
+        """
 
         if not name:
             raise UserError(
@@ -731,13 +769,36 @@ class NameChooser(object):
 
 
     def chooseName(self, name, object):
-        "See zope.app.container.interfaces.INameChooser"
+        """See zope.app.container.interfaces.INameChooser
+
+        The name chooser is expected to choose a name without error
+        
+        We create and populate a dummy container
+
+        >>> from zope.app.container.sample import SampleContainer
+        >>> container = SampleContainer()
+        >>> container['foo.old.rst'] = 'rst doc'
+
+        >>> from zope.app.container.contained import NameChooser
+        >>> NameChooser(container).chooseName('+@+@foo.old.rst', object())
+        u'foo.old-2.rst'
+        >>> NameChooser(container).chooseName('+@+@foo/foo', object())
+        u'foo-foo'
+        >>> NameChooser(container).chooseName('', object())
+        u'object'
+        >>> NameChooser(container).chooseName('@+@', object())
+        u'object'
+
+        """
 
         container = self.context
 
-        if not name:
-            name = object.__class__.__name__
+        # remove characters that checkName does not allow
+        name = unicode(name.replace('/', '-').lstrip('+@'))
 
+        if not name:
+            name = unicode(object.__class__.__name__)
+        
         dot = name.rfind('.')
         if dot >= 0:
             suffix = name[dot:]
