@@ -6,6 +6,7 @@ CHANGES
 -------------------
 
 - fixed #238579 / #163149: error with unicode traversing
+- fixed #221025 : adding menu is sorted with translated item
 
 3.6.0 (2008-05-06)
 ------------------
