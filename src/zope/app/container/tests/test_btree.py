@@ -139,6 +139,18 @@ class TestBTreeSpecials(TestCase):
         self.checkIterable(bc.values("0."))
         self.checkIterable(bc.values("3"))
 
+    def testCorrectLengthWhenAddingExistingItem(self):
+        """
+        for bug #175388
+        """
+        bc = BTreeContainer()
+        bc[u'x'] = object()
+        self.assertEqual(len(bc), 1)
+        bc[u'x'] = bc[u'x']
+        self.assertEqual(len(bc), 1)
+        self.assertEqual(list(bc), [u'x'])
+
+
     def checkIterable(self, iterable):
         it = iter(iterable)
         self.assert_(callable(it.next))

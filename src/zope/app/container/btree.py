@@ -27,23 +27,17 @@ from BTrees.OOBTree import OOBTree
 from BTrees.Length import Length
 
 from zope.app.container.interfaces import IBTreeContainer
-from zope.app.container.sample import SampleContainer
+from zope.app.container.contained import Contained, setitem, uncontained
 from zope.cachedescriptors.property import Lazy
 from zope.interface import implements
 
 
-class BTreeContainer(SampleContainer, Persistent):
+class BTreeContainer(Contained, Persistent):
 
     implements(IBTreeContainer)
 
-    # TODO: It appears that BTreeContainer uses SampleContainer only to
-    # get the implementation of __setitem__().  All the other methods
-    # provided by that base class are just slower replacements for
-    # operations on the BTree itself.  It would probably be clearer to
-    # just delegate those methods directly to the btree.
-
     def __init__(self):
-        super(BTreeContainer, self).__init__()
+        self.__data = self._newContainerData()
         self.__len = Length()
 
     def _newContainerData(self):
@@ -53,14 +47,12 @@ class BTreeContainer(SampleContainer, Persistent):
 
         The value returned is a mapping object that also has get,
         has_key, keys, items, and values methods.
+        The default implementation uses an OOBTree.
         """
         return OOBTree()
 
     def __contains__(self, key):
         '''See interface IReadContainer
-
-        Reimplement this method, since has_key() returns the key if available,
-        while we expect True or False.
 
         >>> c = BTreeContainer()
         >>> "a" in c
@@ -71,51 +63,54 @@ class BTreeContainer(SampleContainer, Persistent):
         >>> "A" in c
         False
         '''
-        return key in self._SampleContainer__data
+        return key in self.__data
 
     @Lazy
     def _BTreeContainer__len(self):
-        import logging
-        log = logging.getLogger('zope.app.container.btree')
         l = Length()
-        ol = super(BTreeContainer, self).__len__()
+        ol = len(self.__data)
         if ol > 0:
             l.change(ol)
         self._p_changed = True
-        log.info("Storing length of %r" % self)
         return l
 
     def __len__(self):
         return self.__len()
 
-    def __setitem__(self, key, value):
+    def _setitemf(self, key, value):
         # make sure our lazy property gets set
         l = self.__len
-        super(BTreeContainer, self).__setitem__(key, value)
+        self.__data[key] = value
         l.change(1)
+
+    def __iter__(self):
+        return iter(self.__data)
+
+    def __getitem__(self, key):
+        '''See interface `IReadContainer`'''
+        return self.__data[key]
+
+    def get(self, key, default=None):
+        '''See interface `IReadContainer`'''
+        return self.__data.get(key, default)
+        
+    def __setitem__(self, key, value):
+        setitem(self, self._setitemf, key, value)
 
     def __delitem__(self, key):
         # make sure our lazy property gets set
         l = self.__len
-        super(BTreeContainer, self).__delitem__(key)
+        uncontained(self.__data[key], self, key)
+        del self.__data[key]
         l.change(-1)
 
     has_key = __contains__
 
     def items(self, key=None):
-        if key is None:
-            return super(BTreeContainer, self).items()
-        else:
-            return self._SampleContainer__data.items(key)
+        return self.__data.items(key)
 
     def keys(self, key=None):
-        if key is None:
-            return super(BTreeContainer, self).keys()
-        else:
-            return self._SampleContainer__data.keys(key)
+        return self.__data.keys(key)
 
     def values(self, key=None):
-        if key is None:
-            return super(BTreeContainer, self).values()
-        else:
-            return self._SampleContainer__data.values(key)
+        return self.__data.values(key)
