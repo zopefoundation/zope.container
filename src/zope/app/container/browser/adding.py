@@ -22,7 +22,7 @@ $Id$
 __docformat__ = 'restructuredtext'
 
 import zope.security.checker
-from zope.component import getMultiAdapter
+from zope.component import getMultiAdapter, queryAdapter
 from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
@@ -43,7 +43,8 @@ from zope.app.container.interfaces import IAdding, INameChooser
 from zope.app.container.interfaces import IContainerNamesContainer
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.app.publisher.browser.menu import getMenu
-from zope.i18n import translate
+from zope.i18n.interfaces.locales import ICollator
+from zope.i18n.locales.fallbackcollator import FallbackCollator
 
 class Adding(BrowserView):
     implements(IAdding, IPublishTraverse)
@@ -187,7 +188,11 @@ class Adding(BrowserView):
                                                     context=self.request)
                 result.append(item)
 
-        result.sort(lambda a, b: cmp(a['title'], b['title']))
+        # sort the adding info with a collator instead of a basic unicode sort
+        collator = queryAdapter(self.request.locale, ICollator)
+        if collator is None:
+            collator = FallbackCollator(self.request.locale)
+        result.sort(key = lambda x: collator.key(x['title']))
         return result
 
     def isSingleMenuItem(self):
