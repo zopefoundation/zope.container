@@ -1,5 +1,5 @@
 <tal:block define="addingInfo context/@@+/addingInfo|nothing"
-           condition="addingInfo" i18n:domain="zope">
+           condition="addingInfo">
 
   <tal:block repeat="info addingInfo"
     define="namesRequired context/@@+/nameAllowed">
@@ -15,7 +15,7 @@
         tal:attributes="
           href string:${baseurl}/@@contents.html?type_name=${info/action};
           class info/selected"
-        tal:content="info/title" i18n:translate="">Folder
+        tal:content="info/title">Folder
       </a>
 
       <a href="#"
@@ -25,7 +25,7 @@
         tal:attributes="
           href string:${baseurl}/@@+/action.html?type_name=${info/action};
           class info/selected"
-        tal:content="info/title" i18n:translate="">Folder
+        tal:content="info/title">Folder
       </a>
 
       <a href="#"
@@ -34,7 +34,7 @@
         tal:attributes="
           href python: info['action'][3:];
           class info/selected"
-        tal:content="info/title" i18n:translate="">Folder
+        tal:content="info/title">Folder
       </a>
     </div>
   </tal:block>

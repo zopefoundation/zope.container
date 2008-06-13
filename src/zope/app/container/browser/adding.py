@@ -43,7 +43,7 @@ from zope.app.container.interfaces import IAdding, INameChooser
 from zope.app.container.interfaces import IContainerNamesContainer
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.app.publisher.browser.menu import getMenu
-
+from zope.i18n import translate
 
 class Adding(BrowserView):
     implements(IAdding, IPublishTraverse)
@@ -182,6 +182,9 @@ class Adding(BrowserView):
                             continue
                         elif item['extra']['factory'] != item['action']:
                             item['has_custom_add_view']=True
+                # translate here to have a localized sorting
+                item['title'] = zope.i18n.translate(item['title'],
+                                                    context=self.request)
                 result.append(item)
 
         result.sort(lambda a, b: cmp(a['title'], b['title']))
