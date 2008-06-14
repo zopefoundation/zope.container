@@ -11,12 +11,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""This module provides a sample container implementation.
-
-This is primarily for testing purposes.
-
-It might be useful as a mix-in for some classes, but many classes will
-need a very different implementation.
+"""This module provides a sample btree container implementation.
 
 $Id$
 """
@@ -37,7 +32,9 @@ class BTreeContainer(Contained, Persistent):
     implements(IBTreeContainer)
 
     def __init__(self):
-        self.__data = self._newContainerData()
+        # We keep the previous attribute to store the data
+        # for backward compatibility
+        self._SampleContainer__data = self._newContainerData()
         self.__len = Length()
 
     def _newContainerData(self):
@@ -63,12 +60,12 @@ class BTreeContainer(Contained, Persistent):
         >>> "A" in c
         False
         '''
-        return key in self.__data
+        return key in self._SampleContainer__data
 
     @Lazy
     def _BTreeContainer__len(self):
         l = Length()
-        ol = len(self.__data)
+        ol = len(self._SampleContainer__data)
         if ol > 0:
             l.change(ol)
         self._p_changed = True
@@ -80,19 +77,19 @@ class BTreeContainer(Contained, Persistent):
     def _setitemf(self, key, value):
         # make sure our lazy property gets set
         l = self.__len
-        self.__data[key] = value
+        self._SampleContainer__data[key] = value
         l.change(1)
 
     def __iter__(self):
-        return iter(self.__data)
+        return iter(self._SampleContainer__data)
 
     def __getitem__(self, key):
         '''See interface `IReadContainer`'''
-        return self.__data[key]
+        return self._SampleContainer__data[key]
 
     def get(self, key, default=None):
         '''See interface `IReadContainer`'''
-        return self.__data.get(key, default)
+        return self._SampleContainer__data.get(key, default)
         
     def __setitem__(self, key, value):
         setitem(self, self._setitemf, key, value)
@@ -100,39 +97,20 @@ class BTreeContainer(Contained, Persistent):
     def __delitem__(self, key):
         # make sure our lazy property gets set
         l = self.__len
-        uncontained(self.__data[key], self, key)
-        del self.__data[key]
+        uncontained(self._SampleContainer__data[key], self, key)
+        del self._SampleContainer__data[key]
         l.change(-1)
 
     has_key = __contains__
 
     def items(self, key=None):
-        return self.__data.items(key)
+        return self._SampleContainer__data.items(key)
 
     def keys(self, key=None):
-        return self.__data.keys(key)
+        return self._SampleContainer__data.keys(key)
 
     def values(self, key=None):
-        return self.__data.values(key)
-
-    # transparent backward compatibility
-    # since BTreeContainer does not inherit from SampleContainer
-    def _get__data(self):
-        try:
-            return self._BTreeContainer__data
-        except:
-            return self._SampleContainer__data
-    def _set__data(self, value):
-        try:
-            self._BTreeContainer__data = value
-        except:
-            self._SampleContainer__data = value
-    def _del_data(self):
-        try:
-            del self._BTreeContainer__data
-        except:
-            del self._SampleContainer__data
-    __data = property(_get__data, _set__data, _del_data)
+        return self._SampleContainer__data.values(key)
 
 
 
