@@ -21,30 +21,33 @@ $Id$
 
 __docformat__ = 'restructuredtext'
 
-import zope.security.checker
-from zope.component import getMultiAdapter, queryAdapter
+
+from zope.app.container.constraints import checkFactory
+from zope.app.container.constraints import checkObject
+from zope.app.container.i18n import ZopeMessageFactory as _
+from zope.app.container.interfaces import IAdding
+from zope.app.container.interfaces import IContainerNamesContainer
+from zope.app.container.interfaces import INameChooser
+from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
+from zope.app.publisher.browser.menu import getMenu
+from zope.component import getMultiAdapter
 from zope.component import getUtility
+from zope.component import queryAdapter
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from zope.component.interfaces import IFactory
 from zope.event import notify
-from zope.interface import implements
-from zope.publisher.interfaces import IPublishTraverse
-from zope.publisher.browser import BrowserView
-from zope.security.proxy import removeSecurityProxy
-from zope.traversing.browser.absoluteurl import absoluteURL
 from zope.exceptions.interfaces import UserError
-from zope.location import LocationProxy
-from zope.lifecycleevent import ObjectCreatedEvent
-
-from zope.app.container.constraints import checkFactory, checkObject
-from zope.app.container.i18n import ZopeMessageFactory as _
-from zope.app.container.interfaces import IAdding, INameChooser
-from zope.app.container.interfaces import IContainerNamesContainer
-from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
-from zope.app.publisher.browser.menu import getMenu
 from zope.i18n.interfaces.locales import ICollator
 from zope.i18n.locales.fallbackcollator import FallbackCollator
+from zope.interface import implements
+from zope.lifecycleevent import ObjectCreatedEvent
+from zope.location import LocationProxy
+from zope.publisher.browser import BrowserView
+from zope.publisher.interfaces import IPublishTraverse
+from zope.security.proxy import removeSecurityProxy
+from zope.traversing.browser.absoluteurl import absoluteURL
+import zope.security.checker
 
 class Adding(BrowserView):
     implements(IAdding, IPublishTraverse)
