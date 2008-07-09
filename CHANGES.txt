@@ -3,12 +3,6 @@ CHANGES
 =======
 
 
-Heads up:
-
-Relase zope.app.authentication 3.4.2 if this 3.6.1 get released. It contains a 
-bugfix based on the BTreeContainer re-implementation.
-
-
 3.6.1dev (unreleased)
 ---------------------
 
