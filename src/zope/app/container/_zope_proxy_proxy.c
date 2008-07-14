@@ -612,20 +612,20 @@ wrap_nonzero(PyObject *self)
  *   Sequence methods
  */
 
-static int
+static Py_ssize_t
 wrap_length(PyObject *self)
 {
     return PyObject_Length(Proxy_GET_OBJECT(self));
 }
 
 static PyObject *
-wrap_slice(PyObject *self, int start, int end)
+wrap_slice(PyObject *self, Py_ssize_t start, Py_ssize_t end)
 {
     return PySequence_GetSlice(Proxy_GET_OBJECT(self), start, end);
 }
 
 static int
-wrap_ass_slice(PyObject *self, int i, int j, PyObject *value)
+wrap_ass_slice(PyObject *self, Py_ssize_t i, Py_ssize_t j, PyObject *value)
 {
     return PySequence_SetSlice(Proxy_GET_OBJECT(self), i, j, value);
 }
