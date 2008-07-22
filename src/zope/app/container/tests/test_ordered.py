@@ -89,6 +89,43 @@ def test_all_items_available_at_object_added_event():
         >>> setup.placefulTearDown()
     """
 
+def test_exception_causes_order_fix():
+    """
+    Prepare the setup::
+
+        >>> root = setup.placefulSetUp(site=True)
+
+    Now register an event subscriber to object added events that
+    throws an error.
+
+        >>> import zope.component
+        >>> from zope.app.container import interfaces
+
+        >>> @zope.component.adapter(interfaces.IObjectAddedEvent)
+        ... def raiseException(event):
+        ...     raise Exception()
+
+        >>> zope.component.provideHandler(raiseException)
+
+    Now we are adding an object to the container.
+
+        >>> from zope.app.container.ordered import OrderedContainer
+        >>> oc = OrderedContainer()
+        >>> oc['foo'] = 'FOO'
+        Traceback (most recent call last):
+        ...
+        Exception
+
+    The key 'foo' should not be around:
+
+        >>> 'foo' in oc.keys()
+        False
+
+    Finally, tear down::
+
+        >>> setup.placefulTearDown()
+    """
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(DocTestSuite("zope.app.container.ordered",

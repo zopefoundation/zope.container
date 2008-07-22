@@ -204,7 +204,11 @@ class OrderedContainer(Persistent, Contained):
             self._order.append(key)
 
         # This function creates a lot of events that other code listens to.
-        setitem(self, self._data.__setitem__, key, object)
+        try:
+            setitem(self, self._data.__setitem__, key, object)
+        except Exception, e:
+            self._order.remove(key)
+            raise e
 
         return key
 
