@@ -5,6 +5,7 @@ CHANGES
 
 3.6.1dev (unreleased)
 ---------------------
+
 - Bug: Error thrown during __setitem__ for an ordered container leaves
   bad key in order
 - fixed #238579 / #163149: error with unicode traversing
@@ -19,6 +20,7 @@ CHANGES
   and the event subscribers should see the new size instead of the old size.
 - Reimplemented the BTreeContainer so that it directly accesses the btree
   methods (removed an old #TODO)
+- Made C code compatible with Python 2.5 on 64bit architectures.
 
 3.6.0 (2008-05-06)
 ------------------
