@@ -19,14 +19,13 @@ $Id$
 __docformat__ = 'restructuredtext'
 
 from zope.interface import Interface
-from zope.configuration.fields import GlobalObject
+from zope.configuration.fields import GlobalObject, GlobalInterface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.schema import Id
 from zope.security.zcml import Permission
 from zope.app.publisher.browser.viewmeta import page, view
 from zope.app.container.browser.contents import Contents
 from zope.app.container.browser.adding import Adding
-from zope.app.component.back35 import LayerField
 from zope.app.container.i18n import ZopeMessageFactory as _
 
 
@@ -53,7 +52,7 @@ class IContainerViews(Interface):
         title=u"The permission needed for add page.",
         required=False)
 
-    layer = LayerField(
+    layer = GlobalInterface(
         title=_("The layer the view is in."),
         description=_("""A skin is composed of layers. It is common to put
         skin specific views in a layer named after the skin. If the 'layer'

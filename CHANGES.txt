@@ -2,10 +2,10 @@
 CHANGES
 =======
 
-
 3.6.1dev (unreleased)
 ---------------------
 
+- Removed usage of deprecated LayerField
 - Bug: Error thrown during __setitem__ for an ordered container leaves
   bad key in order
 - fixed #238579 / #163149: error with unicode traversing
