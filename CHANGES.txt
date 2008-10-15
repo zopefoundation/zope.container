@@ -5,7 +5,12 @@ CHANGES
 3.6.1dev (unreleased)
 ---------------------
 
+- Reimplemented the BTreeContainer so that it directly accesses the btree
+  methods (removed an old #TODO)
+
 - Removed usage of deprecated LayerField.
+
+- Made C code compatible with Python 2.5 on 64bit architectures.
 
 - Fixed bug: Error thrown during __setitem__ for an ordered container
   leaves bad key in order
@@ -27,11 +32,6 @@ CHANGES
   size modification is now done in ``setitemf``: setting an existing
   item does not change the size, and the event subscribers should see
   the new size instead of the old size.
-
-- Reimplemented the BTreeContainer so that it directly accesses the btree
-  methods (removed an old #TODO)
-
-- Made C code compatible with Python 2.5 on 64bit architectures.
 
 3.6.0 (2008-05-06)
 ------------------
