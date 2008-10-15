@@ -2,8 +2,8 @@
 CHANGES
 =======
 
-3.6.1dev (unreleased)
----------------------
+3.6.1 (2008-10-15)
+------------------
 
 - Reimplemented the BTreeContainer so that it directly accesses the btree
   methods (removed an old #TODO)
