@@ -6,20 +6,27 @@ CHANGES
 ---------------------
 
 - Removed usage of deprecated LayerField
+
 - Bug: Error thrown during __setitem__ for an ordered container leaves
   bad key in order
+
 - fixed #238579 / #163149: error with unicode traversing
+
 - fixed #221025 : adding menu is sorted with translated item
                   by using a collator (better localized sorting)
+
 - fixed #227617 :
     - prevent the namechooser from failing on '+', '@' and '/'
     - added tests in the namechooser
     - be sure the name chooser returns unicode
+
 - fixed #175388 : the setitem's size modification is now done in setitemf:
   setting an existing item does not change the size,
   and the event subscribers should see the new size instead of the old size.
+
 - Reimplemented the BTreeContainer so that it directly accesses the btree
   methods (removed an old #TODO)
+
 - Made C code compatible with Python 2.5 on 64bit architectures.
 
 3.6.0 (2008-05-06)
@@ -34,11 +41,14 @@ CHANGES
 ----------------
 
 - Updated bootstrap script to current version.
+
 - Store length of ``BTreeContainer`` in its own ``Length`` object for faster
   ``__len__`` implementation of huge containers.
+
 - Send ``IObjectModifiedEvent`` when changing the title through the
   ``@@contents.html`` view.
   This fixes https://bugs.edge.launchpad.net/zope3/+bug/98483.
+
 - Resolve ``ZopeSecurityPolicy`` and ``IRolePermissionManager`` deprecation
   warning.
 
