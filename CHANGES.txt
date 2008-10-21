@@ -7,6 +7,11 @@ CHANGES
 
 - ...
 
+3.6.2 (unreleased)
+------------------
+
+- Fixed bug in ``_zope_app_container_contained.c``.
+
 3.6.1 (2008-10-15)
 ------------------
 
