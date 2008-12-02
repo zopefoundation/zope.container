@@ -5,7 +5,7 @@ CHANGES
 3.7.0 (unreleased)
 ------------------
 
-- ...
+- Remove long-time deprecated IContentContainer class.
 
 3.6.2 (2008-10-21)
 ------------------

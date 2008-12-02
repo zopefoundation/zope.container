@@ -17,19 +17,12 @@ $Id$
 """
 __docformat__ = 'restructuredtext'
 
-from zope.deprecation import deprecated
-
 from zope.interface import Interface, Attribute, Invalid
 from zope.component.interfaces import IView, IObjectEvent
 from zope.interface.common.mapping import IItemMapping
 from zope.interface.common.mapping import IReadMapping, IEnumerableMapping
 from zope.location.interfaces import ILocation
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
-
-deprecated('IContentContainer',
-           'This interface has been deprecated. '
-           'Check the "containerViews" zcml directive. '
-           'The reference will be gone in 3.3')
 
 class DuplicateIDError(KeyError):
     pass
@@ -127,10 +120,6 @@ class IWriteContainer(Interface):
 
 class IItemWriteContainer(IWriteContainer, IItemContainer):
     """A write container that also supports minimal reads."""
-
-
-class IContentContainer(IWriteContainer):
-    """Containers (like folders) that contain ordinary content."""
 
 
 class IContainer(IReadContainer, IWriteContainer):
