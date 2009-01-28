@@ -36,8 +36,8 @@ from zope.container.interfaces import IObjectAddedEvent
 from zope.container.interfaces import IObjectMovedEvent
 from zope.container.interfaces import IObjectRemovedEvent
 from zope.container.interfaces import IContainerModifiedEvent
-from zope.container._zope_app_container_contained import ContainedProxyBase
-from zope.container._zope_app_container_contained import getProxiedObject
+from zope.container._zope_container_contained import ContainedProxyBase
+from zope.container._zope_container_contained import getProxiedObject
 from zope.app.broken.interfaces import IBroken
 
 class Contained(object):

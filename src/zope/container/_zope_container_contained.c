@@ -12,7 +12,7 @@
 #
 ############################################################################*/
 
-#define _ZOPE_APP_CONTAINER_CONTAINED_C "$Id$\n"
+#define _ZOPE_CONTAINER_CONTAINED_C "$Id$\n"
 
 /* Contained Proxy Base class
 
@@ -291,7 +291,7 @@ CP_dealloc(ProxyObject *self)
 #define PyMODINIT_FUNC void
 #endif
 PyMODINIT_FUNC
-init_zope_app_container_contained(void)
+init_zope_container_contained(void)
 {
   PyObject *m;
 
@@ -302,7 +302,7 @@ init_zope_app_container_contained(void)
   /* Try to fake out compiler nag function */
   if (0) init_zope_proxy_proxy();
   
-  m = Py_InitModule3("_zope_app_container_contained", 
+  m = Py_InitModule3("_zope_container_contained", 
                      module_functions, module___doc__);
 
   if (m == NULL)
@@ -316,7 +316,7 @@ init_zope_app_container_contained(void)
   if (cPersistenceCAPI == NULL)
     return;
 
-  ProxyType.tp_name = "zope.app.container.contained.ContainedProxyBase";
+  ProxyType.tp_name = "zope.container.contained.ContainedProxyBase";
   ProxyType.ob_type = &PyType_Type;
   ProxyType.tp_base = cPersistenceCAPI->pertype;
   ProxyType.tp_getattro = CP_getattro;

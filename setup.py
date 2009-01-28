@@ -11,7 +11,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Setup for zope.app.container package
+"""Setup for zope.container package
 
 $Id$
 """
@@ -21,7 +21,7 @@ from setuptools import setup, find_packages, Extension
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
-setup(name='zope.app.container',
+setup(name='zope.container',
       version = '3.7.0dev',
       author='Zope Corporation and Contributors',
       author_email='zope-dev@zope.org',
@@ -32,7 +32,7 @@ setup(name='zope.app.container',
           'Detailed Documentation\n'
           '**********************\n'
           + '\n\n' +
-          read('src', 'zope', 'app', 'container', 'constraints.txt')
+          read('src', 'zope', 'container', 'constraints.txt')
           + '\n\n' +
           read('CHANGES.txt')
           ),
@@ -45,22 +45,21 @@ setup(name='zope.app.container',
           'Programming Language :: Python',
           'Natural Language :: English',
           'Operating System :: OS Independent',
+
           'Topic :: Internet :: WWW/HTTP',
           'Framework :: Zope3'],
-      url='http://cheeseshop.python.org/pypi/zope.app.container',
+      url='http://cheeseshop.python.org/pypi/zope.container',
       license='ZPL 2.1',
       packages=find_packages('src'),
       package_dir = {'': 'src'},
-      namespace_packages=['zope', 'zope.app'],
-      ext_modules=[Extension("zope.app.container._zope_app_container_contained",
-                             [os.path.join("src", "zope", "app", "container",
-                                           "_zope_app_container_contained.c")
+      namespace_packages=['zope'],
+      ext_modules=[Extension("zope.container._zope_container_contained",
+                             [os.path.join("src", "zope", "container",
+                                           "_zope_container_contained.c")
                               ], include_dirs=['include']),
                    ],
 
       extras_require=dict(test=['zope.app.testing',
-                                'zope.app.securitypolicy',
-                                'zope.app.zcmlfiles',
                                 'zope.app.file']),
       install_requires=['setuptools',
                         'zope.interface',
