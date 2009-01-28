@@ -33,7 +33,7 @@
    ...         "Add an item"
    ...     __setitem__.precondition = preNoZ
 
-   >>> from zope.app.container.interfaces import IContainer
+   >>> from zope.container.interfaces import IContainer
    >>> class C1(object):
    ...     zope.interface.implements(I1, IContainer)
    ...     def __repr__(self):
@@ -157,9 +157,9 @@ from zope.cachedescriptors.property import readproperty
 from zope.dottedname.resolve import resolve
 import zope.schema
 from zope.interface import providedBy
-from zope.app.container.interfaces import InvalidItemType, InvalidContainerType
-from zope.app.container.i18n import ZopeMessageFactory as _
-from zope.app.container.interfaces import IContainer
+from zope.container.interfaces import InvalidItemType, InvalidContainerType
+from zope.container.i18n import ZopeMessageFactory as _
+from zope.container.interfaces import IContainer
 
 def checkObject(container, name, object):
     """Check containement constraints for an object and container
@@ -425,7 +425,7 @@ def containers(*types):
       >>> class IBar(IContainer):
       ...     pass
 
-      >>> from zope.app.container.interfaces import IContained
+      >>> from zope.container.interfaces import IContained
       >>> class IFooBarContained(IContained):
       ...     containers(IFoo, IBar)
 

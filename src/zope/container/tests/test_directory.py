@@ -16,7 +16,7 @@
 $Id$
 """
 from unittest import TestCase, TestSuite, main, makeSuite
-import zope.app.container.directory
+import zope.container.directory
 
 class Directory(object):
     pass
@@ -26,7 +26,7 @@ class Test(TestCase):
     def test_Cloner(self):
         d = Directory()
         d.a = 1
-        clone = zope.app.container.directory.Cloner(d)('foo')
+        clone = zope.container.directory.Cloner(d)('foo')
         self.assert_(clone != d)
         self.assertEqual(clone.__class__, d.__class__)
 

@@ -20,8 +20,8 @@ from zope.interface.verify import verifyObject
 from zope.testing.doctestunit import DocTestSuite
 from zope.app.testing import placelesssetup
 from test_icontainer import TestSampleContainer
-from zope.app.container.btree import BTreeContainer
-from zope.app.container.interfaces import IBTreeContainer
+from zope.container.btree import BTreeContainer
+from zope.container.interfaces import IBTreeContainer
 
 
 class TestBTreeContainer(TestSampleContainer, TestCase):
@@ -168,7 +168,7 @@ def test_suite():
     return TestSuite((
         makeSuite(TestBTreeContainer),
         makeSuite(TestBTreeSpecials),
-        DocTestSuite('zope.app.container.btree',
+        DocTestSuite('zope.container.btree',
                      setUp=placelesssetup.setUp,
                      tearDown=placelesssetup.tearDown),
         ))

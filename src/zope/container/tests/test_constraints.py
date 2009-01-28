@@ -19,14 +19,14 @@ import unittest
 from zope.testing import doctest, module
 
 def setUp(test):
-    module.setUp(test, 'zope.app.container.constraints_txt')
+    module.setUp(test, 'zope.container.constraints_txt')
 
 def tearDown(test):
-    module.tearDown(test, 'zope.app.container.constraints_txt')
+    module.tearDown(test, 'zope.container.constraints_txt')
 
 def test_suite():
     return unittest.TestSuite((
-        doctest.DocTestSuite('zope.app.container.constraints'),
+        doctest.DocTestSuite('zope.container.constraints'),
         doctest.DocFileSuite('../constraints.txt',
                              setUp=setUp, tearDown=tearDown),
         ))

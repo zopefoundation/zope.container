@@ -24,8 +24,8 @@ from zope.publisher.interfaces.browser import IBrowserPublisher
 from zope.publisher.interfaces.xmlrpc import IXMLRPCPublisher
 from zope.publisher.interfaces import NotFound
 
-from zope.app.container.interfaces import ISimpleReadContainer, IItemContainer
-from zope.app.container.interfaces import IReadContainer
+from zope.container.interfaces import ISimpleReadContainer, IItemContainer
+from zope.container.interfaces import IReadContainer
 from zope.app.publisher.browser import getDefaultViewName
 
 # Note that the next two classes are included here because they

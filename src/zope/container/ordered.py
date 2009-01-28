@@ -17,14 +17,14 @@ $Id$
 """
 __docformat__ = 'restructuredtext'
 
-from zope.app.container.interfaces import IOrderedContainer
+from zope.container.interfaces import IOrderedContainer
 from zope.interface import implements
 from persistent import Persistent
 from persistent.dict import PersistentDict
 from persistent.list import PersistentList
 from types import StringTypes, TupleType, ListType
-from zope.app.container.contained import Contained, setitem, uncontained
-from zope.app.container.contained import notifyContainerModified
+from zope.container.contained import Contained, setitem, uncontained
+from zope.container.contained import notifyContainerModified
 
 class OrderedContainer(Persistent, Contained):
     """ `OrderedContainer` maintains entries' order as added and moved.

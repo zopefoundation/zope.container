@@ -20,8 +20,8 @@ from zope.testing.cleanup import CleanUp
 from zope.interface import implements
 from zope.traversing.interfaces import TraversalError
 
-from zope.app.container.traversal import ContainerTraversable
-from zope.app.container.interfaces import IContainer
+from zope.container.traversal import ContainerTraversable
+from zope.container.interfaces import IContainer
 
 class Container(object):
 

@@ -21,7 +21,7 @@ $Id$
 __docformat__ = 'restructuredtext'
 
 from zope.i18nmessageid import Message
-from zope.app.container.i18n import ZopeMessageFactory as _
+from zope.container.i18n import ZopeMessageFactory as _
 from zope.app.dependable.interfaces import IDependable, DependencyError
 from zope.traversing.api import getPath
 

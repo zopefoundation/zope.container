@@ -18,7 +18,7 @@ $Id$
 """
 __docformat__ = 'restructuredtext'
 
-from zope.app.container.i18n import ZopeMessageFactory as _
+from zope.container.i18n import ZopeMessageFactory as _
 from zope.size.interfaces import ISized
 from zope.interface import implements
 

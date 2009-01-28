@@ -18,7 +18,7 @@ $Id$
 from unittest import TestCase, main, makeSuite
 
 from zope.interface.verify import verifyObject
-from zope.app.container.interfaces import IContainer
+from zope.container.interfaces import IContainer
 from zope.app.testing import placelesssetup
 
 
@@ -300,7 +300,7 @@ class BaseTestIContainer(placelesssetup.PlacelessSetup):
 class TestSampleContainer(BaseTestIContainer, TestCase):
 
     def makeTestObject(self):
-        from zope.app.container.sample import SampleContainer
+        from zope.container.sample import SampleContainer
         return SampleContainer()
 
     def makeTestData(self):

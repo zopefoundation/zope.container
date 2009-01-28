@@ -29,15 +29,15 @@ from zope.exceptions.interfaces import DuplicationError, UserError
 from zope.security.checker import selectChecker, CombinedChecker
 from zope.lifecycleevent import ObjectModifiedEvent
 
-from zope.app.container.i18n import ZopeMessageFactory as _
-from zope.app.container.interfaces import IContained
-from zope.app.container.interfaces import INameChooser
-from zope.app.container.interfaces import IObjectAddedEvent
-from zope.app.container.interfaces import IObjectMovedEvent
-from zope.app.container.interfaces import IObjectRemovedEvent
-from zope.app.container.interfaces import IContainerModifiedEvent
-from zope.app.container._zope_app_container_contained import ContainedProxyBase
-from zope.app.container._zope_app_container_contained import getProxiedObject
+from zope.container.i18n import ZopeMessageFactory as _
+from zope.container.interfaces import IContained
+from zope.container.interfaces import INameChooser
+from zope.container.interfaces import IObjectAddedEvent
+from zope.container.interfaces import IObjectMovedEvent
+from zope.container.interfaces import IObjectRemovedEvent
+from zope.container.interfaces import IContainerModifiedEvent
+from zope.container._zope_app_container_contained import ContainedProxyBase
+from zope.container._zope_app_container_contained import getProxiedObject
 from zope.app.broken.interfaces import IBroken
 
 class Contained(object):
@@ -380,8 +380,8 @@ def setitem(container, setitemf, name, object):
     ...     def setMoved(self, event):
     ...         self.moved = event
 
-    >>> from zope.app.container.interfaces import IObjectAddedEvent
-    >>> from zope.app.container.interfaces import IObjectMovedEvent
+    >>> from zope.container.interfaces import IObjectAddedEvent
+    >>> from zope.container.interfaces import IObjectMovedEvent
     >>> from zope.app.testing import ztapi
 
     >>> ztapi.subscribe([IItem, IObjectAddedEvent], None,
@@ -601,7 +601,7 @@ def uncontained(object, container, name=None):
 
     >>> from zope.component.eventtesting import getEvents
     >>> from zope.lifecycleevent.interfaces import IObjectModifiedEvent
-    >>> from zope.app.container.interfaces import IObjectRemovedEvent
+    >>> from zope.container.interfaces import IObjectRemovedEvent
 
     We'll start by creating a container with an item:
 
@@ -705,14 +705,14 @@ class NameChooser(object):
         self.context = context
 
     def checkName(self, name, object):
-        """See zope.app.container.interfaces.INameChooser
+        """See zope.container.interfaces.INameChooser
 
         We create and populate a dummy container
 
-        >>> from zope.app.container.sample import SampleContainer
+        >>> from zope.container.sample import SampleContainer
         >>> container = SampleContainer()
         >>> container['foo'] = 'bar'
-        >>> from zope.app.container.contained import NameChooser
+        >>> from zope.container.contained import NameChooser
 
         All these names are invalid:
 
@@ -769,17 +769,17 @@ class NameChooser(object):
 
 
     def chooseName(self, name, object):
-        """See zope.app.container.interfaces.INameChooser
+        """See zope.container.interfaces.INameChooser
 
         The name chooser is expected to choose a name without error
         
         We create and populate a dummy container
 
-        >>> from zope.app.container.sample import SampleContainer
+        >>> from zope.container.sample import SampleContainer
         >>> container = SampleContainer()
         >>> container['foo.old.rst'] = 'rst doc'
 
-        >>> from zope.app.container.contained import NameChooser
+        >>> from zope.container.contained import NameChooser
         >>> NameChooser(container).chooseName('+@+@foo.old.rst', object())
         u'foo.old-2.rst'
         >>> NameChooser(container).chooseName('+@+@foo/foo', object())

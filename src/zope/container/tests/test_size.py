@@ -19,7 +19,7 @@ import unittest
 
 from zope.interface import implements
 from zope.size.interfaces import ISized
-from zope.app.container.interfaces import IContainer
+from zope.container.interfaces import IContainer
 
 class DummyContainer(object):
 
@@ -35,12 +35,12 @@ class DummyContainer(object):
 class Test(unittest.TestCase):
 
     def testImplementsISized(self):
-        from zope.app.container.size import ContainerSized
+        from zope.container.size import ContainerSized
         sized = ContainerSized(DummyContainer(23))
         self.assert_(ISized.providedBy(sized))
 
     def testEmptyContainer(self):
-        from zope.app.container.size import ContainerSized
+        from zope.container.size import ContainerSized
         obj = DummyContainer(0)
         sized = ContainerSized(obj)
         self.assertEqual(sized.sizeForSorting(), ('item', 0))
@@ -48,14 +48,14 @@ class Test(unittest.TestCase):
         self.assertEqual(sized.sizeForDisplay().mapping['items'], '0')
 
     def testOneItem(self):
-        from zope.app.container.size import ContainerSized
+        from zope.container.size import ContainerSized
         obj = DummyContainer(1)
         sized = ContainerSized(obj)
         self.assertEqual(sized.sizeForSorting(), ('item', 1))
         self.assertEqual(sized.sizeForDisplay(), u'1 item')
 
     def testSeveralItems(self):
-        from zope.app.container.size import ContainerSized
+        from zope.container.size import ContainerSized
         obj = DummyContainer(2)
         sized = ContainerSized(obj)
         self.assertEqual(sized.sizeForSorting(), ('item', 2))

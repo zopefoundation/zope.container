@@ -28,7 +28,7 @@ def test_order_events():
 
     Prepare some objects::
 
-        >>> from zope.app.container.ordered import OrderedContainer
+        >>> from zope.container.ordered import OrderedContainer
         >>> oc = OrderedContainer()
         >>> oc['foo'] = 'bar'
         >>> oc['baz'] = 'quux'
@@ -69,7 +69,7 @@ def test_all_items_available_at_object_added_event():
     Now register an event subscriber to object added events.
 
         >>> import zope.component
-        >>> from zope.app.container import interfaces
+        >>> from zope.container import interfaces
 
         >>> @zope.component.adapter(interfaces.IObjectAddedEvent)
         ... def printContainerKeys(event):
@@ -79,7 +79,7 @@ def test_all_items_available_at_object_added_event():
 
     Now we are adding an object to the container. 
 
-        >>> from zope.app.container.ordered import OrderedContainer
+        >>> from zope.container.ordered import OrderedContainer
         >>> oc = OrderedContainer()
         >>> oc['foo'] = 'FOO'
         ['foo']
@@ -99,7 +99,7 @@ def test_exception_causes_order_fix():
     throws an error.
 
         >>> import zope.component
-        >>> from zope.app.container import interfaces
+        >>> from zope.container import interfaces
 
         >>> @zope.component.adapter(interfaces.IObjectAddedEvent)
         ... def raiseException(event):
@@ -109,7 +109,7 @@ def test_exception_causes_order_fix():
 
     Now we are adding an object to the container.
 
-        >>> from zope.app.container.ordered import OrderedContainer
+        >>> from zope.container.ordered import OrderedContainer
         >>> oc = OrderedContainer()
         >>> oc['foo'] = 'FOO'
         Traceback (most recent call last):
@@ -128,7 +128,7 @@ def test_exception_causes_order_fix():
 
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(DocTestSuite("zope.app.container.ordered",
+    suite.addTest(DocTestSuite("zope.container.ordered",
                                setUp=placelesssetup.setUp,
                                tearDown=placelesssetup.tearDown))
     suite.addTest(DocTestSuite())

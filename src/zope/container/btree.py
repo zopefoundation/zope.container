@@ -21,8 +21,8 @@ from persistent import Persistent
 from BTrees.OOBTree import OOBTree
 from BTrees.Length import Length
 
-from zope.app.container.interfaces import IBTreeContainer
-from zope.app.container.contained import Contained, setitem, uncontained
+from zope.container.interfaces import IBTreeContainer
+from zope.container.contained import Contained, setitem, uncontained
 from zope.cachedescriptors.property import Lazy
 from zope.interface import implements
 

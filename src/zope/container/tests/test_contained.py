@@ -25,7 +25,7 @@ from persistent import Persistent
 import zope.interface
 from zope.testing import doctest
 
-from zope.app.container.contained import ContainedProxy
+from zope.container.contained import ContainedProxy
 from zope.app.testing import placelesssetup
 
 class MyOb(Persistent):
@@ -108,24 +108,24 @@ def test_declarations_on_ContainedProxy():
     It implements IContained and IPersistent:
 
       >>> tuple(zope.interface.implementedBy(ContainedProxy))
-      (<InterfaceClass zope.app.container.interfaces.IContained>,
+      (<InterfaceClass zope.container.interfaces.IContained>,
        <InterfaceClass persistent.interfaces.IPersistent>)
 
     A proxied object has IContainer, in addition to what the unproxied
     object has:
 
       >>> tuple(zope.interface.providedBy(p))
-      (<InterfaceClass zope.app.container.tests.test_contained.I1>,
-       <InterfaceClass zope.app.container.interfaces.IContained>,
+      (<InterfaceClass zope.container.tests.test_contained.I1>,
+       <InterfaceClass zope.container.interfaces.IContained>,
        <InterfaceClass persistent.interfaces.IPersistent>)
 
       >>> class I2(zope.interface.Interface):
       ...     pass
       >>> zope.interface.directlyProvides(c, I2)
       >>> tuple(zope.interface.providedBy(p))
-      (<InterfaceClass zope.app.container.tests.test_contained.I2>,
-       <InterfaceClass zope.app.container.tests.test_contained.I1>,
-       <InterfaceClass zope.app.container.interfaces.IContained>,
+      (<InterfaceClass zope.container.tests.test_contained.I2>,
+       <InterfaceClass zope.container.tests.test_contained.I1>,
+       <InterfaceClass zope.container.interfaces.IContained>,
        <InterfaceClass persistent.interfaces.IPersistent>)
 
     We can declare interfaces through the proxy:
@@ -134,9 +134,9 @@ def test_declarations_on_ContainedProxy():
       ...     pass
       >>> zope.interface.directlyProvides(p, I3)
       >>> tuple(zope.interface.providedBy(p))
-      (<InterfaceClass zope.app.container.tests.test_contained.I3>,
-       <InterfaceClass zope.app.container.tests.test_contained.I1>,
-       <InterfaceClass zope.app.container.interfaces.IContained>,
+      (<InterfaceClass zope.container.tests.test_contained.I3>,
+       <InterfaceClass zope.container.tests.test_contained.I1>,
+       <InterfaceClass zope.container.interfaces.IContained>,
        <InterfaceClass persistent.interfaces.IPersistent>)
 
     """
@@ -293,7 +293,7 @@ def test_proxy_cache_interaction():
 def test_ContainedProxy_instances_have_no_instance_dictionaries():
     """Make sure that proxies don't introduce extra instance dictionaries
 
-    >>> from zope.app.container.contained import ContainedProxy
+    >>> from zope.container.contained import ContainedProxy
     >>> class C:
     ...     pass
 
@@ -318,7 +318,7 @@ def test_ContainedProxy_instances_have_no_instance_dictionaries():
 
 def test_suite():
     return unittest.TestSuite((
-        doctest.DocTestSuite('zope.app.container.contained',
+        doctest.DocTestSuite('zope.container.contained',
                              setUp=placelesssetup.setUp,
                              tearDown=placelesssetup.tearDown),
         doctest.DocTestSuite(optionflags=doctest.NORMALIZE_WHITESPACE),

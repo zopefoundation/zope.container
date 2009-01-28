@@ -16,8 +16,8 @@
 $Id$
 """
 import unittest
-from zope.app.container.traversal import ContainerTraverser
-from zope.app.container.interfaces import IReadContainer
+from zope.container.traversal import ContainerTraverser
+from zope.container.interfaces import IReadContainer
 from zope.app.testing import ztapi, placelesssetup
 from zope.publisher.interfaces import NotFound
 from zope.publisher.browser import TestRequest

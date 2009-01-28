@@ -16,8 +16,8 @@
 $Id$
 """
 from zope.app.testing import ztapi
-from zope.app.container.interfaces import IWriteContainer, INameChooser
-from zope.app.container.contained import NameChooser
+from zope.container.interfaces import IWriteContainer, INameChooser
+from zope.container.contained import NameChooser
 
 class PlacelessSetup(object):
 

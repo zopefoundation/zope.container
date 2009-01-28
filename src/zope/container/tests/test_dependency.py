@@ -19,8 +19,8 @@ import unittest
 
 from zope.interface import implements
 from zope.app.dependable.interfaces import IDependable, DependencyError
-from zope.app.container.contained import ObjectRemovedEvent
-from zope.app.container.dependency import CheckDependency
+from zope.container.contained import ObjectRemovedEvent
+from zope.container.dependency import CheckDependency
 from zope.traversing.interfaces import IPhysicallyLocatable
 
 class DummyObject(object):
