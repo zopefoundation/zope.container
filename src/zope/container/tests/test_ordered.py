@@ -24,8 +24,8 @@ def test_order_events():
     """
     Prepare the setup::
 
-        >>> from zope.app.folder import rootFolder
-        >>> root = rootFolder()
+      >>> from zope.container.sample import SampleContainer
+      >>> root = SampleContainer()
 
     Prepare some objects::
 
@@ -62,8 +62,8 @@ def test_all_items_available_at_object_added_event():
     """
     Prepare the setup::
     
-        >>> from zope.app.folder import rootFolder
-        >>> root = rootFolder()
+      >>> from zope.container.sample import SampleContainer
+      >>> root = SampleContainer()
         
     Now register an event subscriber to object added events.
 
@@ -89,8 +89,8 @@ def test_exception_causes_order_fix():
     """
     Prepare the setup::
 
-        >>> from zope.app.folder import rootFolder
-        >>> root = rootFolder()
+      >>> from zope.container.sample import SampleContainer
+      >>> root = SampleContainer()
 
     Now register an event subscriber to object added events that
     throws an error.

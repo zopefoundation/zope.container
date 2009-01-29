@@ -19,15 +19,15 @@ from zope import component
 from zope.component.testing import PlacelessSetup as CAPlacelessSetup
 from zope.component.eventtesting import PlacelessSetup as EventPlacelessSetup
 
-from zope.traversing.interfaces import ITraversable
+from zope.traversing.interfaces import ITraversable, IContainmentRoot
 import zope.traversing.testing
+import zope.interface
 
 from zope.container.interfaces import IWriteContainer, INameChooser
 from zope.container.contained import NameChooser
 from zope.container.interfaces import ISimpleReadContainer
 from zope.container.traversal import ContainerTraversable
-
-from zope.app.folder import Folder, rootFolder
+from zope.container.sample import SampleContainer
 
 # XXX we would like to swap the names of the *PlacelessSetup classes
 # in here as that would seem to follow the convention better, but
@@ -73,10 +73,11 @@ class ContainerPlacefulSetup(ContainerPlacelessSetup):
 
 
     def buildFolders(self):
-        root = self.rootFolder = rootFolder()
-        root[u'folder1'] = Folder()
-        root[u'folder1'][u'folder1_1'] = Folder()
-        root[u'folder1'][u'folder1_1'][u'folder1_1_1'] = Folder()
-        root[u'folder2'] = Folder()
-        root[u'folder2'][u'folder2_1'] = Folder()
-        root[u'folder2'][u'folder2_1'][u'folder2_1_1'] = Folder()
+        root = self.rootFolder = SampleContainer()
+        zope.interface.directlyProvides(root, IContainmentRoot)
+        root[u'folder1'] = SampleContainer()
+        root[u'folder1'][u'folder1_1'] = SampleContainer()
+        root[u'folder1'][u'folder1_1'][u'folder1_1_1'] = SampleContainer()
+        root[u'folder2'] = SampleContainer()
+        root[u'folder2'][u'folder2_1'] = SampleContainer()
+        root[u'folder2'][u'folder2_1'][u'folder2_1_1'] = SampleContainer()

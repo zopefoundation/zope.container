@@ -24,7 +24,6 @@ from zope.component.eventtesting import getEvents, clearEvents
 from zope.copypastemove import ObjectMover
 from zope.copypastemove.interfaces import IObjectMover
 
-from zope.app.folder import Folder
 from zope.container import testing
 
 class File(object):
@@ -34,8 +33,8 @@ def test_move_events():
     """
     We need a root folder::
 
-      >>> from zope.app.folder import rootFolder
-      >>> root = rootFolder()
+      >>> from zope.container.sample import SampleContainer
+      >>> root = SampleContainer()
       
     Prepare the setup::
 
@@ -44,7 +43,7 @@ def test_move_events():
 
     Prepare some objects::
 
-      >>> folder = Folder()
+      >>> folder = SampleContainer()
       >>> root[u'foo'] = File()
       >>> root[u'folder'] = folder
       >>> list(folder.keys())

@@ -25,7 +25,6 @@ from zope.copypastemove import ObjectCopier
 from zope.copypastemove.interfaces import IObjectCopier
 
 from zope.container import testing
-from zope.app.folder import Folder, rootFolder
 
 class File(object):
     pass
@@ -39,12 +38,12 @@ def test_copy_events():
 
     We set things up in a root folder::
 
-      >>> from zope.app.folder import rootFolder
-      >>> root = rootFolder()
+      >>> from zope.container.sample import SampleContainer
+      >>> root = SampleContainer()
       
     Prepare some objects::
 
-      >>> folder = Folder()
+      >>> folder = SampleContainer()
       >>> root[u'foo'] = File()
       >>> root[u'folder'] = folder
       >>> list(folder.keys())
