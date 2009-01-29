@@ -19,14 +19,14 @@ from unittest import TestCase, main, makeSuite
 
 from zope.interface.verify import verifyObject
 from zope.container.interfaces import IContainer
-from zope.app.testing import placelesssetup
+from zope.container import testing
 
 
 def DefaultTestData():
     return [('3', '0'), ('2', '1'), ('4', '2'), ('6', '3'), ('0', '4'),
             ('5', '5'), ('1', '6'), ('8', '7'), ('7', '8'), ('9', '9')]
 
-class BaseTestIContainer(placelesssetup.PlacelessSetup):
+class BaseTestIContainer(testing.ContainerPlacelessSetup):
     """Base test cases for containers.
 
     Subclasses must define a makeTestObject that takes no

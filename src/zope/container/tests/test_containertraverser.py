@@ -16,12 +16,15 @@
 $Id$
 """
 import unittest
-from zope.container.traversal import ContainerTraverser
-from zope.container.interfaces import IReadContainer
-from zope.app.testing import ztapi, placelesssetup
+from zope.interface import Interface, implements
+from zope import component
 from zope.publisher.interfaces import NotFound
 from zope.publisher.browser import TestRequest
-from zope.interface import implements
+from zope.publisher.interfaces.browser import IDefaultBrowserLayer
+
+from zope.container.traversal import ContainerTraverser
+from zope.container.interfaces import IReadContainer
+from zope.container import testing
 
 class TestContainer(object):
     implements(IReadContainer)
@@ -40,7 +43,7 @@ class View(object):
         self.request = request
 
 
-class TraverserTest(placelesssetup.PlacelessSetup, unittest.TestCase):
+class TraverserTest(testing.ContainerPlacelessSetup, unittest.TestCase):
 
     # The following two methods exist, so that other container traversers can
     # use these tests as a base.
@@ -60,7 +63,9 @@ class TraverserTest(placelesssetup.PlacelessSetup, unittest.TestCase):
         # Create the traverser
         self.traverser = self._getTraverser(foo2, self.request)
         # Define a simple view for the container
-        ztapi.browserView(IReadContainer, 'viewfoo', View)
+        component.provideAdapter(
+            View, (IReadContainer, IDefaultBrowserLayer), Interface,
+            name='viewfoo')
         
     def test_itemTraversal(self):
         self.assertEqual(

@@ -26,7 +26,7 @@ import zope.interface
 from zope.testing import doctest
 
 from zope.container.contained import ContainedProxy
-from zope.app.testing import placelesssetup
+from zope.container import testing
 
 class MyOb(Persistent):
     pass
@@ -319,8 +319,8 @@ def test_ContainedProxy_instances_have_no_instance_dictionaries():
 def test_suite():
     return unittest.TestSuite((
         doctest.DocTestSuite('zope.container.contained',
-                             setUp=placelesssetup.setUp,
-                             tearDown=placelesssetup.tearDown),
+                             setUp=testing.setUp,
+                             tearDown=testing.tearDown),
         doctest.DocTestSuite(optionflags=doctest.NORMALIZE_WHITESPACE),
         ))
 

@@ -25,18 +25,23 @@ from zope.copypastemove import ObjectMover
 from zope.copypastemove.interfaces import IObjectMover
 
 from zope.app.component.testing import PlacefulSetup
-from zope.app.testing import setup
 from zope.app.folder import Folder
+from zope.container import testing
 
 class File(object):
     pass
 
 def test_move_events():
     """
+    We need a root folder::
+
+      >>> from zope.app.folder import rootFolder
+      >>> root = rootFolder()
+      
     Prepare the setup::
 
-      >>> root = setup.placefulSetUp(site=True)
-      >>> zope.component.provideAdapter(ObjectMover, (None,), IObjectMover)
+      >>> from zope import component
+      >>> component.provideAdapter(ObjectMover, (None,), IObjectMover)
 
     Prepare some objects::
 
@@ -85,9 +90,6 @@ def test_move_events():
       >>> events[2].object is root
       True
 
-    Finally, tear down::
-
-      >>> setup.placefulTearDown()
     """
 
 
@@ -220,7 +222,8 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
 def test_suite():
     return TestSuite((
         makeSuite(ObjectMoverTest),
-        doctest.DocTestSuite(),
+        doctest.DocTestSuite(setUp=testing.ContainerPlacefulSetup().setUp,
+                             tearDown=testing.ContainerPlacefulSetup().tearDown),
         ))
 
 if __name__=='__main__':

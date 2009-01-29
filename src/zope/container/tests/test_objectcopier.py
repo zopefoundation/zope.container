@@ -25,7 +25,7 @@ from zope.copypastemove import ObjectCopier
 from zope.copypastemove.interfaces import IObjectCopier
 
 from zope.app.component.testing import PlacefulSetup
-from zope.app.testing import setup
+from zope.container import testing
 from zope.app.folder import Folder
 
 class File(object):
@@ -33,11 +33,16 @@ class File(object):
 
 def test_copy_events():
     """
-    Prepare the setup::
+    Prepare an IObjectCopier::
 
-      >>> root = setup.placefulSetUp(site=True)
-      >>> zope.component.provideAdapter(ObjectCopier, (None,), IObjectCopier)
+      >>> from zope import component
+      >>> component.provideAdapter(ObjectCopier, (None,), IObjectCopier)
 
+    We set things up in a root folder::
+
+      >>> from zope.app.folder import rootFolder
+      >>> root = rootFolder()
+      
     Prepare some objects::
 
       >>> folder = Folder()
@@ -50,7 +55,7 @@ def test_copy_events():
     Now make a copy::
 
       >>> clearEvents()
-      >>> copier = IObjectCopier(foo)
+      >>> copier = IObjectCopier(foo)  
       >>> copier.copyTo(folder, u'bar')
       u'bar'
 
@@ -71,10 +76,6 @@ def test_copy_events():
       True
       >>> events[0].original is root[u'foo']
       True
-
-    Finally, tear down::
-
-      >>> setup.placefulTearDown()
     """
 
 
@@ -204,7 +205,8 @@ class ObjectCopierTest(PlacefulSetup, TestCase):
 def test_suite():
     return TestSuite((
         makeSuite(ObjectCopierTest),
-        doctest.DocTestSuite(),
+        doctest.DocTestSuite(setUp=testing.ContainerPlacefulSetup().setUp,
+                             tearDown=testing.ContainerPlacefulSetup().tearDown),
         ))
 
 if __name__=='__main__':

@@ -18,8 +18,8 @@ $Id$
 from unittest import TestCase, main, makeSuite, TestSuite
 from zope.interface.verify import verifyObject
 from zope.testing.doctestunit import DocTestSuite
-from zope.app.testing import placelesssetup
-from test_icontainer import TestSampleContainer
+from zope.component.testing import setUp, tearDown
+from zope.container.tests.test_icontainer import TestSampleContainer
 from zope.container.btree import BTreeContainer
 from zope.container.interfaces import IBTreeContainer
 
@@ -169,8 +169,8 @@ def test_suite():
         makeSuite(TestBTreeContainer),
         makeSuite(TestBTreeSpecials),
         DocTestSuite('zope.container.btree',
-                     setUp=placelesssetup.setUp,
-                     tearDown=placelesssetup.tearDown),
+                     setUp=setUp,
+                     tearDown=tearDown),
         ))
 
 if __name__=='__main__':

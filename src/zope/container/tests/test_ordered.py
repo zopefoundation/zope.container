@@ -18,13 +18,14 @@ $Id$
 import unittest
 from zope.testing.doctestunit import DocTestSuite
 from zope.component.eventtesting import getEvents, clearEvents
-from zope.app.testing import placelesssetup, setup
+from zope.container import testing
 
 def test_order_events():
     """
     Prepare the setup::
 
-        >>> root = setup.placefulSetUp(site=True)
+        >>> from zope.app.folder import rootFolder
+        >>> root = rootFolder()
 
     Prepare some objects::
 
@@ -55,17 +56,15 @@ def test_order_events():
         >>> IObjectModifiedEvent.providedBy(events[0])
         True
 
-    Finally, tear down::
-
-        >>> setup.placefulTearDown()
     """
 
 def test_all_items_available_at_object_added_event():
     """
     Prepare the setup::
-
-        >>> root = setup.placefulSetUp(site=True)
-
+    
+        >>> from zope.app.folder import rootFolder
+        >>> root = rootFolder()
+        
     Now register an event subscriber to object added events.
 
         >>> import zope.component
@@ -84,16 +83,14 @@ def test_all_items_available_at_object_added_event():
         >>> oc['foo'] = 'FOO'
         ['foo']
 
-    Finally, tear down::
-
-        >>> setup.placefulTearDown()
     """
 
 def test_exception_causes_order_fix():
     """
     Prepare the setup::
 
-        >>> root = setup.placefulSetUp(site=True)
+        >>> from zope.app.folder import rootFolder
+        >>> root = rootFolder()
 
     Now register an event subscriber to object added events that
     throws an error.
@@ -121,17 +118,16 @@ def test_exception_causes_order_fix():
         >>> 'foo' in oc.keys()
         False
 
-    Finally, tear down::
-
-        >>> setup.placefulTearDown()
     """
 
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(DocTestSuite("zope.container.ordered",
-                               setUp=placelesssetup.setUp,
-                               tearDown=placelesssetup.tearDown))
-    suite.addTest(DocTestSuite())
+                               setUp=testing.setUp,
+                               tearDown=testing.tearDown))
+    suite.addTest(DocTestSuite(
+            setUp=testing.ContainerPlacefulSetup().setUp,
+            tearDown=testing.ContainerPlacefulSetup().tearDown))
     return suite
 
 if __name__ == '__main__':

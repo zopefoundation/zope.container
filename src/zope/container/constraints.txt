@@ -6,8 +6,8 @@ of items that can be placed in containers or on the types of
 containers an item can be placed in.  We express these constraints in
 interfaces.  Let's define some container and item interfaces:
 
-    >>> from zope.app.container.interfaces import IContainer, IContained
-    >>> from zope.app.container.constraints import containers, contains
+    >>> from zope.container.interfaces import IContainer, IContained
+    >>> from zope.container.constraints import containers, contains
 
     >>> class IBuddyFolder(IContainer):
     ...     contains('.IBuddy')
@@ -35,7 +35,7 @@ folders:
     >>> class BuddyFolder:
     ...     interface.implements(IBuddyFolder)
 
-    >>> from zope.app.container.constraints import checkObject, checkFactory
+    >>> from zope.container.constraints import checkObject, checkFactory
     >>> from zope.component.factory import Factory
 
     >>> checkObject(BuddyFolder(), 'x', Buddy())
