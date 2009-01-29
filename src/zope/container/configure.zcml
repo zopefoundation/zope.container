@@ -9,7 +9,7 @@
      provides=".interfaces.IFind"
      for=".interfaces.IReadContainer"
      permission="zope.ManageContent"
-     factory="zope.app.container.find.FindAdapter"
+     factory="zope.container.find.FindAdapter"
      />
 
   <adapter
@@ -25,33 +25,33 @@
       />
 
   <adapter
-      factory="zope.app.container.traversal.ContainerTraversable"
+      factory="zope.container.traversal.ContainerTraversable"
       provides="zope.traversing.interfaces.ITraversable"
-      for="zope.app.container.interfaces.IReadContainer"
+      for="zope.container.interfaces.IReadContainer"
       />
 
 
   <adapter
-      factory="zope.app.container.size.ContainerSized"
+      factory="zope.container.size.ContainerSized"
       provides="zope.size.interfaces.ISized"
-      for="zope.app.container.interfaces.IReadContainer"
+      for="zope.container.interfaces.IReadContainer"
       />
 
   <adapter
       provides=".interfaces.INameChooser"
-      for="zope.app.container.interfaces.IWriteContainer"
+      for="zope.container.interfaces.IWriteContainer"
       factory=".contained.NameChooser"
       />
 
   <subscriber
       handler=".dependency.CheckDependency"
-      for="zope.app.container.interfaces.IObjectRemovedEvent"
+      for="zope.container.interfaces.IObjectRemovedEvent"
       trusted="y"
       />
 
   <subscriber
       for="zope.location.interfaces.ILocation
-           zope.app.container.interfaces.IObjectMovedEvent"
+           zope.container.interfaces.IObjectMovedEvent"
       handler=".contained.dispatchToSublocations"
       >
       Handler dispatches moved events to sublocations of the original object.
@@ -59,7 +59,7 @@
 
   <adapter
       provides="zope.location.interfaces.ISublocations"
-      for="zope.app.container.interfaces.IReadContainer"
+      for="zope.container.interfaces.IReadContainer"
       factory=".contained.ContainerSublocations"
       />
 
@@ -68,19 +68,19 @@
   </class>
 
   <view
-      for="zope.app.container.interfaces.IItemContainer"
+      for="zope.container.interfaces.IItemContainer"
       type="zope.publisher.interfaces.browser.IBrowserRequest"
       provides="zope.publisher.interfaces.browser.IBrowserPublisher"
-      factory="zope.app.container.traversal.ItemTraverser"
+      factory="zope.container.traversal.ItemTraverser"
       permission="zope.Public"
       allowed_interface="zope.publisher.interfaces.browser.IBrowserPublisher"
       />
 
   <view
-      for="zope.app.container.interfaces.ISimpleReadContainer"
+      for="zope.container.interfaces.ISimpleReadContainer"
       type="zope.publisher.interfaces.browser.IBrowserRequest"
       provides="zope.publisher.interfaces.browser.IBrowserPublisher"
-      factory="zope.app.container.traversal.ItemTraverser"
+      factory="zope.container.traversal.ItemTraverser"
       permission="zope.Public"
       allowed_interface="zope.publisher.interfaces.browser.IBrowserPublisher"
       />
