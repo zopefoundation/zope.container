@@ -27,7 +27,6 @@ from zope.publisher.interfaces import NotFound
 
 from zope.container.interfaces import ISimpleReadContainer, IItemContainer
 from zope.container.interfaces import IReadContainer
-from zope.app.publisher.browser import getDefaultViewName
 
 # Note that the next two classes are included here because they
 # can be used for multiple view types.
