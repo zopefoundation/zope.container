@@ -61,7 +61,6 @@ setup(name='zope.container',
 
       install_requires=['setuptools',
                         'zope.interface',
-                        'zope.app.publisher',
                         'zope.cachedescriptors',
                         'zope.dottedname',
                         'zope.schema',

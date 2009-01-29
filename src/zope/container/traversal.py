@@ -19,6 +19,7 @@ __docformat__ = 'restructuredtext'
 
 from zope.interface import implements
 from zope.component import queryMultiAdapter
+from zope.component.interfaces import IDefaultViewName
 from zope.traversing.interfaces import TraversalError, ITraversable
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from zope.publisher.interfaces.xmlrpc import IXMLRPCPublisher
@@ -55,7 +56,12 @@ class ContainerTraverser(object):
 
     def browserDefault(self, request):
         """See zope.publisher.browser.interfaces.IBrowserPublisher"""
-        view_name = getDefaultViewName(self.context, request)
+        # XXX this re-implements zope.app.publisher.browser.getDefaultViewName()
+        # to break our only dependency on it.
+        view_name = queryMultiAdapter((self.context, request), IDefaultViewName)
+        if view_name is None:
+            raise ComponentLookupError("Couldn't find default view name",
+                                       context, request)
         view_uri = "@@%s" %view_name
         return self.context, (view_uri,)
 
