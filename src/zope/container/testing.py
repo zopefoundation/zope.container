@@ -27,6 +27,8 @@ from zope.container.contained import NameChooser
 from zope.container.interfaces import ISimpleReadContainer
 from zope.container.traversal import ContainerTraversable
 
+from zope.app.folder import Folder, rootFolder
+
 # XXX we would like to swap the names of the *PlacelessSetup classes
 # in here as that would seem to follow the convention better, but
 # unfortunately that would break compatibility with zope.app.testing
@@ -69,3 +71,12 @@ class ContainerPlacefulSetup(ContainerPlacelessSetup):
     def tearDown(self, docttesttest=None):
         ContainerPlacelessSetup.tearDown(self)
 
+
+    def buildFolders(self):
+        root = self.rootFolder = rootFolder()
+        root[u'folder1'] = Folder()
+        root[u'folder1'][u'folder1_1'] = Folder()
+        root[u'folder1'][u'folder1_1'][u'folder1_1_1'] = Folder()
+        root[u'folder2'] = Folder()
+        root[u'folder2'][u'folder2_1'] = Folder()
+        root[u'folder2'][u'folder2_1'][u'folder2_1_1'] = Folder()

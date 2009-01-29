@@ -59,11 +59,6 @@ setup(name='zope.container',
                               ], include_dirs=['include']),
                    ],
 
-      # we don't need zope.app.testing, but zope.app.component does and
-      # doesn't declare the dependency, and we need zope.app.component for
-      # testing
-      extras_require=dict(test=['zope.app.testing',
-                                'zope.app.component']),
       install_requires=['setuptools',
                         'zope.interface',
                         'zope.app.publisher',
@@ -82,6 +77,7 @@ setup(name='zope.container',
                         'zope.traversing',
                         'zope.publisher',
                         'zope.app.broken',
+                        'zope.app.dependable',
                         'ZODB3',
                         ],
       include_package_data = True,

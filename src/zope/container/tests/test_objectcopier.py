@@ -24,9 +24,8 @@ from zope.component.eventtesting import getEvents, clearEvents
 from zope.copypastemove import ObjectCopier
 from zope.copypastemove.interfaces import IObjectCopier
 
-from zope.app.component.testing import PlacefulSetup
 from zope.container import testing
-from zope.app.folder import Folder
+from zope.app.folder import Folder, rootFolder
 
 class File(object):
     pass
@@ -79,13 +78,13 @@ def test_copy_events():
     """
 
 
-class ObjectCopierTest(PlacefulSetup, TestCase):
+class ObjectCopierTest(testing.ContainerPlacefulSetup, TestCase):
 
     def setUp(self):
-        PlacefulSetup.setUp(self)
-        PlacefulSetup.buildFolders(self)
+        testing.ContainerPlacefulSetup.setUp(self)
+        self.buildFolders()
         zope.component.provideAdapter(ObjectCopier, (None,), IObjectCopier)
-
+        
     def test_copytosame(self):
         root = self.rootFolder
         container = traverse(root, 'folder1')

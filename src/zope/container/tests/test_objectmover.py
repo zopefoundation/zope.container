@@ -24,7 +24,6 @@ from zope.component.eventtesting import getEvents, clearEvents
 from zope.copypastemove import ObjectMover
 from zope.copypastemove.interfaces import IObjectMover
 
-from zope.app.component.testing import PlacefulSetup
 from zope.app.folder import Folder
 from zope.container import testing
 
@@ -93,11 +92,11 @@ def test_move_events():
     """
 
 
-class ObjectMoverTest(PlacefulSetup, TestCase):
+class ObjectMoverTest(testing.ContainerPlacefulSetup, TestCase):
 
     def setUp(self):
-        PlacefulSetup.setUp(self)
-        PlacefulSetup.buildFolders(self)
+        testing.ContainerPlacefulSetup.setUp(self)
+        self.buildFolders()
         zope.component.provideAdapter(ObjectMover, (None,), )
  
     def test_movetosame(self):
@@ -109,7 +108,7 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
         mover = IObjectMover(file)
         mover.moveTo(container, 'file1')
         self.failUnless('file1' in container)
-        self.assertEquals(len(container), 3)
+        self.assertEquals(len(container), 2)
 
     def test_movetosamewithnewname(self):
         root = self.rootFolder
@@ -190,7 +189,7 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
         mover = IObjectMover(source)
         mover.moveTo(target)
         self.failUnless('folder1_1' in target)
-        self.assertEquals(len(target), 2)
+        self.assertEquals(len(target), 1)
 
     def test_movefoldertosame2(self):
         # Should be a noop, because "moving" to same location
@@ -200,7 +199,7 @@ class ObjectMoverTest(PlacefulSetup, TestCase):
         mover = IObjectMover(source)
         mover.moveTo(target)
         self.failUnless('folder1_1_1' in target)
-        self.assertEquals(len(target), 2)
+        self.assertEquals(len(target), 1)
 
     def test_movefolderfromroot(self):
         root = self.rootFolder
