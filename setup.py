@@ -58,7 +58,8 @@ setup(name='zope.container',
                                            "_zope_container_contained.c")
                               ], include_dirs=['include']),
                    ],
-
+      extras_require=dict(
+          test=['zope.copypastemove']),
       install_requires=['setuptools',
                         'zope.interface',
                         'zope.cachedescriptors',
