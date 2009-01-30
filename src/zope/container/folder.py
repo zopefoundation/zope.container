@@ -18,18 +18,16 @@ $Id$
 __docformat__ = 'restructuredtext'
 
 from BTrees.OOBTree import OOBTree
-from interfaces import IFolder, IRootFolder
 from persistent import Persistent
+from zope.container.interfaces import IContainer
 from zope.container.contained import Contained, setitem, uncontained
-from zope.app.component.interfaces import ISite
-from zope.app.component.site import SiteManagerContainer
 from zope.exceptions import DuplicationError
 from zope.interface import implements, directlyProvides
 
-class Folder(Persistent, SiteManagerContainer, Contained):
+class Folder(Persistent, Contained):
     """The standard Zope Folder implementation."""
 
-    implements(IFolder)
+    implements(IContainer)
 
     def __init__(self):
         self.data = OOBTree()
@@ -99,49 +97,3 @@ class Folder(Persistent, SiteManagerContainer, Contained):
         uncontained(self.data[name], self, name)
         del self.data[name]
 
-def rootFolder():
-    f = Folder()
-    directlyProvides(f, IRootFolder)
-    return f
-
-class FolderSublocations(object):
-    """Get the sublocations of a folder
-
-    The subobjects of a folder include it's contents and it's site manager if
-    it is a site.
-
-      >>> folder = Folder()
-      >>> folder['ob1'] = Contained()
-      >>> folder['ob2'] = Contained()
-      >>> folder['ob3'] = Contained()
-      >>> subs = list(FolderSublocations(folder).sublocations())
-      >>> subs.remove(folder['ob1'])
-      >>> subs.remove(folder['ob2'])
-      >>> subs.remove(folder['ob3'])
-      >>> subs
-      []
-
-      >>> sm = Contained()
-      >>> from zope.component.interfaces import IComponentLookup
-      >>> directlyProvides(sm, IComponentLookup)
-      >>> folder.setSiteManager(sm)
-      >>> directlyProvides(folder, ISite)
-      >>> subs = list(FolderSublocations(folder).sublocations())
-      >>> subs.remove(folder['ob1'])
-      >>> subs.remove(folder['ob2'])
-      >>> subs.remove(folder['ob3'])
-      >>> subs.remove(sm)
-      >>> subs
-      []
-    """
-
-    def __init__(self, folder):
-        self.folder = folder
-
-    def sublocations(self):
-        folder = self.folder
-        for key in folder:
-            yield folder[key]
-
-        if ISite.providedBy(folder):
-            yield folder.getSiteManager()
