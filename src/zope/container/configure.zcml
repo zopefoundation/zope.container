@@ -32,14 +32,14 @@
   <adapter
       for=".interfaces.IContentContainer"
       provides="zope.filerepresentation.interfaces.IDirectoryFactory"
-      factory="zope.container.directory.Cloner"
+      factory=".directory.Cloner"
       permission="zope.ManageContent"
       />
 
   <adapter
       for=".interfaces.IContentContainer"
       provides="zope.filerepresentation.interfaces.IReadDirectory"
-      factory=".filerepresentation.ReadDirectory"
+      factory=".directory.ReadDirectory"
       permission="zope.View"
       />
 
