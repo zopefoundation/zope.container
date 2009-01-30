@@ -126,6 +126,10 @@ class IContainer(IReadContainer, IWriteContainer):
     """Readable and writable content container."""
 
 
+class IContentContainer(IContainer):
+    """A container that is to be used as a content type."""
+
+
 class IBTreeContainer(IContainer):
     """Container that supports BTree semantics for some methods."""
 

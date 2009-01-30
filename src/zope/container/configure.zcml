@@ -5,6 +5,11 @@
    i18n_domain="zope"
    >
 
+  <interface 
+      interface=".interfaces.IContentContainer" 
+      type="zope.app.content.interfaces.IContentType"
+      /> 
+
   <adapter
      provides=".interfaces.IFind"
      for=".interfaces.IReadContainer"
@@ -22,6 +27,20 @@
       for=".interfaces.IWriteContainer"
       provides="zope.filerepresentation.interfaces.IWriteDirectory"
       factory=".directory.noop"
+      />
+
+  <adapter
+      for=".interfaces.IContentContainer"
+      provides="zope.filerepresentation.interfaces.IDirectoryFactory"
+      factory="zope.container.directory.Cloner"
+      permission="zope.ManageContent"
+      />
+
+  <adapter
+      for=".interfaces.IContentContainer"
+      provides="zope.filerepresentation.interfaces.IReadDirectory"
+      factory=".filerepresentation.ReadDirectory"
+      permission="zope.View"
       />
 
   <adapter

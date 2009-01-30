@@ -25,9 +25,13 @@ $Id$
 """
 __docformat__ = 'restructuredtext'
 
-import zope.filerepresentation.interfaces
-from zope.security.proxy import removeSecurityProxy
 from zope.interface import implements
+
+from zope.location.interfaces import ISite
+from zope.security.proxy import removeSecurityProxy
+import zope.filerepresentation.interfaces
+
+MARKER = object()
 
 def noop(container):
     """Adapt an `IContainer` to an `IWriteDirectory` by just returning it
@@ -60,3 +64,55 @@ class Cloner(object):
         # exciting side effects as a result of instantiation. :)
 
         return removeSecurityProxy(self.context).__class__()
+
+
+class RootDirectoryFactory(object):
+
+    def __init__(self, context):
+        pass
+
+    def __call__(self, name):
+        return Folder()
+
+
+class ReadDirectory(object):
+    """Adapter to provide a file-system rendition of folders."""
+
+    def __init__(self, context):
+        self.context = context
+
+    def keys(self):
+        keys = self.context.keys()
+        if ISite.providedBy(self.context):
+            return list(keys) + ['++etc++site']
+        return keys
+
+    def get(self, key, default=None):
+        if key == '++etc++site' and ISite.providedBy(self.context):
+            return self.context.getSiteManager()
+        return self.context.get(key, default)
+
+    def __iter__(self):
+        return iter(self.keys())
+
+    def __getitem__(self, key):
+        v = self.get(key, MARKER)
+        if v is MARKER:
+            raise KeyError(key)
+        return v
+
+    def values(self):
+        return map(self.get, self.keys())
+
+    def __len__(self):
+        l = len(self.context)
+        if ISite.providedBy(self.context):
+            l += 1
+        return l
+
+    def items(self):
+        get = self.get
+        return [(key, get(key)) for key in self.keys()]
+
+    def __contains__(self, key):
+        return self.get(key) is not None

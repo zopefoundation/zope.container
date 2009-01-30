@@ -16,6 +16,9 @@
 $Id$
 """
 from unittest import TestCase, TestSuite, main, makeSuite
+from zope.testing import doctest
+from zope.container import testing
+
 import zope.container.directory
 
 class Directory(object):
@@ -31,8 +34,12 @@ class Test(TestCase):
         self.assertEqual(clone.__class__, d.__class__)
 
 def test_suite():
+    flags = doctest.ELLIPSIS|doctest.NORMALIZE_WHITESPACE
     return TestSuite((
         makeSuite(Test),
+        doctest.DocFileSuite("directory.txt",
+                             setUp=testing.setUp, tearDown=testing.tearDown,
+                             optionflags=flags),
         ))
 
 if __name__=='__main__':

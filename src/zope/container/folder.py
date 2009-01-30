@@ -19,15 +19,21 @@ __docformat__ = 'restructuredtext'
 
 from BTrees.OOBTree import OOBTree
 from persistent import Persistent
-from zope.container.interfaces import IContainer
+from zope.container.interfaces import IContainer, IContentContainer
 from zope.container.contained import Contained, setitem, uncontained
 from zope.exceptions import DuplicationError
 from zope.interface import implements, directlyProvides
 
+# XXX This container implementation is really only used by 
+# zope.site.folder.Folder. Please do not use it. 
+
+# XXX Check whether this IContainer implementation cannot really
+# be replaced by the BTreeContainer.
+
 class Folder(Persistent, Contained):
     """The standard Zope Folder implementation."""
 
-    implements(IContainer)
+    implements(IContentContainer)
 
     def __init__(self):
         self.data = OOBTree()
