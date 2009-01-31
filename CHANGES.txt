@@ -7,6 +7,6 @@ CHANGES
 
 - Split this package off ``zope.app.container``. This package is
   intended to have far less dependencies than ``zope.app.container``.
-  It is currently still indirectly pulling in a lot of stuff that is
-  not in fact needed, but we're working on this.
 
+- This package also contains the container implementation that
+  used to be in ``zope.app.folder``.
