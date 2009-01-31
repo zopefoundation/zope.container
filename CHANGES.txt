@@ -2,7 +2,12 @@
 CHANGES
 =======
 
-3.7.0 (unreleased)
+3.7.1 (unreleased)
+------------------
+
+- ...
+
+3.7.0 (2009-01-31)
 ------------------
 
 - Split this package off ``zope.app.container``. This package is
