@@ -38,7 +38,7 @@ from zope.container.interfaces import IObjectRemovedEvent
 from zope.container.interfaces import IContainerModifiedEvent
 from zope.container._zope_container_contained import ContainedProxyBase
 from zope.container._zope_container_contained import getProxiedObject
-from zope.app.broken.interfaces import IBroken
+from zope.broken.interfaces import IBroken
 
 class Contained(object):
     """Stupid mix-in that defines `__parent__` and `__name__` attributes"""

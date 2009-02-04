@@ -5,7 +5,15 @@ CHANGES
 3.7.1 (unreleased)
 ------------------
 
-- ...
+- Moved import of ``IBroken`` interface to use new ``zope.broken``
+  package, which has no dependencies beyond ``zope.interface``.
+
+- Made ``test`` part pull in the extra test requirements of this package.
+
+- Split the ``z3c.recipe.compattest`` configuration out into a new file,
+  ``compat.cfg``, to reduce the burden of doing standard unit tests.
+
+- Stripped out bogus develop eggs from ``buildout.cfg``.
 
 3.7.0 (2009-01-31)
 ------------------
