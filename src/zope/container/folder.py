@@ -21,7 +21,6 @@ from BTrees.OOBTree import OOBTree
 from persistent import Persistent
 from zope.container.interfaces import IContainer, IContentContainer
 from zope.container.contained import Contained, setitem, uncontained
-from zope.exceptions import DuplicationError
 from zope.interface import implements, directlyProvides
 
 # XXX This container implementation is really only used by 
@@ -93,7 +92,7 @@ class Folder(Persistent, Contained):
             raise TypeError("Name must not be empty")
 
         if name in self.data:
-            raise DuplicationError("name, %s, is already in use" % name)
+            raise KeyError("name, %s, is already in use" % name)
 
         setitem(self, self.data.__setitem__, name, object)
 

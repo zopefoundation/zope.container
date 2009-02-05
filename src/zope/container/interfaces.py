@@ -64,7 +64,11 @@ class IWriteContainer(Interface):
         """Add the given `object` to the container under the given name.
 
         Raises a ``TypeError`` if the key is not a unicode or ascii string.
-        Raises a ``ValueError`` if key is empty.
+
+        Raises a ``ValueError`` if the key is empty, or if the key contains
+        a character which is not allowed in an object name.
+
+        Raises a ``KeyError`` if the key violates a uniqueness constraint.
 
         The container might choose to add a different object than the
         one passed to this method.

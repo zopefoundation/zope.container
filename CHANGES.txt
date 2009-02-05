@@ -5,6 +5,13 @@ CHANGES
 3.7.1 (unreleased)
 ------------------
 
+- Raise more "Pythonic" errors from ``__setitem__``, losing the dependency
+  on ``zope.exceptions``:
+
+  o ``zope.exceptions.DuplicationError`` -> ``KeyError``
+
+  o ``zope.exceptions.UserError`` -> ``ValueError``
+
 - Moved import of ``IBroken`` interface to use new ``zope.broken``
   package, which has no dependencies beyond ``zope.interface``.
 

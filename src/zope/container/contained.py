@@ -25,7 +25,6 @@ from zope.interface.declarations import ObjectSpecification
 from zope.event import notify
 from zope.component.interfaces import ObjectEvent
 from zope.location.interfaces import ILocation, ISublocations
-from zope.exceptions.interfaces import DuplicationError, UserError
 from zope.security.checker import selectChecker, CombinedChecker
 from zope.lifecycleevent import ObjectModifiedEvent
 
@@ -478,7 +477,7 @@ def setitem(container, setitemf, name, object):
     >>> setitem(container, container.__setitem__, u'c', [])
     Traceback (most recent call last):
     ...
-    DuplicationError: c
+    KeyError: u'c'
 
 
     >>> del container[u'c']
@@ -582,7 +581,7 @@ def setitem(container, setitemf, name, object):
     if old is object:
         return
     if old is not None:
-        raise DuplicationError(name)
+        raise KeyError(name)
 
     object, event = containedEvent(object, container, name)
     setitemf(name, object)
@@ -718,19 +717,19 @@ class NameChooser(object):
         >>> NameChooser(container).checkName('+foo', object())
         Traceback (most recent call last):
         ...
-        UserError: Names cannot begin with '+' or '@' or contain '/'
+        ValueError: Names cannot begin with '+' or '@' or contain '/'
         >>> NameChooser(container).checkName('@foo', object())
         Traceback (most recent call last):
         ...
-        UserError: Names cannot begin with '+' or '@' or contain '/'
+        ValueError: Names cannot begin with '+' or '@' or contain '/'
         >>> NameChooser(container).checkName('f/oo', object())
         Traceback (most recent call last):
         ...
-        UserError: Names cannot begin with '+' or '@' or contain '/'
+        ValueError: Names cannot begin with '+' or '@' or contain '/'
         >>> NameChooser(container).checkName('foo', object())
         Traceback (most recent call last):
         ...
-        UserError: The given name is already being used
+        KeyError: u'The given name is already being used'
         >>> NameChooser(container).checkName(2, object())
         Traceback (most recent call last):
         ...
@@ -745,7 +744,7 @@ class NameChooser(object):
         """
 
         if not name:
-            raise UserError(
+            raise ValueError(
                 _("An empty name was provided. Names cannot be empty.")
                 )
 
@@ -755,12 +754,12 @@ class NameChooser(object):
             raise TypeError("Invalid name type", type(name))
 
         if name[:1] in '+@' or '/' in name:
-            raise UserError(
+            raise ValueError(
                 _("Names cannot begin with '+' or '@' or contain '/'")
                 )
 
         if name in self.context:
-            raise UserError(
+            raise KeyError(
                 _("The given name is already being used")
                 )
 
