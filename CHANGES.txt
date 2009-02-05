@@ -2,7 +2,12 @@
 CHANGES
 =======
 
-3.7.1 (unreleased)
+3.7.2 (unreleased)
+------------------
+
+- ...
+
+3.7.1 (2009-02-05)
 ------------------
 
 - Raise more "Pythonic" errors from ``__setitem__``, losing the dependency
