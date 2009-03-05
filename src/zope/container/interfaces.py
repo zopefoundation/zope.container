@@ -18,11 +18,14 @@ $Id$
 __docformat__ = 'restructuredtext'
 
 from zope.interface import Interface, Attribute, Invalid
-from zope.component.interfaces import IObjectEvent
 from zope.interface.common.mapping import IItemMapping
 from zope.interface.common.mapping import IReadMapping, IEnumerableMapping
-from zope.location.interfaces import ILocation
+from zope.component.interfaces import IObjectEvent
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
+from zope.location.interfaces import ILocation
+from zope.schema import Set
+
+from zope.container.i18n import ZopeMessageFactory as _
 
 class DuplicateIDError(KeyError):
     pass
@@ -193,6 +196,17 @@ class IOrderedContainer(IContainer):
 class IContainerNamesContainer(IContainer):
     """Containers that always choose names for their items."""
 
+class IReservedNames(Interface):
+    """A sequence of names that are reserved for that container"""
+    
+    reservedNames = Set(
+        title=_(u'Reserved Names'),
+        description=_(u'Names that are not allowed for addable content'),
+        required=True,
+        )
+    
+class NameReserved(ValueError):
+    __doc__ = _("""The name is reserved for this container""")
 
 ##############################################################################
 # Moving Objects

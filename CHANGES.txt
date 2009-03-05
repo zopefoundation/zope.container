@@ -5,7 +5,10 @@ CHANGES
 3.7.2 (unreleased)
 ------------------
 
-- ...
+- Add support for reserved names for containers. To specify reserved
+  names for some container, you need to provide an adapter from the
+  container to the ``zope.container.interfaces.IReservedNames`` interface.
+  The default NameChooser is now also aware of reserved names.
 
 3.7.1 (2009-02-05)
 ------------------

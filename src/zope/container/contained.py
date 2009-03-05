@@ -31,6 +31,7 @@ from zope.lifecycleevent import ObjectModifiedEvent
 from zope.container.i18n import ZopeMessageFactory as _
 from zope.container.interfaces import IContained
 from zope.container.interfaces import INameChooser
+from zope.container.interfaces import IReservedNames, NameReserved
 from zope.container.interfaces import IObjectAddedEvent
 from zope.container.interfaces import IObjectMovedEvent
 from zope.container.interfaces import IObjectRemovedEvent
@@ -740,6 +741,32 @@ class NameChooser(object):
         >>> NameChooser(container).checkName('2', object())
         True
 
+        We can reserve some names by providing a IReservedNames adapter
+        to a container:
+        
+        >>> NameChooser(container).checkName('reserved', None)
+        True
+        >>> NameChooser(container).checkName('other', None)
+        True
+
+        >>> from zope.container.interfaces import IContainer
+        >>> class ReservedNames(object):
+        ...     zope.component.adapts(IContainer)
+        ...     zope.interface.implements(IReservedNames)
+        ...
+        ...     def __init__(self, context):
+        ...         self.reservedNames = set(('reserved', 'other'))
+
+        >>> zope.component.provideAdapter(ReservedNames)
+
+        >>> NameChooser(container).checkName('reserved', None)
+        Traceback (most recent call last):
+        ...
+        NameReserved: reserved
+        >>> NameChooser(container).checkName('other', None)
+        Traceback (most recent call last):
+        ...
+        NameReserved: other
 
         """
 
@@ -757,6 +784,11 @@ class NameChooser(object):
             raise ValueError(
                 _("Names cannot begin with '+' or '@' or contain '/'")
                 )
+
+        reserved = IReservedNames(self.context, None)
+        if reserved is not None:
+            if name in reserved.reservedNames:
+                raise NameReserved(name)
 
         if name in self.context:
             raise KeyError(
