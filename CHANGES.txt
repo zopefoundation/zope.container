@@ -5,6 +5,9 @@ CHANGES
 3.7.2 (unreleased)
 ------------------
 
+- Adapt to the move of IDefaultViewName from zope.component.interfaces
+  to zope.publisher.interfaces.
+
 - Add support for reserved names for containers. To specify reserved
   names for some container, you need to provide an adapter from the
   container to the ``zope.container.interfaces.IReservedNames`` interface.

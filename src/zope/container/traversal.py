@@ -19,11 +19,10 @@ __docformat__ = 'restructuredtext'
 
 from zope.interface import implements, providedBy
 from zope.component import queryMultiAdapter, getSiteManager
-from zope.component.interfaces import IDefaultViewName
 from zope.traversing.interfaces import TraversalError, ITraversable
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from zope.publisher.interfaces.xmlrpc import IXMLRPCPublisher
-from zope.publisher.interfaces import NotFound
+from zope.publisher.interfaces import IDefaultViewName, NotFound
 
 from zope.container.interfaces import ISimpleReadContainer, IItemContainer
 from zope.container.interfaces import IReadContainer
