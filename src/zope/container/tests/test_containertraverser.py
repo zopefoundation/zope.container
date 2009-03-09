@@ -18,7 +18,7 @@ $Id$
 import unittest
 from zope.interface import Interface, implements
 from zope import component
-from zope.publisher.interfaces import NotFound
+from zope.publisher.interfaces import NotFound, IDefaultViewName
 from zope.publisher.browser import TestRequest
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
@@ -56,21 +56,21 @@ class TraverserTest(testing.ContainerPlacelessSetup, unittest.TestCase):
     def setUp(self):
         super(TraverserTest, self).setUp()
         # Create a small object tree
-        self.foo = self._getContainer()
-        foo2 = self._getContainer(Foo=self.foo)
+        self.container = self._getContainer()
+        self.subcontainer = self._getContainer(Foo=self.container)
         # Initiate a request
         self.request = TestRequest()
         # Create the traverser
-        self.traverser = self._getTraverser(foo2, self.request)
+        self.traverser = self._getTraverser(self.subcontainer, self.request)
         # Define a simple view for the container
         component.provideAdapter(
             View, (IReadContainer, IDefaultBrowserLayer), Interface,
             name='viewfoo')
-        
+
     def test_itemTraversal(self):
         self.assertEqual(
             self.traverser.publishTraverse(self.request, 'Foo'),
-            self.foo)
+            self.container)
         self.assertRaises(
             NotFound,
             self.traverser.publishTraverse, self.request, 'morebar')
@@ -81,13 +81,24 @@ class TraverserTest(testing.ContainerPlacelessSetup, unittest.TestCase):
             View)
         self.assertEquals(
             self.traverser.publishTraverse(self.request, 'Foo'),
-            self.foo)
+            self.container)
         self.assertRaises(
             NotFound,
             self.traverser.publishTraverse, self.request, 'morebar')
         self.assertRaises(
             NotFound,
             self.traverser.publishTraverse, self.request, '@@morebar')
+
+    def test_browserDefault_without_registration_should_raise(self):
+        self.assertRaises(component.ComponentLookupError,
+                          self.traverser.browserDefault, self.request)
+
+    def test_browserDefault(self):
+        component.provideAdapter(
+            'myDefaultView', (Interface, IDefaultBrowserLayer),
+            IDefaultViewName)
+        self.assertEquals((self.subcontainer, ('@@myDefaultView',)),
+                          self.traverser.browserDefault(self.request))
 
 
 def test_suite():

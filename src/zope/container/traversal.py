@@ -61,7 +61,7 @@ class ContainerTraverser(object):
             map(providedBy, (self.context, request)), IDefaultViewName)
         if view_name is None:
             raise ComponentLookupError("Couldn't find default view name",
-                                       context, request)
+                                       self.context, request)
         view_uri = "@@%s" %view_name
         return self.context, (view_uri,)
 
