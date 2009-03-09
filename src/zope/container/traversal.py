@@ -19,6 +19,7 @@ __docformat__ = 'restructuredtext'
 
 from zope.interface import implements, providedBy
 from zope.component import queryMultiAdapter, getSiteManager
+from zope.component import ComponentLookupError
 from zope.traversing.interfaces import TraversalError, ITraversable
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from zope.publisher.interfaces.xmlrpc import IXMLRPCPublisher

@@ -5,6 +5,9 @@ CHANGES
 3.7.2 (unreleased)
 ------------------
 
+- Fix: added missing ComponentLookupError, missing since revision 95429 and 
+  missing in last release.
+
 - Adapt to the move of IDefaultViewName from zope.component.interfaces
   to zope.publisher.interfaces.
 

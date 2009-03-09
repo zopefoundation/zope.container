@@ -48,7 +48,7 @@ setup(name='zope.container',
 
           'Topic :: Internet :: WWW/HTTP',
           'Framework :: Zope3'],
-      url='http://cheeseshop.python.org/pypi/zope.container',
+      url='http://pypi.python.org/pypi/zope.container',
       license='ZPL 2.1',
       packages=find_packages('src'),
       package_dir = {'': 'src'},
