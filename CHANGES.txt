@@ -5,7 +5,9 @@ CHANGES
 3.7.3 (unreleased)
 ------------------
 
-- ...
+- Moved the declaration of ``IOrderedContainer.updateOrder``  to a new, basic
+  ``IOrdered`` interface and let ``IOrderedContainer`` inherit it. This allows
+  easier reuse of the declaration.
 
 3.7.2 (2009-03-12)
 ------------------

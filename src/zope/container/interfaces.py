@@ -177,8 +177,9 @@ class IBTreeContainer(IContainer):
         """
 
 
-class IOrderedContainer(IContainer):
-    """Containers whose contents are maintained in order."""
+class IOrdered(Interface):
+    """Objects whose contents are maintained in order."""
+
 
     def updateOrder(order):
         """Revise the order of keys, replacing the current ordering.
@@ -191,6 +192,11 @@ class IOrderedContainer(IContainer):
 
         Raises ``ValueError`` if order contains an invalid set of keys.
         """
+
+
+class IOrderedContainer(IOrdered, IContainer):
+    """Containers whose contents are maintained in order."""
+
 
 
 class IContainerNamesContainer(IContainer):
