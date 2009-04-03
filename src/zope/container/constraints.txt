@@ -1,5 +1,6 @@
-Containment constraints
-=======================
+=========================
+ Containment constraints
+=========================
 
 Containment constraints allow us to express restrictions on the types
 of items that can be placed in containers or on the types of

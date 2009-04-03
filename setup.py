@@ -29,8 +29,7 @@ setup(name='zope.container',
       long_description=(
           read('README.txt')
           + '\n\n' +
-          'Detailed Documentation\n'
-          '**********************\n'
+          '.. contents::\n'
           + '\n\n' +
           read('src', 'zope', 'container', 'constraints.txt')
           + '\n\n' +
