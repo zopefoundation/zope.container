@@ -2,10 +2,10 @@
 CHANGES
 =======
 
-3.8.1 (unreleased)
+3.8.1 (2009-04-03)
 ------------------
 
-- Nothing changed yet.
+- Fixed misspackaged 3.8.0
 
 
 3.8.0 (2009-04-03)
