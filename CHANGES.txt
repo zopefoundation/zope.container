@@ -5,6 +5,9 @@ CHANGES
 3.7.3 (unreleased)
 ------------------
 
+- Change configure.zcml to not depend on zope.app.component.
+  Fixes: https://bugs.launchpad.net/bugs/348329
+
 - Moved the declaration of ``IOrderedContainer.updateOrder``  to a new, basic
   ``IOrdered`` interface and let ``IOrderedContainer`` inherit it. This allows
   easier reuse of the declaration.
