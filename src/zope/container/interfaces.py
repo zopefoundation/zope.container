@@ -17,13 +17,20 @@ $Id$
 """
 __docformat__ = 'restructuredtext'
 
-from zope.interface import Interface, Attribute, Invalid
+from zope.interface import Interface, Invalid
 from zope.interface.common.mapping import IItemMapping
 from zope.interface.common.mapping import IReadMapping, IEnumerableMapping
-from zope.component.interfaces import IObjectEvent
-from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 from zope.location.interfaces import ILocation
 from zope.schema import Set
+
+from zope.lifecycleevent.interfaces import IObjectModifiedEvent
+
+# the following imports provide backwards compatibility for consumers;
+# do not remove them
+from zope.lifecycleevent.interfaces import IObjectMovedEvent
+from zope.lifecycleevent.interfaces import IObjectAddedEvent
+from zope.lifecycleevent.interfaces import IObjectRemovedEvent
+# /end backwards compatibility imports
 
 from zope.container.i18n import ZopeMessageFactory as _
 
@@ -215,18 +222,6 @@ class NameReserved(ValueError):
     __doc__ = _("""The name is reserved for this container""")
 
 ##############################################################################
-# Moving Objects
-
-class IObjectMovedEvent(IObjectEvent):
-    """An object has been moved."""
-
-    oldParent = Attribute("The old location parent for the object.")
-    oldName = Attribute("The old location name for the object.")
-    newParent = Attribute("The new location parent for the object.")
-    newName = Attribute("The new location name for the object.")
-
-
-##############################################################################
 # Adding objects
 
 class UnaddableError(ContainerError):
@@ -240,10 +235,6 @@ class UnaddableError(ContainerError):
     def __str__(self):
         return ("%(obj)s cannot be added "
                 "to %(container)s%(message)s" % self.__dict__)
-
-
-class IObjectAddedEvent(IObjectMovedEvent):
-    """An object has been added to a container."""
 
 
 class INameChooser(Interface):
@@ -264,14 +255,6 @@ class INameChooser(Interface):
         the checkName test) and never raise an error.
 
         """
-
-
-##############################################################################
-# Removing objects
-
-
-class IObjectRemovedEvent(IObjectMovedEvent):
-    """An object has been removed from a container."""
 
 
 ##############################################################################

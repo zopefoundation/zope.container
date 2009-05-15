@@ -2,6 +2,18 @@
 CHANGES
 =======
 
+movedaddedremoved-branch (unreleased)
+--------------------------------------
+
+- Rid ourselves of ``IObjectMovedEvent``, ``IObjectAddedEvent``,
+  ``IObjectRemovedEvent`` interfaces and ``ObjectMovedEvent``,
+  ``ObjectAddedEvent`` and ``ObjectRemovedEvent`` classes on this
+  branch, moved to ``zope.lifecycleevent`` in the movedaddedremoved
+  branch at
+  svn+ssh://svn.zope.org/repos/main/zope.lifecycleevent/branches/movedaddedremoved.
+  Depend on zope.lifecycleevent in the right places.  This branch will
+  not work without the movedaddedremoved branch of zope.lifecyclevent.
+
 3.8.2 (unreleased)
 ------------------
 
