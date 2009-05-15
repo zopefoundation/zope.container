@@ -1,5 +1,6 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
+   xmlns:zcml="http://namespaces.zope.org/zcml"
    i18n_domain="zope"
    >
 
@@ -56,6 +57,7 @@
       />
 
   <subscriber
+      zcml:condition="installed zope.app.dependable"
       handler=".dependency.CheckDependency"
       for="zope.container.interfaces.IObjectRemovedEvent"
       trusted="y"

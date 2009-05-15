@@ -11,6 +11,13 @@ CHANGES
   dependencies on zope.traversing are currently interface
   dependencies.
 
+- Break runtime dependency on ``zope.app.dependable`` by using a zcml
+  condition on the qsubscriber ZCML directive that registers the
+  CheckDependency handler for IObjectRemovedEvent.  If
+  ``zope.app.dependable`` is not installed, this subscriber will never
+  be registered.  ``zope.app.dependable`` is now a testing dependency
+  only.
+
 3.8.1 (2009-04-03)
 ------------------
 
