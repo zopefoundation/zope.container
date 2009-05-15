@@ -179,6 +179,13 @@ class OrderedContainer(Persistent, Contained):
         ['foo', 'baz']
         >>> int(len(oc._order) == len(oc._data))
         1
+
+        >>> oc['foo'] = 'baz'
+        Traceback (most recent call last):
+        ...
+        KeyError: u'foo'
+        >>> oc._order
+        ['foo', 'baz']
         """
 
         existed = self._data.has_key(key)
@@ -207,7 +214,8 @@ class OrderedContainer(Persistent, Contained):
         try:
             setitem(self, self._data.__setitem__, key, object)
         except Exception, e:
-            self._order.remove(key)
+            if not existed:
+                self._order.remove(key)
             raise e
 
         return key

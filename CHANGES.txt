@@ -4,6 +4,9 @@ CHANGES
 
 3.8.2 (unreleased)
 ------------------
+- Fix a bug in OrderedContainer where trying to set the value for a
+  key that already exists (duplication error) would actually delete the
+  key from the order, leaving a dangling reference.
 
 - Partially break dependency on ``zope.traversing`` by disusing
   zope.traversing.api.getPath in favor of using
