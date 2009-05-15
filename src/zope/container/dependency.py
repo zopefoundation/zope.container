@@ -23,7 +23,7 @@ __docformat__ = 'restructuredtext'
 from zope.i18nmessageid import Message
 from zope.container.i18n import ZopeMessageFactory as _
 from zope.app.dependable.interfaces import IDependable, DependencyError
-from zope.traversing.api import getPath
+from zope.location.interfaces import ILocationInfo
 
 exception_msg = _("""
 Removal of object (${object}) which has dependents (${dependents})
@@ -39,7 +39,8 @@ def CheckDependency(event):
         dependents = dependency.dependents()
         if dependents:
             mapping = {
-                "object": getPath(object),
+                "object": ILocationInfo(object).getPath(),
                 "dependents": ", ".join(dependents)
                 }
             raise DependencyError(Message(exception_msg, mapping=mapping))
+

@@ -5,6 +5,12 @@ CHANGES
 3.8.2 (unreleased)
 ------------------
 
+- Partially break dependency on ``zope.traversing`` by disusing
+  zope.traversing.api.getPath in favor of using
+  ILocationInfo(object).getPath().  The rest of the runtime
+  dependencies on zope.traversing are currently interface
+  dependencies.
+
 3.8.1 (2009-04-03)
 ------------------
 
