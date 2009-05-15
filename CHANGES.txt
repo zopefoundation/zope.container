@@ -2,6 +2,14 @@
 CHANGES
 =======
 
+3.7.0.1 (unreleased)
+--------------------
+
+- Fix a bug in OrderedContainer where trying to set the value for a
+  key that already exists (duplication error) would actually delete the
+  key from the order, leaving a dangling reference.
+
+
 3.7.0 (2009-01-31)
 ------------------
 
