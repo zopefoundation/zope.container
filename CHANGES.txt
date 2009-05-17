@@ -4,6 +4,13 @@ CHANGES
 
 3.8.2 (unreleased)
 ------------------
+
+- Rid ourselves of ``IObjectMovedEvent``, ``IObjectAddedEvent``,
+  ``IObjectRemovedEvent`` interfaces and ``ObjectMovedEvent``,
+  ``ObjectAddedEvent`` and ``ObjectRemovedEvent`` classes.  All of
+  these were moved to ``zope.lifecycleevent``. Depend on
+  ``zope.lifecycleevent``>=3.5.2.
+
 - Fix a bug in OrderedContainer where trying to set the value for a
   key that already exists (duplication error) would actually delete the
   key from the order, leaving a dangling reference.

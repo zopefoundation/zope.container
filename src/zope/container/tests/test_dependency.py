@@ -19,7 +19,7 @@ import unittest
 
 from zope.interface import implements
 from zope.app.dependable.interfaces import IDependable, DependencyError
-from zope.container.contained import ObjectRemovedEvent
+from zope.lifecycleevent import ObjectRemovedEvent
 from zope.container.dependency import CheckDependency
 from zope.traversing.interfaces import IPhysicallyLocatable
 

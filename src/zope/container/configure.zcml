@@ -59,13 +59,13 @@
   <subscriber
       zcml:condition="installed zope.app.dependable"
       handler=".dependency.CheckDependency"
-      for="zope.container.interfaces.IObjectRemovedEvent"
+      for="zope.lifecycleevent.interfaces.IObjectRemovedEvent"
       trusted="y"
       />
 
   <subscriber
       for="zope.location.interfaces.ILocation
-           zope.container.interfaces.IObjectMovedEvent"
+           zope.lifecycleevent.interfaces.IObjectMovedEvent"
       handler=".contained.dispatchToSublocations"
       >
       Handler dispatches moved events to sublocations of the original object.

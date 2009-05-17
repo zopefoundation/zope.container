@@ -69,8 +69,9 @@ def test_all_items_available_at_object_added_event():
 
         >>> import zope.component
         >>> from zope.container import interfaces
+        >>> from zope.lifecycleevent.interfaces import IObjectAddedEvent
 
-        >>> @zope.component.adapter(interfaces.IObjectAddedEvent)
+        >>> @zope.component.adapter(IObjectAddedEvent)
         ... def printContainerKeys(event):
         ...     print event.newParent.keys()
 
@@ -97,8 +98,9 @@ def test_exception_causes_order_fix():
 
         >>> import zope.component
         >>> from zope.container import interfaces
+        >>> from zope.lifecycleevent.interfaces import IObjectAddedEvent
 
-        >>> @zope.component.adapter(interfaces.IObjectAddedEvent)
+        >>> @zope.component.adapter(IObjectAddedEvent)
         ... def raiseException(event):
         ...     raise Exception()
 

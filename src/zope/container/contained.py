@@ -23,7 +23,6 @@ from zope.interface import providedBy
 from zope.interface.declarations import getObjectSpecification
 from zope.interface.declarations import ObjectSpecification
 from zope.event import notify
-from zope.component.interfaces import ObjectEvent
 from zope.location.interfaces import ILocation, ISublocations
 from zope.security.checker import selectChecker, CombinedChecker
 from zope.lifecycleevent import ObjectModifiedEvent
@@ -32,12 +31,14 @@ from zope.container.i18n import ZopeMessageFactory as _
 from zope.container.interfaces import IContained
 from zope.container.interfaces import INameChooser
 from zope.container.interfaces import IReservedNames, NameReserved
-from zope.container.interfaces import IObjectAddedEvent
-from zope.container.interfaces import IObjectMovedEvent
-from zope.container.interfaces import IObjectRemovedEvent
 from zope.container.interfaces import IContainerModifiedEvent
 from zope.container._zope_container_contained import ContainedProxyBase
 from zope.container._zope_container_contained import getProxiedObject
+
+from zope.lifecycleevent import ObjectMovedEvent
+from zope.lifecycleevent import ObjectAddedEvent
+from zope.lifecycleevent import ObjectRemovedEvent
+
 from zope.broken.interfaces import IBroken
 
 class Contained(object):
@@ -46,42 +47,6 @@ class Contained(object):
     zope.interface.implements(IContained)
 
     __parent__ = __name__ = None
-
-class ObjectMovedEvent(ObjectEvent):
-    """An object has been moved"""
-
-    zope.interface.implements(IObjectMovedEvent)
-
-    def __init__(self, object, oldParent, oldName, newParent, newName):
-        ObjectEvent.__init__(self, object)
-        self.oldParent = oldParent
-        self.oldName = oldName
-        self.newParent = newParent
-        self.newName = newName
-
-class ObjectAddedEvent(ObjectMovedEvent):
-    """An object has been added to a container"""
-
-    zope.interface.implements(IObjectAddedEvent)
-
-    def __init__(self, object, newParent=None, newName=None):
-        if newParent is None:
-            newParent = object.__parent__
-        if newName is None:
-            newName = object.__name__
-        ObjectMovedEvent.__init__(self, object, None, None, newParent, newName)
-
-class ObjectRemovedEvent(ObjectMovedEvent):
-    """An object has been removed from a container"""
-
-    zope.interface.implements(IObjectRemovedEvent)
-
-    def __init__(self, object, oldParent=None, oldName=None):
-        if oldParent is None:
-            oldParent = object.__parent__
-        if oldName is None:
-            oldName = object.__name__
-        ObjectMovedEvent.__init__(self, object, oldParent, oldName, None, None)
 
 class ContainerModifiedEvent(ObjectModifiedEvent):
     """The container has been modified."""
@@ -147,6 +112,7 @@ def dispatchToSublocations(object, event):
        Now we'll register it:
 
          >>> from zope import component
+         >>> from zope.lifecycleevent.interfaces import IObjectMovedEvent
          >>> component.provideHandler(handler, [None, IObjectMovedEvent])
 
        We also register our dispatcher:
@@ -380,8 +346,8 @@ def setitem(container, setitemf, name, object):
     ...     def setMoved(self, event):
     ...         self.moved = event
 
-    >>> from zope.container.interfaces import IObjectAddedEvent
-    >>> from zope.container.interfaces import IObjectMovedEvent
+    >>> from zope.lifecycleevent.interfaces import IObjectAddedEvent
+    >>> from zope.lifecycleevent.interfaces import IObjectMovedEvent
 
     >>> from zope import component
     >>> component.provideHandler(lambda obj, event: obj.setAdded(event),
@@ -600,7 +566,7 @@ def uncontained(object, container, name=None):
 
     >>> from zope.component.eventtesting import getEvents
     >>> from zope.lifecycleevent.interfaces import IObjectModifiedEvent
-    >>> from zope.container.interfaces import IObjectRemovedEvent
+    >>> from zope.lifecycleevent.interfaces import IObjectRemovedEvent
 
     We'll start by creating a container with an item:
 
