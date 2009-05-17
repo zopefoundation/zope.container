@@ -425,7 +425,7 @@ def containers(*types):
       >>> class IBar(IContainer):
       ...     pass
 
-      >>> from zope.container.interfaces import IContained
+      >>> from zope.location.interfaces import IContained
       >>> class IFooBarContained(IContained):
       ...     containers(IFoo, IBar)
 

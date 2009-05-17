@@ -28,7 +28,7 @@ from zope.security.checker import selectChecker, CombinedChecker
 from zope.lifecycleevent import ObjectModifiedEvent
 
 from zope.container.i18n import ZopeMessageFactory as _
-from zope.container.interfaces import IContained
+from zope.location.interfaces import IContained
 from zope.container.interfaces import INameChooser
 from zope.container.interfaces import IReservedNames, NameReserved
 from zope.container.interfaces import IContainerModifiedEvent

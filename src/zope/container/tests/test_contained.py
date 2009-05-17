@@ -108,7 +108,7 @@ def test_declarations_on_ContainedProxy():
     It implements IContained and IPersistent:
 
       >>> tuple(zope.interface.implementedBy(ContainedProxy))
-      (<InterfaceClass zope.container.interfaces.IContained>,
+      (<InterfaceClass zope.location.interfaces.IContained>,
        <InterfaceClass persistent.interfaces.IPersistent>)
 
     A proxied object has IContainer, in addition to what the unproxied
@@ -116,7 +116,7 @@ def test_declarations_on_ContainedProxy():
 
       >>> tuple(zope.interface.providedBy(p))
       (<InterfaceClass zope.container.tests.test_contained.I1>,
-       <InterfaceClass zope.container.interfaces.IContained>,
+       <InterfaceClass zope.location.interfaces.IContained>,
        <InterfaceClass persistent.interfaces.IPersistent>)
 
       >>> class I2(zope.interface.Interface):
@@ -125,7 +125,7 @@ def test_declarations_on_ContainedProxy():
       >>> tuple(zope.interface.providedBy(p))
       (<InterfaceClass zope.container.tests.test_contained.I2>,
        <InterfaceClass zope.container.tests.test_contained.I1>,
-       <InterfaceClass zope.container.interfaces.IContained>,
+       <InterfaceClass zope.location.interfaces.IContained>,
        <InterfaceClass persistent.interfaces.IPersistent>)
 
     We can declare interfaces through the proxy:
@@ -136,7 +136,7 @@ def test_declarations_on_ContainedProxy():
       >>> tuple(zope.interface.providedBy(p))
       (<InterfaceClass zope.container.tests.test_contained.I3>,
        <InterfaceClass zope.container.tests.test_contained.I1>,
-       <InterfaceClass zope.container.interfaces.IContained>,
+       <InterfaceClass zope.location.interfaces.IContained>,
        <InterfaceClass persistent.interfaces.IPersistent>)
 
     """

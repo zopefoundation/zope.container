@@ -30,6 +30,7 @@ from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 from zope.lifecycleevent.interfaces import IObjectMovedEvent
 from zope.lifecycleevent.interfaces import IObjectAddedEvent
 from zope.lifecycleevent.interfaces import IObjectRemovedEvent
+from zope.location.interfaces import IContained
 # /end backwards compatibility imports
 
 from zope.container.i18n import ZopeMessageFactory as _
@@ -49,10 +50,6 @@ class InvalidItemType(Invalid, TypeError):
 class InvalidType(Invalid, TypeError):
     """The type of an object is not valid."""
 
-
-
-class IContained(ILocation):
-    """Objects contained in containers."""
 
 
 class IItemContainer(IItemMapping):
