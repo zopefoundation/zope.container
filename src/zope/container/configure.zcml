@@ -97,4 +97,20 @@
       permission="zope.Public"
       />
 
+  <view 
+      for="zope.container.interfaces.IItemContainer"
+      type="zope.publisher.interfaces.xmlrpc.IXMLRPCRequest"
+      provides="zope.publisher.interfaces.xmlrpc.IXMLRPCPublisher"
+      factory="zope.container.traversal.ItemTraverser"
+      permission="zope.Public"
+      />
+
+  <view 
+      for="zope.container.interfaces.IReadContainer"
+      type="zope.publisher.interfaces.xmlrpc.IXMLRPCRequest"
+      provides="zope.publisher.interfaces.xmlrpc.IXMLRPCPublisher"
+      factory="zope.container.traversal.ContainerTraverser"
+      permission="zope.Public"
+      />
+
 </configure>

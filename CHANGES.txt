@@ -5,7 +5,8 @@ CHANGES
 3.8.3 (unreleased)
 ------------------
 
-- ...
+- Move IXMLRPCPublisher ZCML registrations for containers from
+  zope.app.publisher.xmlrpc to zope.container for now.
 
 3.8.2 (2009-05-17)
 ------------------
