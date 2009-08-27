@@ -2,10 +2,19 @@
 CHANGES
 =======
 
-3.8.4 (unreleased)
+3.9.1 (unreleased)
 ------------------
 
 - ...
+
+3.9.0 (2009-08-28)
+------------------
+
+- Previous releases should be versioned 3.9.0 as they are not pure bugfix
+  releases and worth a "feature" release, increasing feature version.
+  
+  Packages that depend on any changes introduced in version 3.8.2 or 3.8.3
+  should depend on version 3.9 or greater.
 
 3.8.3 (2009-08-27)
 ------------------
