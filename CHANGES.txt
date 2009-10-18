@@ -2,10 +2,12 @@
 CHANGES
 =======
 
-3.9.1 (unreleased)
+3.9.1 (2009-10-18)
 ------------------
 
-- ...
+- Rerelease 3.9.0 as it had a broken Windows 2.6 egg.
+
+- Marked as part of the ZTK.
 
 3.9.0 (2009-08-28)
 ------------------
