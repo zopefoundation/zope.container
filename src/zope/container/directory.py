@@ -27,7 +27,7 @@ __docformat__ = 'restructuredtext'
 
 from zope.interface import implements
 
-from zope.location.interfaces import ISite
+from zope.component.interfaces import ISite
 from zope.security.proxy import removeSecurityProxy
 import zope.filerepresentation.interfaces
 
