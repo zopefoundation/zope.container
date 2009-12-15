@@ -5,6 +5,7 @@ CHANGES
 3.10.1 (unreleased)
 -------------------
 
+- Removed no longer used zcml prefix from the configure file.
 
 3.10.0 (2009-12-15)
 -------------------
