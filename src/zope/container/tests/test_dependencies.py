@@ -1,27 +1,31 @@
-import os
 import unittest
 
+from zope.configuration.xmlconfig import XMLConfig
 from zope.interface import implements
-import zope.component
-from zope.app.testing import functional
 from zope.publisher.browser import TestRequest
-
 from zope.publisher.interfaces.browser import IBrowserPublisher
-from zope.container.traversal import ItemTraverser
-
-ContainerLayer = functional.ZCMLLayer(
-    os.path.join(os.path.dirname(__file__), 'ftest_zcml_dependencies.zcml'),
-    __name__, 'ContainerLayer', allow_teardown=True)
-
 
 from zope.container.interfaces import IItemContainer
 from zope.container.interfaces import ISimpleReadContainer
+from zope.container.traversal import ItemTraverser
+from zope.container.testing import ContainerPlacelessSetup
 
-class ZCMLDependencies(functional.BrowserTestCase):
+
+class ZCMLDependencies(ContainerPlacelessSetup, unittest.TestCase):
 
     def test_zcml_can_load_with_only_zope_component_meta(self):
         # this is just an example.  It is supposed to show that the
         # configure.zcml file has loaded successfully.
+
+        import zope.component
+        XMLConfig('meta.zcml', zope.component)()
+
+        import zope.security
+        XMLConfig('meta.zcml', zope.security)()
+        XMLConfig('permissions.zcml', zope.security)()
+
+        import zope.container
+        XMLConfig('configure.zcml', zope.container)()
 
         request = TestRequest()
 
@@ -45,7 +49,6 @@ class ZCMLDependencies(functional.BrowserTestCase):
 
 def test_suite():
     suite = unittest.TestSuite()
-    ZCMLDependencies.layer = ContainerLayer
     suite.addTest(unittest.makeSuite(ZCMLDependencies))
     return suite
 

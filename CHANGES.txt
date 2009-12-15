@@ -5,6 +5,8 @@ CHANGES
 3.10.0 (Unreleased)
 -------------------
 
+- Break testing dependency on zope.app.testing.
+
 - Break testing dependency on zope.app.dependable by moving the code and tests
   into that package.
 
