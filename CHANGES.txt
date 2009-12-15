@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-3.10.0 (Unreleased)
+3.10.0 (2009-12-15)
 -------------------
 
 - Break testing dependency on zope.app.testing.
