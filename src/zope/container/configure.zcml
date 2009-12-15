@@ -57,13 +57,6 @@
       />
 
   <subscriber
-      zcml:condition="installed zope.app.dependable"
-      handler=".dependency.CheckDependency"
-      for="zope.lifecycleevent.interfaces.IObjectRemovedEvent"
-      trusted="y"
-      />
-
-  <subscriber
       for="zope.location.interfaces.ILocation
            zope.lifecycleevent.interfaces.IObjectMovedEvent"
       handler=".contained.dispatchToSublocations"

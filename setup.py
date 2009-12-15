@@ -27,7 +27,7 @@ def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
 setup(name='zope.container',
-      version = '3.9.2dev',
+      version = '3.10.0dev',
       author='Zope Corporation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Container',
@@ -40,7 +40,7 @@ setup(name='zope.container',
           + '\n\n' +
           read('CHANGES.txt')
           ),
-      keywords = "zope3 container",
+      keywords = "zope container",
       classifiers = [
           'Development Status :: 5 - Production/Stable',
           'Environment :: Web Environment',
@@ -65,8 +65,6 @@ setup(name='zope.container',
       extras_require=dict(
           test=['zope.copypastemove',
                 'zope.app.testing',
-                'zope.app.component',
-                'zope.app.dependable',
                 ]),
       install_requires=['setuptools',
                         'zope.interface',

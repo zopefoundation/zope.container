@@ -12,35 +12,6 @@
 #
 ##############################################################################
 
-"""Subscriber function checking dependencies if a removal is performed
-on an object having dependencies. It raises an exception if it's the
-case.
-
-$Id$
-"""
-__docformat__ = 'restructuredtext'
-
-from zope.i18nmessageid import Message
-from zope.container.i18n import ZopeMessageFactory as _
-from zope.app.dependable.interfaces import IDependable, DependencyError
-from zope.location.interfaces import ILocationInfo
-
-exception_msg = _("""
-Removal of object (${object}) which has dependents (${dependents})
-is not possible !
-
-You must deactivate this object before trying to remove it.
-""")
-
-def CheckDependency(event):
-    object = event.object
-    dependency = IDependable(object, None)
-    if dependency is not None:
-        dependents = dependency.dependents()
-        if dependents:
-            mapping = {
-                "object": ILocationInfo(object).getPath(),
-                "dependents": ", ".join(dependents)
-                }
-            raise DependencyError(Message(exception_msg, mapping=mapping))
-
+# BBB imports
+from zope.app.dependable.dependency import exception_msg
+from zope.app.dependable.dependency import CheckDependency
