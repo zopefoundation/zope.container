@@ -7,6 +7,9 @@ CHANGES
 
 - Removed no longer used zcml prefix from the configure file.
 
+- Stop importing DocTestSuite from zope.testing.doctestunit.  Fixes
+  compatibility problems with zope.testing 3.8.4.
+
 3.10.0 (2009-12-15)
 -------------------
 

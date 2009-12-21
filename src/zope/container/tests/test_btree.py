@@ -17,7 +17,7 @@ $Id$
 """
 from unittest import TestCase, main, makeSuite, TestSuite
 from zope.interface.verify import verifyObject
-from zope.testing.doctestunit import DocTestSuite
+from zope.testing.doctest import DocTestSuite
 from zope.component.testing import setUp, tearDown
 from zope.container.tests.test_icontainer import TestSampleContainer
 from zope.container.btree import BTreeContainer

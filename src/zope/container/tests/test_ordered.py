@@ -16,7 +16,7 @@
 $Id$
 """
 import unittest
-from zope.testing.doctestunit import DocTestSuite
+from zope.testing.doctest import DocTestSuite
 from zope.component.eventtesting import getEvents, clearEvents
 from zope.container import testing
 
