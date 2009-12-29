@@ -64,7 +64,6 @@ setup(name='zope.container',
                    ],
       extras_require=dict(
           test=['zope.configuration',
-                'zope.copypastemove',
                 'zope.security',
                 ]),
       install_requires=['setuptools',
