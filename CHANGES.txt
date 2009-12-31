@@ -2,9 +2,12 @@
 CHANGES
 =======
 
-3.10.2 (unreleased)
+3.11.0 (unreleased)
 -------------------
 
+- Copy two trivial classes from zope.cachedescriptors into this package, which
+  allows us to remove that dependency. We didn't actually use any caching
+  properties as the dependency suggested.
 
 3.10.1 (2009-12-29)
 -------------------

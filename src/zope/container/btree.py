@@ -23,8 +23,27 @@ from BTrees.Length import Length
 
 from zope.container.interfaces import IBTreeContainer
 from zope.container.contained import Contained, setitem, uncontained
-from zope.cachedescriptors.property import Lazy
 from zope.interface import implements
+
+
+class Lazy(object):
+    """Lazy Attributes.
+    """
+
+    def __init__(self, func, name=None):
+        if name is None:
+            name = func.__name__
+        self.data = (func, name)
+
+    def __get__(self, inst, class_):
+        if inst is None:
+            return self
+
+        func, name = self.data
+        value = func(inst)
+        inst.__dict__[name] = value
+
+        return value
 
 
 class BTreeContainer(Contained, Persistent):
