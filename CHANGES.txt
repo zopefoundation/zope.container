@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-3.11.0 (unreleased)
+3.11.0 (2009-12-31)
 -------------------
 
 - Copy two trivial classes from zope.cachedescriptors into this package, which
