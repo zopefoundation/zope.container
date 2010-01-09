@@ -5,6 +5,9 @@ CHANGES
 3.11.1 (unreleased)
 -------------------
 
+- Added compatibility with ZODB3 3.10 by importing the IBroken interface from
+  it directly. Once we can rely on the new ZODB3 version exclusively, we can
+  remove the dependency onto the zope.broken distribution.
 
 3.11.0 (2009-12-31)
 -------------------

@@ -39,7 +39,12 @@ from zope.lifecycleevent import ObjectMovedEvent
 from zope.lifecycleevent import ObjectAddedEvent
 from zope.lifecycleevent import ObjectRemovedEvent
 
-from zope.broken.interfaces import IBroken
+# BBB ZODB3 < 3.10
+try:
+    from ZODB.interfaces import IBroken
+except ImportError:
+    from zope.broken.interfaces import IBroken
+
 
 class Contained(object):
     """Stupid mix-in that defines `__parent__` and `__name__` attributes"""
