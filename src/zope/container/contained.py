@@ -124,7 +124,7 @@ def dispatchToSublocations(object, event):
 
          >>> component.provideHandler(dispatchToSublocations,
          ...   [None, IObjectMovedEvent])
- 
+
        We can then call the dispatcher for the root object:
 
          >>> event = ObjectRemovedEvent(c)
@@ -359,7 +359,7 @@ def setitem(container, setitemf, name, object):
     ...   [IItem, IObjectAddedEvent])
     >>> component.provideHandler(lambda obj, event: obj.setMoved(event),
     ...   [IItem, IObjectMovedEvent])
-    
+
     >>> item = Item()
 
     >>> container = {}
@@ -684,41 +684,34 @@ class NameChooser(object):
         >>> container['foo'] = 'bar'
         >>> from zope.container.contained import NameChooser
 
-        All these names are invalid:
+        An invalid name raises a ValueError:
 
         >>> NameChooser(container).checkName('+foo', object())
         Traceback (most recent call last):
         ...
         ValueError: Names cannot begin with '+' or '@' or contain '/'
-        >>> NameChooser(container).checkName('@foo', object())
-        Traceback (most recent call last):
-        ...
-        ValueError: Names cannot begin with '+' or '@' or contain '/'
-        >>> NameChooser(container).checkName('f/oo', object())
-        Traceback (most recent call last):
-        ...
-        ValueError: Names cannot begin with '+' or '@' or contain '/'
+
+        A name that already exists raises a KeyError:
+
         >>> NameChooser(container).checkName('foo', object())
         Traceback (most recent call last):
         ...
         KeyError: u'The given name is already being used'
+
+        A name must be a string or unicode string:
+
         >>> NameChooser(container).checkName(2, object())
         Traceback (most recent call last):
         ...
         TypeError: ('Invalid name type', <type 'int'>)
 
-        This one is ok:
+        A correct name returns True:
 
         >>> NameChooser(container).checkName('2', object())
         True
 
         We can reserve some names by providing a IReservedNames adapter
         to a container:
-        
-        >>> NameChooser(container).checkName('reserved', None)
-        True
-        >>> NameChooser(container).checkName('other', None)
-        True
 
         >>> from zope.container.interfaces import IContainer
         >>> class ReservedNames(object):
@@ -728,28 +721,23 @@ class NameChooser(object):
         ...     def __init__(self, context):
         ...         self.reservedNames = set(('reserved', 'other'))
 
-        >>> zope.component.provideAdapter(ReservedNames)
+        >>> zope.component.getSiteManager().registerAdapter(ReservedNames)
 
         >>> NameChooser(container).checkName('reserved', None)
         Traceback (most recent call last):
         ...
         NameReserved: reserved
-        >>> NameChooser(container).checkName('other', None)
-        Traceback (most recent call last):
-        ...
-        NameReserved: other
-
         """
-
-        if not name:
-            raise ValueError(
-                _("An empty name was provided. Names cannot be empty.")
-                )
 
         if isinstance(name, str):
             name = unicode(name)
         elif not isinstance(name, unicode):
             raise TypeError("Invalid name type", type(name))
+
+        if not name:
+            raise ValueError(
+                _("An empty name was provided. Names cannot be empty.")
+                )
 
         if name[:1] in '+@' or '/' in name:
             raise ValueError(
@@ -773,40 +761,57 @@ class NameChooser(object):
         """See zope.container.interfaces.INameChooser
 
         The name chooser is expected to choose a name without error
-        
+
         We create and populate a dummy container
 
         >>> from zope.container.sample import SampleContainer
         >>> container = SampleContainer()
-        >>> container['foo.old.rst'] = 'rst doc'
+        >>> container['foobar.old'] = 'rst doc'
 
         >>> from zope.container.contained import NameChooser
-        >>> NameChooser(container).chooseName('+@+@foo.old.rst', object())
-        u'foo.old-2.rst'
-        >>> NameChooser(container).chooseName('+@+@foo/foo', object())
+
+        the suggested name is converted to unicode:
+
+        >>> NameChooser(container).chooseName('foobar', object())
+        u'foobar'
+
+        If it already exists, a number is appended but keeps the same extension:
+
+        >>> NameChooser(container).chooseName('foobar.old', object())
+        u'foobar-2.old'
+
+        Bad characters are turned into dashes:
+
+        >>> NameChooser(container).chooseName('foo/foo', object())
         u'foo-foo'
-        >>> NameChooser(container).chooseName('', object())
-        u'object'
-        >>> NameChooser(container).chooseName('@+@', object())
-        u'object'
+
+        If no name is suggested, it is based on the object type:
+
+        >>> NameChooser(container).chooseName('', [])
+        u'list'
 
         """
 
         container = self.context
 
-        # remove characters that checkName does not allow
-        name = unicode(name.replace('/', '-').lstrip('+@'))
+        # convert to unicode and remove characters that checkName does not allow
+        try:
+            name = unicode(name)
+        except:
+            name = u''
+        name = name.replace('/', '-').lstrip('+@')
 
         if not name:
             name = unicode(object.__class__.__name__)
-        
+
+        # for an existing name, append a number.
+        # We should keep client's os.path.extsep (not ours), we assume it's '.'
         dot = name.rfind('.')
         if dot >= 0:
             suffix = name[dot:]
             name = name[:dot]
         else:
             suffix = ''
-
 
         n = name + suffix
         i = 1
