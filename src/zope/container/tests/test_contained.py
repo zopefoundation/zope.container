@@ -29,7 +29,7 @@ from zope.testing import doctest
 from zope.container.contained import ContainedProxy, NameChooser
 from zope.container.sample import SampleContainer
 from zope.container import testing
-from zope.container.interfaces import NameReserved, IContainer, IReservedNames, IReservedNames
+from zope.container.interfaces import NameReserved, IContainer, IReservedNames
 
 class MyOb(Persistent):
     pass
