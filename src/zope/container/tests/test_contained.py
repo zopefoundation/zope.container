@@ -15,8 +15,11 @@
 
 $Id$
 """
-import unittest
+
+import doctest
 import gc
+import unittest
+
 from ZODB.DemoStorage import DemoStorage
 from ZODB.DB import DB
 import transaction
@@ -24,7 +27,6 @@ from persistent import Persistent
 
 import zope.interface
 import zope.component
-from zope.testing import doctest
 
 from zope.container.contained import ContainedProxy, NameChooser
 from zope.container.sample import SampleContainer

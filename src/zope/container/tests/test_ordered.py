@@ -16,9 +16,11 @@
 $Id$
 """
 import unittest
-from zope.testing.doctest import DocTestSuite
+from doctest import DocTestSuite
+
 from zope.component.eventtesting import getEvents, clearEvents
 from zope.container import testing
+
 
 def test_order_events():
     """

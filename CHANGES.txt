@@ -5,13 +5,15 @@ CHANGES
 3.11.1 (unreleased)
 -------------------
 
+- Prefer the standard libraries doctest module to the one from zope.testing.
+
 - Added compatibility with ZODB3 3.10 by importing the IBroken interface from
   it directly. Once we can rely on the new ZODB3 version exclusively, we can
   remove the dependency onto the zope.broken distribution.
 
-- never fail if the suggested name is in a wrong type (#227617)
+- Never fail if the suggested name is in a wrong type (#227617)
 
-- checkName first checks the parameter type before the emptiness
+- ``checkName`` first checks the parameter type before the emptiness.
 
 3.11.0 (2009-12-31)
 -------------------

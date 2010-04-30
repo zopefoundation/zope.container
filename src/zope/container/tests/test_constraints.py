@@ -15,8 +15,10 @@
 
 $Id$
 """
+
+import doctest
 import unittest
-from zope.testing import doctest, module
+from zope.testing import module
 
 def setUp(test):
     module.setUp(test, 'zope.container.constraints_txt')

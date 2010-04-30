@@ -15,11 +15,13 @@
 
 $Id$
 """
-from unittest import TestCase, TestSuite, main, makeSuite
-from zope.testing import doctest
-from zope.container import testing
 
+import doctest
+from unittest import TestCase, TestSuite, main, makeSuite
+
+from zope.container import testing
 import zope.container.directory
+
 
 class Directory(object):
     pass
