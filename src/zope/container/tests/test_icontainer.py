@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """Test the IContainer interface.
-
-$Id$
 """
 from unittest import TestCase, main, makeSuite
 

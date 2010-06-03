@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """Container Traverser tests.
-
-$Id$
 """
 import unittest
 from zope.testing.cleanup import CleanUp

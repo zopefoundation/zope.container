@@ -146,8 +146,6 @@
 
    >>> checkFactory(c1, "Zbob", factory)
    False
-
-   $Id$
    """
 __docformat__ = 'restructuredtext'
 

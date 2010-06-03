@@ -20,8 +20,6 @@ providing a file-system representation for containers:
 
 `Cloner`
   An `IDirectoryFactory` adapter that just clones the original object.
-
-$Id$
 """
 __docformat__ = 'restructuredtext'
 

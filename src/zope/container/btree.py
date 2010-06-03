@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """This module provides a sample btree container implementation.
-
-$Id$
 """
 __docformat__ = 'restructuredtext'
 

@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """Traversal components for containers
-
-$Id$
 """
 __docformat__ = 'restructuredtext'
 

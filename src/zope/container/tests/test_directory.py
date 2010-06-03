@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """FS-based directory implementation tests for containers
-
-$Id$
 """
 
 import doctest

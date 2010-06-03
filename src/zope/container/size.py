@@ -13,8 +13,6 @@
 #
 ##############################################################################
 """Adapters that give the size of an object.
-
-$Id$
 """
 __docformat__ = 'restructuredtext'
 

@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """Container Traverser Tests
-
-$Id$
 """
 import unittest
 from zope.interface import Interface, implements

@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """BTree Container Tests
-
-$Id$
 """
 from doctest import DocTestSuite
 from unittest import TestCase, main, makeSuite, TestSuite

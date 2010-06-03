@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """Test the OrderedContainer.
-
-$Id$
 """
 import unittest
 from doctest import DocTestSuite

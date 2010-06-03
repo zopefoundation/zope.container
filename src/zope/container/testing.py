@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """Unit test logic for setting up and tearing down basic infrastructure
-
-$Id: placelesssetup.py 95341 2009-01-28 15:59:18Z wosc $
 """
 from zope import component
 from zope.component.testing import PlacelessSetup as CAPlacelessSetup

@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """Classes to support implementing `IContained`
-
-$Id$
 """
 __docformat__ = 'restructuredtext'
 

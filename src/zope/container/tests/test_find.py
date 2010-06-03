@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """Find functionality tests
-
-$Id$
 """
 from unittest import TestCase, main, makeSuite
 from zope.container.interfaces import IReadContainer

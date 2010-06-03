@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """Ordered container implementation.
-
-$Id$
 """
 __docformat__ = 'restructuredtext'
 

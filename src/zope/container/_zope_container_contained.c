@@ -12,7 +12,7 @@
 #
 ############################################################################*/
 
-#define _ZOPE_CONTAINER_CONTAINED_C "$Id$\n"
+#define _ZOPE_CONTAINER_CONTAINED_C "\n"
 
 /* Contained Proxy Base class
 

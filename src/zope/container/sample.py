@@ -17,8 +17,6 @@ This is primarily for testing purposes.
 
 It might be useful as a mix-in for some classes, but many classes will
 need a very different implementation.
-
-$Id$
 """
 __docformat__ = 'restructuredtext'
 

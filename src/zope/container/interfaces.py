@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """Container-related interfaces
-
-$Id$
 """
 __docformat__ = 'restructuredtext'
 
