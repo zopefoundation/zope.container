@@ -5,6 +5,8 @@ CHANGES
 3.11.2 (unreleased)
 -------------------
 
+- Fix detection of moving folders into itself or a subfolder of itself.
+  (#118088)
 
 3.11.1 (2010-04-30)
 -------------------

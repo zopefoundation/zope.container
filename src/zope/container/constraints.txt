@@ -96,4 +96,20 @@ could have defined these in the opposite order:
     >>> checkFactory(Contacts(), 'x', Factory(Buddy))
     False
 
+The constraints prevent us from moving a container beneath itself (either into
+itself or another folder beneath it):
 
+    >>> container = Container()
+    >>> checkObject(container, 'x', container)
+    Traceback (most recent call last):
+    TypeError: Cannot add an object to itself or its children.
+
+    >>> import zope.location.interfaces
+    >>> import zope.interface
+    >>> subcontainer = Container()
+    >>> zope.interface.directlyProvides(subcontainer,
+    ...     zope.location.interfaces.ILocation)
+    >>> subcontainer.__parent__ = container
+    >>> checkObject(subcontainer, 'x', container)
+    Traceback (most recent call last):
+    TypeError: Cannot add an object to itself or its children.

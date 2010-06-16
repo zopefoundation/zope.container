@@ -159,7 +159,7 @@ from zope.container.i18n import ZopeMessageFactory as _
 from zope.container.interfaces import IContainer
 
 def checkObject(container, name, object):
-    """Check containement constraints for an object and container
+    """Check containment constraints for an object and container
     """
 
     # check __setitem__ precondition
@@ -169,6 +169,16 @@ def checkObject(container, name, object):
         precondition = __setitem__.queryTaggedValue('precondition')
         if precondition is not None:
             precondition(container, name, object)
+
+    # check that object is not being pasted into itself or its children.
+    target = container
+    while target is not None:
+        if target is object:
+            raise TypeError("Cannot add an object to itself or its children.")
+        if zope.location.interfaces.ILocation.providedBy(target):
+            target = target.__parent__
+        else:
+            target = None
 
     # check the constraint on __parent__
     __parent__ = providedBy(object).get('__parent__')
