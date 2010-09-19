@@ -13,16 +13,9 @@ from zope.container.testing import ContainerPlacelessSetup
 
 class ZCMLDependencies(ContainerPlacelessSetup, unittest.TestCase):
 
-    def test_zcml_can_load_with_only_zope_component_meta(self):
+    def test_zcml_can_load(self):
         # this is just an example.  It is supposed to show that the
         # configure.zcml file has loaded successfully.
-
-        import zope.component
-        XMLConfig('meta.zcml', zope.component)()
-
-        import zope.security
-        XMLConfig('meta.zcml', zope.security)()
-        XMLConfig('permissions.zcml', zope.security)()
 
         import zope.container
         XMLConfig('configure.zcml', zope.container)()

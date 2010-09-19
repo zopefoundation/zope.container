@@ -3,6 +3,10 @@
    i18n_domain="zope"
    >
 
+  <include file="meta.zcml" package="zope.component" />
+  <include file="meta.zcml" package="zope.security" />
+  <include file="permissions.zcml" package="zope.security" />
+
   <adapter
      provides=".interfaces.IFind"
      for=".interfaces.IReadContainer"

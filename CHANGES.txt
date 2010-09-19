@@ -8,6 +8,8 @@ CHANGES
 - Fix detection of moving folders into itself or a subfolder of itself.
   (#118088)
 
+- Fixed ZCML-related tests and dependencies.
+
 3.11.1 (2010-04-30)
 -------------------
 
