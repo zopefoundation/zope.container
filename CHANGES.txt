@@ -2,13 +2,15 @@
 CHANGES
 =======
 
-3.11.2 (unreleased)
+3.12.0 (unreleased)
 -------------------
 
 - Fix detection of moving folders into itself or a subfolder of itself.
   (#118088)
 
 - Fixed ZCML-related tests and dependencies.
+
+- Added ``zcml`` extra dependencies.
 
 3.11.1 (2010-04-30)
 -------------------
