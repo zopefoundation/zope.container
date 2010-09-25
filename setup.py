@@ -16,18 +16,18 @@
 # When developing and releasing this package, please follow the documented
 # Zope Toolkit policies as described by this documentation.
 ##############################################################################
-"""Setup for zope.container package
+"""Setup for zope.container package"""
 
-$Id$
-"""
 import os
 from setuptools import setup, find_packages, Extension
+
 
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
+
 setup(name='zope.container',
-      version = '3.11.1',
+      version = '3.11.2dev',
       author='Zope Corporation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Container',
