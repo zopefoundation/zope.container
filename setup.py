@@ -27,7 +27,7 @@ def read(*rnames):
 
 
 setup(name='zope.container',
-      version = '3.11.2dev',
+      version='3.11.2',
       author='Zope Corporation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Container',
