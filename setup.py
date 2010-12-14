@@ -25,7 +25,7 @@ def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
 setup(name='zope.container',
-      version = '3.12.0dev',
+      version = '3.12.0',
       author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Container',
@@ -66,7 +66,7 @@ setup(name='zope.container',
           zcml=[
                 'zope.component[zcml]',
                 'zope.configuration',
-                'zope.security[zcml]>=3.8.0dev',
+                'zope.security[zcml]>=3.8',
                 ]),
       install_requires=['setuptools',
                         'zope.interface',
