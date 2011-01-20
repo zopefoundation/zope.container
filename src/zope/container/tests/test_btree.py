@@ -20,6 +20,9 @@ from zope.component.testing import setUp, tearDown
 from zope.container.tests.test_icontainer import TestSampleContainer
 from zope.container.btree import BTreeContainer
 from zope.container.interfaces import IBTreeContainer
+from zope.container.interfaces import IContainerModifiedEvent
+from zope.container.contained import Contained
+from zope.lifecycleevent.interfaces import IObjectRemovedEvent
 
 
 class TestBTreeContainer(TestSampleContainer, TestCase):
@@ -162,10 +165,44 @@ class TestBTreeSpecials(TestCase):
         self.assertEqual(list(iterable), first_time)
 
 
+class TestBTreeEvents(TestCase):
+
+    def setUp(self):
+        from zope.event import subscribers
+        self._old_subscribers = subscribers[:]
+        subscribers[:] = []
+
+    def tearDown(self):
+        from zope.event import subscribers
+        subscribers[:] = self._old_subscribers
+
+    def testDeletion(self):
+        from zope.event import subscribers
+        tree = BTreeContainer()
+        item = Contained()
+        tree['42'] = item
+        events = []
+        def subscriber(event):
+            events.append(event)
+            # events should happen after the deletion, not before)
+            self.assertEqual(len(tree), 0)
+            self.assertEqual(list(tree), [])
+        subscribers.append(subscriber)
+
+        del tree['42']
+        self.assertEqual(item.__name__, None)
+        self.assertEqual(item.__parent__, None)
+
+        self.assertEqual(len(events), 2)
+        self.assertTrue(IObjectRemovedEvent.providedBy(events[0]))
+        self.assertTrue(IContainerModifiedEvent.providedBy(events[1]))
+
+
 def test_suite():
     return TestSuite((
         makeSuite(TestBTreeContainer),
         makeSuite(TestBTreeSpecials),
+        makeSuite(TestBTreeEvents),
         DocTestSuite('zope.container.btree',
                      setUp=setUp,
                      tearDown=tearDown),

@@ -107,16 +107,17 @@ class BTreeContainer(Contained, Persistent):
     def get(self, key, default=None):
         '''See interface `IReadContainer`'''
         return self._SampleContainer__data.get(key, default)
-        
+
     def __setitem__(self, key, value):
         setitem(self, self._setitemf, key, value)
 
     def __delitem__(self, key):
         # make sure our lazy property gets set
         l = self.__len
-        uncontained(self._SampleContainer__data[key], self, key)
+        item = self._SampleContainer__data[key]
         del self._SampleContainer__data[key]
         l.change(-1)
+        uncontained(item, self, key)
 
     has_key = __contains__
 
