@@ -211,10 +211,10 @@ class OrderedContainer(Persistent, Contained):
         # This function creates a lot of events that other code listens to.
         try:
             setitem(self, self._data.__setitem__, key, object)
-        except Exception, e:
+        except Exception:
             if not existed:
                 self._order.remove(key)
-            raise e
+            raise
 
         return key
 

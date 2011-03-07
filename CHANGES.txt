@@ -8,6 +8,8 @@ CHANGES
 - Send ``IContainerModifiedEvent`` *after* the container is modified
   (LP#705600).
 
+- Preserve the original exception traceback in OrderedContainer.__setitem__.
+
 
 3.12.0 (2010-12-14)
 -------------------
