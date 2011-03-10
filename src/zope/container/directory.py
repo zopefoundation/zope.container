@@ -1,5 +1,5 @@
 ##############################################################################
-# Copyright (c) 2003 Zope Corporation and Contributors.
+# Copyright (c) 2003 Zope Foundation and Contributors.
 # All Rights Reserved.
 # 
 # This software is subject to the provisions of the Zope Public License,
@@ -20,8 +20,6 @@ providing a file-system representation for containers:
 
 `Cloner`
   An `IDirectoryFactory` adapter that just clones the original object.
-
-$Id$
 """
 __docformat__ = 'restructuredtext'
 

@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (c) 2002 Zope Corporation and Contributors.
+# Copyright (c) 2002 Zope Foundation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """Unit test logic for setting up and tearing down basic infrastructure
-
-$Id: placelesssetup.py 95341 2009-01-28 15:59:18Z wosc $
 """
 from zope import component
 from zope.component.testing import PlacelessSetup as CAPlacelessSetup

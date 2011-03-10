@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (c) 2001, 2002 Zope Corporation and Contributors.
+# Copyright (c) 2001, 2002 Zope Foundation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -17,8 +17,6 @@ This is primarily for testing purposes.
 
 It might be useful as a mix-in for some classes, but many classes will
 need a very different implementation.
-
-$Id$
 """
 __docformat__ = 'restructuredtext'
 

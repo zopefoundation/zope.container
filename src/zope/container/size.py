@@ -1,7 +1,7 @@
 
 ##############################################################################
 #
-# Copyright (c) 2002 Zope Corporation and Contributors.
+# Copyright (c) 2002 Zope Foundation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -13,8 +13,6 @@
 #
 ##############################################################################
 """Adapters that give the size of an object.
-
-$Id$
 """
 __docformat__ = 'restructuredtext'
 

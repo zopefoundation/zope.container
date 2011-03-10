@@ -1,6 +1,6 @@
 /*############################################################################
 #
-# Copyright (c) 2003 Zope Corporation and Contributors.
+# Copyright (c) 2003 Zope Foundation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -12,7 +12,7 @@
 #
 ############################################################################*/
 
-#define _ZOPE_CONTAINER_CONTAINED_C "$Id$\n"
+#define _ZOPE_CONTAINER_CONTAINED_C "\n"
 
 /* Contained Proxy Base class
 
