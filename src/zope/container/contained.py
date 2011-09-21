@@ -640,6 +640,19 @@ def uncontained(object, container, name=None):
     >>> len(getEvents(IObjectModifiedEvent))
     3
 
+    If one tries to delete a Broken object, we allow them to do
+    just that.
+
+    >>> class Broken(object):
+    ...     __Broken_state__ = {}
+    >>> broken = Broken()
+    >>> broken.__Broken_state__['__name__'] = u'bar'
+    >>> broken.__Broken_state__['__parent__'] = container
+    >>> container[u'bar'] = broken
+    >>> uncontained(broken, container, u'bar')
+    >>> len(getEvents(IObjectRemovedEvent))
+    2
+
     """
     try:
         oldparent = object.__parent__
@@ -647,10 +660,15 @@ def uncontained(object, container, name=None):
     except AttributeError:
         # The old object doesn't implements IContained
         # Maybe we're converting old data:
-        if not fixing_up:
-            raise
-        oldparent = None
-        oldname = None
+        if hasattr(object, '__Broken_state__'):
+            state = object.__Broken_state__
+            oldparent = state['__parent__']
+            oldname = state['__name__']
+        else:
+            if not fixing_up:
+                raise
+            oldparent = None
+            oldname = None
 
     if oldparent is not container or oldname != name:
         if oldparent is not None or oldname is not None:
