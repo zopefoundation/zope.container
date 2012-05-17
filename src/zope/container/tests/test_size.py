@@ -15,13 +15,12 @@
 """
 import unittest
 
-from zope.interface import implements
+from zope.interface import implementer
 from zope.size.interfaces import ISized
 from zope.container.interfaces import IContainer
 
+@implementer(IContainer)
 class DummyContainer(object):
-
-    implements(IContainer)
 
     def __init__(self, numitems):
         self._numitems = numitems

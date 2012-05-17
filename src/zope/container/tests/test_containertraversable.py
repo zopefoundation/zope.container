@@ -15,15 +15,14 @@
 """
 import unittest
 from zope.testing.cleanup import CleanUp
-from zope.interface import implements
+from zope.interface import implementer
 from zope.traversing.interfaces import TraversalError
 
 from zope.container.traversal import ContainerTraversable
 from zope.container.interfaces import IContainer
 
+@implementer(IContainer)
 class Container(object):
-
-    implements(IContainer)
 
     def __init__(self, attrs={}, objs={}):
         for attr,value in attrs.iteritems():

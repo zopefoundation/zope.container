@@ -18,10 +18,10 @@ from zope.container.interfaces import IReadContainer
 from zope.container.interfaces import IObjectFindFilter
 from zope.container.find import FindAdapter, SimpleIdFindFilter
 from zope.container.find import SimpleInterfacesFindFilter
-from zope.interface import implements, Interface, directlyProvides
+from zope.interface import implementer, Interface, directlyProvides
 
+@implementer(IReadContainer)
 class FakeContainer(object):
-    implements(IReadContainer)
 
     def __init__(self, id, objects):
         self._id = id
@@ -67,8 +67,8 @@ class FakeInterfaceBar(Interface):
 class FakeInterfaceSpam(Interface):
     """Test interface Spam"""
 
+@implementer(IObjectFindFilter)
 class TestObjectFindFilter(object):
-    implements(IObjectFindFilter)
 
     def __init__(self, count):
         self._count = count

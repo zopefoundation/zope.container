@@ -1,7 +1,7 @@
 import unittest
 
 from zope.configuration.xmlconfig import XMLConfig
-from zope.interface import implements
+from zope.interface import implementer
 from zope.publisher.browser import TestRequest
 from zope.publisher.interfaces.browser import IBrowserPublisher
 
@@ -22,8 +22,9 @@ class ZCMLDependencies(ContainerPlacelessSetup, unittest.TestCase):
 
         request = TestRequest()
 
+        @implementer(IItemContainer)
         class SampleItemContainer(object):
-            implements(IItemContainer)
+            pass
 
         sampleitemcontainer = SampleItemContainer()
         res = zope.component.getMultiAdapter(
@@ -31,8 +32,9 @@ class ZCMLDependencies(ContainerPlacelessSetup, unittest.TestCase):
         self.failUnless(isinstance(res, ItemTraverser))
         self.failUnless(res.context is sampleitemcontainer)
 
+        @implementer(ISimpleReadContainer)
         class SampleSimpleReadContainer(object):
-            implements(ISimpleReadContainer)
+            pass
 
         samplesimplereadcontainer = SampleSimpleReadContainer()
         res = zope.component.getMultiAdapter(

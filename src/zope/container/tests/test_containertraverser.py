@@ -14,7 +14,7 @@
 """Container Traverser Tests
 """
 import unittest
-from zope.interface import Interface, implements
+from zope.interface import Interface, implementer
 from zope import component
 from zope.publisher.interfaces import NotFound, IDefaultViewName
 from zope.publisher.browser import TestRequest
@@ -24,8 +24,8 @@ from zope.container.traversal import ContainerTraverser
 from zope.container.interfaces import IReadContainer
 from zope.container import testing
 
+@implementer(IReadContainer)
 class TestContainer(object):
-    implements(IReadContainer)
 
     def __init__(self, **kw):
         for name, value in kw.items():

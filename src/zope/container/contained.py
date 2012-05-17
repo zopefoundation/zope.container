@@ -44,17 +44,17 @@ except ImportError:
     from zope.broken.interfaces import IBroken
 
 
+@zope.interface.implementer(IContained)
 class Contained(object):
     """Stupid mix-in that defines `__parent__` and `__name__` attributes"""
 
-    zope.interface.implements(IContained)
-
     __parent__ = __name__ = None
 
+
+@zope.interface.implementer(IContainerModifiedEvent)
 class ContainerModifiedEvent(ObjectModifiedEvent):
     """The container has been modified."""
 
-    zope.interface.implements(IContainerModifiedEvent)
 
 
 def dispatchToSublocations(object, event):
@@ -67,8 +67,8 @@ def dispatchToSublocations(object, event):
 
        Suppose, for example, that we define some location objects.
 
-         >>> class L(object):
-         ...     zope.interface.implements(ILocation)
+         >>> @zope.interface.implementer(ILocation)
+         ... class L(object):
          ...     def __init__(self, name):
          ...         self.__name__ = name
          ...         self.__parent__ = None
@@ -76,8 +76,8 @@ def dispatchToSublocations(object, event):
          ...         return '%s(%s)' % (
          ...                 self.__class__.__name__, str(self.__name__))
 
-         >>> class C(L):
-         ...     zope.interface.implements(ISublocations)
+         >>> @zope.interface.implementer(ISublocations)
+         ... class C(L):
          ...     def __init__(self, name, *subs):
          ...         L.__init__(self, name)
          ...         self.subs = subs
@@ -342,8 +342,8 @@ def setitem(container, setitemf, name, object):
 
     >>> class IItem(zope.interface.Interface):
     ...     pass
-    >>> class Item(Contained):
-    ...     zope.interface.implements(IItem)
+    >>> @zope.interface.implementer(IItem)
+    ... class Item(Contained):
     ...     def setAdded(self, event):
     ...         self.added = event
     ...     def setMoved(self, event):
@@ -683,9 +683,8 @@ def uncontained(object, container, name=None):
         object.__name__ = None
     notifyContainerModified(container)
 
+@zope.interface.implementer(INameChooser)
 class NameChooser(object):
-
-    zope.interface.implements(INameChooser)
 
     def __init__(self, context):
         self.context = context
@@ -730,9 +729,9 @@ class NameChooser(object):
         to a container:
 
         >>> from zope.container.interfaces import IContainer
-        >>> class ReservedNames(object):
-        ...     zope.component.adapts(IContainer)
-        ...     zope.interface.implements(IReservedNames)
+        >>> @zope.component.adapter(IContainer)
+        ... @zope.interface.implementer(IReservedNames)
+        ... class ReservedNames(object):
         ...
         ...     def __init__(self, context):
         ...         self.reservedNames = set(('reserved', 'other'))
@@ -855,15 +854,18 @@ class DecoratorSpecificationDescriptor(
     >>> class I4(Interface):
     ...     pass
 
-    >>> class D1(ContainedProxy):
-    ...   implements(I1)
+    >>> @implementer(I1)
+    ... class D1(ContainedProxy):
+    ...   pass
 
 
-    >>> class D2(ContainedProxy):
-    ...   implements(I2)
+    >>> @implementer(I2)
+    ... class D2(ContainedProxy):
+    ...   pass
 
-    >>> class X:
-    ...   implements(I3)
+    >>> @implementer(I3)
+    ... class X:
+    ...   pass
 
     >>> x = X()
     >>> directlyProvides(x, I4)
@@ -923,14 +925,13 @@ class ContainedProxyClassProvides(zope.interface.declarations.ClassProvides):
         inst = getProxiedObject(inst)
         del inst.__provides__
 
+@zope.interface.implementer(IContained)
 class ContainedProxy(ContainedProxyBase):
 
     # Prevent proxies from having their own instance dictionaries:
     __slots__ = ()
 
     __safe_for_unpickling__ = True
-
-    zope.interface.implements(IContained)
 
     __providedBy__ = DecoratorSpecificationDescriptor()
 

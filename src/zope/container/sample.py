@@ -21,17 +21,17 @@ need a very different implementation.
 __docformat__ = 'restructuredtext'
 
 from zope.container.interfaces import IContainer
-from zope.interface import implements
+from zope.interface import implementer
 from zope.container.contained import Contained, setitem, uncontained
 
 
+@implementer(IContainer)
 class SampleContainer(Contained):
     """Sample container implementation suitable for testing.
 
     It is not suitable, directly as a base class unless the subclass
     overrides `_newContainerData` to return a persistent mapping object.
     """
-    implements(IContainer)
 
     def __init__(self):
         self.__data = self._newContainerData()

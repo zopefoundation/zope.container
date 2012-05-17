@@ -21,7 +21,7 @@ from BTrees.Length import Length
 
 from zope.container.interfaces import IBTreeContainer
 from zope.container.contained import Contained, setitem, uncontained
-from zope.interface import implements
+from zope.interface import implementer
 
 
 class Lazy(object):
@@ -44,9 +44,8 @@ class Lazy(object):
         return value
 
 
+@implementer(IBTreeContainer)
 class BTreeContainer(Contained, Persistent):
-
-    implements(IBTreeContainer)
 
     def __init__(self):
         # We keep the previous attribute to store the data

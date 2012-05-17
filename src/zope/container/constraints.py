@@ -34,8 +34,8 @@
    ...     __setitem__.precondition = preNoZ
 
    >>> from zope.container.interfaces import IContainer
-   >>> class C1(object):
-   ...     zope.interface.implements(I1, IContainer)
+   >>> @zope.interface.implementer(I1, IContainer)
+   ... class C1(object):
    ...     def __repr__(self):
    ...         return 'C1'
 
@@ -66,8 +66,9 @@
    >>> class I2(zope.interface.Interface):
    ...     __parent__ = zope.schema.Field(constraint = con1)
 
-   >>> class O(object):
-   ...     zope.interface.implements(I2)
+   >>> @zope.interface.implementer(I2)
+   ... class O(object):
+   ...     pass
 
    If the constraint isn't satisfied, we'll get a validation error when we
    check whether the object can be added:
@@ -90,8 +91,9 @@
    >>> class I2(zope.interface.Interface):
    ...     __parent__ = zope.schema.Field(constraint = con1)
 
-   >>> class O(object):
-   ...     zope.interface.implements(I2)
+   >>> @zope.interface.implementer(I2)
+   ... class O(object):
+   ...     pass
 
    >>> checkObject(c1, "bob", O())
    Traceback (most recent call last):
@@ -279,6 +281,7 @@ class _TypesBased(object):
             self.types = types
 
 
+@zope.interface.implementer(IItemTypePrecondition)
 class ItemTypePrecondition(_TypesBased):
     """Specify a `__setitem__` precondition that restricts item types
 
@@ -326,7 +329,6 @@ class ItemTypePrecondition(_TypesBased):
 
     """
 
-    zope.interface.implements(IItemTypePrecondition)
 
     def __call__(self, container, name, object):
         for iface in self.types:
@@ -399,6 +401,7 @@ class IContainerTypesConstraint(zope.interface.Interface):
         """
 
 
+@zope.interface.implementer(IContainerTypesConstraint)
 class ContainerTypesConstraint(_TypesBased):
     """Constrain a container to be one of a number of types
 
@@ -423,9 +426,6 @@ class ContainerTypesConstraint(_TypesBased):
     True
 
     """
-
-    zope.interface.implements(IContainerTypesConstraint)
-
     def __call__(self, object):
        for iface in self.types:
            if iface.providedBy(object):

@@ -18,11 +18,10 @@ __docformat__ = 'restructuredtext'
 
 from zope.container.i18n import ZopeMessageFactory as _
 from zope.size.interfaces import ISized
-from zope.interface import implements
+from zope.interface import implementer
 
+@implementer(ISized)
 class ContainerSized(object):
-
-    implements(ISized)
 
     def __init__(self, container):
         self._container = container

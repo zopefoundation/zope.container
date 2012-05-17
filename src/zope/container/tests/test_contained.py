@@ -97,8 +97,9 @@ def test_declarations_on_ContainedProxy():
 
       >>> class I1(zope.interface.Interface):
       ...     pass
-      >>> class C(object):
-      ...     zope.interface.implements(I1)
+      >>> @zope.interface.implementer(I1)
+      ... class C(object):
+      ...     pass
 
       >>> c = C()
       >>> p = ContainedProxy(c)
@@ -350,9 +351,9 @@ class TestNameChooser(unittest.TestCase):
         self.assertEqual(True, checkName(u'r\xe9served', object()))
 
         # reserved names
+        @zope.component.adapter(IContainer)
+        @zope.interface.implementer(IReservedNames)
         class ReservedNames(object):
-            zope.component.adapts(IContainer)
-            zope.interface.implements(IReservedNames)
             def __init__(self, context):
                 self.reservedNames = set(('reserved', 'other'))
         zope.component.getSiteManager().registerAdapter(ReservedNames)

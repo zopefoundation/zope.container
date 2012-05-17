@@ -23,7 +23,7 @@ providing a file-system representation for containers:
 """
 __docformat__ = 'restructuredtext'
 
-from zope.interface import implements
+from zope.interface import implementer
 
 from zope.component.interfaces import ISite
 from zope.security.proxy import removeSecurityProxy
@@ -40,15 +40,13 @@ def noop(container):
     return container
 
 
+@implementer(zope.filerepresentation.interfaces.IDirectoryFactory)
 class Cloner(object):
     """`IContainer` to `IDirectoryFactory` adapter that clones
 
     This adapter provides a factory that creates a new empty container
     of the same class as it's context.
     """
-
-    implements(zope.filerepresentation.interfaces.IDirectoryFactory)
-
     def __init__(self, context):
         self.context = context
 

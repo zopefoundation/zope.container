@@ -16,7 +16,7 @@
 __docformat__ = 'restructuredtext'
 
 from zope.container.interfaces import IOrderedContainer
-from zope.interface import implements
+from zope.interface import implementer
 from persistent import Persistent
 from persistent.dict import PersistentDict
 from persistent.list import PersistentList
@@ -24,6 +24,7 @@ from types import StringTypes, TupleType, ListType
 from zope.container.contained import Contained, setitem, uncontained
 from zope.container.contained import notifyContainerModified
 
+@implementer(IOrderedContainer)
 class OrderedContainer(Persistent, Contained):
     """ `OrderedContainer` maintains entries' order as added and moved.
 
@@ -33,9 +34,6 @@ class OrderedContainer(Persistent, Contained):
     >>> len(oc)
     0
     """
-
-    implements(IOrderedContainer)
-
     def __init__(self):
 
         self._data = PersistentDict()

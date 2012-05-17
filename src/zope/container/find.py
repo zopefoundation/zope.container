@@ -15,13 +15,12 @@
 """
 __docformat__ = 'restructuredtext'
 
-from zope.interface import implements
+from zope.interface import implementer
 from interfaces import IFind, IIdFindFilter, IObjectFindFilter
 from interfaces import IReadContainer
 
+@implementer(IFind)
 class FindAdapter(object):
-
-    implements(IFind)
 
     __used_for__ = IReadContainer
 
@@ -62,9 +61,8 @@ def _find_helper(id, object, container, id_filters, object_filters, result):
     for id, object in container.items():
         _find_helper(id, object, container, id_filters, object_filters, result)
 
+@implementer(IIdFindFilter)
 class SimpleIdFindFilter(object):
-
-    implements(IIdFindFilter)
 
     def __init__(self, ids):
         self._ids = ids
@@ -73,9 +71,9 @@ class SimpleIdFindFilter(object):
         'See INameFindFilter'
         return id in self._ids
     
+@implementer(IObjectFindFilter)
 class SimpleInterfacesFindFilter(object):
     """Filter objects on the provided interfaces"""
-    implements(IObjectFindFilter)
     
     def __init__(self, *interfaces):
         self.interfaces = interfaces

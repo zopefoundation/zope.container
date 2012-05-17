@@ -31,11 +31,13 @@ folders:
 
     >>> from zope import interface
 
-    >>> class Buddy:
-    ...     interface.implements(IBuddy)
+    >>> @interface.implementer(IBuddy)
+    ... class Buddy:
+    ...     pass
 
-    >>> class BuddyFolder:
-    ...     interface.implements(IBuddyFolder)
+    >>> @interface.implementer(IBuddyFolder)
+    ... class BuddyFolder:
+    ...     pass
 
     >>> from zope.container.constraints import checkObject, checkFactory
     >>> from zope.component.factory import Factory
@@ -46,11 +48,13 @@ folders:
 
 If we try to use other containers or folders, we'll get errors:
 
-    >>> class Container:
-    ...     interface.implements(IContainer)
+    >>> @interface.implementer(IContainer)
+    ... class Container:
+    ...     pass
 
-    >>> class Contained:
-    ...     interface.implements(IContained)
+    >>> @interface.implementer(IContained)
+    ... class Contained:
+    ...     pass
 
     >>> checkObject(Container(), 'x', Buddy())
     ... # doctest: +ELLIPSIS
@@ -77,11 +81,13 @@ could have defined these in the opposite order:
     >>> class IContacts(IContainer):
     ...     contains(IContact)
 
-    >>> class Contact:
-    ...     interface.implements(IContact)
+    >>> @interface.implementer(IContact)
+    ... class Contact:
+    ...     pass
 
-    >>> class Contacts:
-    ...     interface.implements(IContacts)
+    >>> @interface.implementer(IContacts)
+    ... class Contacts:
+    ...     pass
 
     >>> checkObject(Contacts(), 'x', Contact())
 

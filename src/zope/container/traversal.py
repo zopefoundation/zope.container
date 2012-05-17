@@ -15,7 +15,7 @@
 """
 __docformat__ = 'restructuredtext'
 
-from zope.interface import implements, providedBy
+from zope.interface import implementer, providedBy
 from zope.component import queryMultiAdapter, getSiteManager
 from zope.component import ComponentLookupError
 from zope.traversing.interfaces import TraversalError, ITraversable
@@ -29,10 +29,10 @@ from zope.container.interfaces import IReadContainer
 # Note that the next two classes are included here because they
 # can be used for multiple view types.
 
+@implementer(IBrowserPublisher, IXMLRPCPublisher)
 class ContainerTraverser(object):
     """A traverser that knows how to look up objects by name in a container."""
 
-    implements(IBrowserPublisher, IXMLRPCPublisher)
     __used_for__ = ISimpleReadContainer
 
     def __init__(self, container, request):
@@ -84,10 +84,10 @@ class ItemTraverser(ContainerTraverser):
 
 _marker = object()
 
+@implementer(ITraversable)
 class ContainerTraversable(object):
     """Traverses containers via `getattr` and `get`."""
 
-    implements(ITraversable)
     __used_for__ = IReadContainer
 
     def __init__(self, container):
