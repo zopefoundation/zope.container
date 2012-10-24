@@ -122,6 +122,27 @@ def test_exception_causes_order_fix():
 
     """
 
+def test_adding_none():
+    """Test for OrderedContainer
+
+    This is a regression test: adding None to an OrderedContainer
+    used to corrupt its internal data structure (_order and _data
+    wouldl get out of sync, causing KeyErrors when you tried to iterate).
+
+        >>> from zope.container.ordered import OrderedContainer
+        >>> oc = OrderedContainer()
+        >>> oc['foo'] = None
+        >>> oc.keys()
+        ['foo']
+        >>> oc.values()
+        [None]
+        >>> oc.items()
+        [('foo', None)]
+        >>> print oc['foo']
+        None
+
+    """
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(DocTestSuite("zope.container.ordered",

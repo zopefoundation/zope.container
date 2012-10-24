@@ -331,6 +331,8 @@ def notifyContainerModified(object, *descriptions):
     """Notify that the container was modified."""
     notify(ContainerModifiedEvent(object, *descriptions))
 
+_SENTINEL = object()
+
 def setitem(container, setitemf, name, object):
     """Helper function to set an item and generate needed events
 
@@ -547,10 +549,10 @@ def setitem(container, setitemf, name, object):
     if not name:
         raise ValueError("empty names are not allowed")
 
-    old = container.get(name)
+    old = container.get(name, _SENTINEL)
     if old is object:
         return
-    if old is not None:
+    if old is not _SENTINEL:
         raise KeyError(name)
 
     object, event = containedEvent(object, container, name)

@@ -21,6 +21,9 @@ CHANGES
 
 - Handle Broken Objects more gracefully
 
+- Fix a bug that made it impossible to store None values in containers
+  (LP#1070719).
+
 
 3.12.0 (2010-12-14)
 -------------------
