@@ -37,12 +37,7 @@ from zope.lifecycleevent import ObjectMovedEvent
 from zope.lifecycleevent import ObjectAddedEvent
 from zope.lifecycleevent import ObjectRemovedEvent
 
-# BBB ZODB3 < 3.10
-try:
-    from ZODB.interfaces import IBroken
-except ImportError:
-    from zope.broken.interfaces import IBroken
-
+from ZODB.interfaces import IBroken
 
 @zope.interface.implementer(IContained)
 class Contained(object):
