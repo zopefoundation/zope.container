@@ -23,7 +23,7 @@
  persistence.  To reuse the base proxy implementation we don't treat
  the proxied object as part of the persistent state of the proxy.
  This means that the proxy still operates as a proxy even if it is a
- ghost.  
+ ghost.
 
  The proxy will only be unghostified if you need to access one of the
  attributes provided by the proxy.
@@ -94,7 +94,7 @@ typedef struct {
          strcmp((NAME), "__reduce_ex__") == 0  \
          ))                                    \
        ))
-      
+
 static PyObject *
 CP_getattro(PyObject *self, PyObject *name)
 {
@@ -132,7 +132,7 @@ CP_setattro(PyObject *self, PyObject *name, PyObject *v)
 static PyObject *
 CP_getstate(ProxyObject *self)
 {
-  return Py_BuildValue("OO", 
+  return Py_BuildValue("OO",
                        self->__parent__ ? self->__parent__ : Py_None,
                        self->__name__   ? self->__name__   : Py_None
                        );
@@ -192,7 +192,7 @@ CP__p_deactivate(ProxyObject *self)
 {
   PyObject *result;
 
-  result = PyObject_CallMethodObjArgs(OBJECT(cPersistenceCAPI->pertype), 
+  result = PyObject_CallMethodObjArgs(OBJECT(cPersistenceCAPI->pertype),
                                       str_p_deactivate,
                                       self, NULL);
   if (result == NULL)
@@ -212,17 +212,17 @@ CP__p_deactivate(ProxyObject *self)
 
 static PyMethodDef
 CP_methods[] = {
-  {"__getstate__", (PyCFunction)CP_getstate, METH_NOARGS, 
+  {"__getstate__", (PyCFunction)CP_getstate, METH_NOARGS,
    "Get the object state"},
-  {"__setstate__", (PyCFunction)CP_setstate, METH_O, 
+  {"__setstate__", (PyCFunction)CP_setstate, METH_O,
    "Set the object state"},
-  {"__getnewargs__", (PyCFunction)CP_getnewargs, METH_NOARGS, 
+  {"__getnewargs__", (PyCFunction)CP_getnewargs, METH_NOARGS,
    "Get the arguments that must be passed to __new__"},
-  {"__reduce__", (PyCFunction)CP_reduce, METH_NOARGS, 
+  {"__reduce__", (PyCFunction)CP_reduce, METH_NOARGS,
    "Reduce the object to constituent parts."},
-  {"__reduce_ex__", (PyCFunction)CP_reduce_ex, METH_O, 
+  {"__reduce_ex__", (PyCFunction)CP_reduce_ex, METH_O,
    "Reduce the object to constituent parts."},
-  {"_p_deactivate", (PyCFunction)CP__p_deactivate, METH_NOARGS, 
+  {"_p_deactivate", (PyCFunction)CP__p_deactivate, METH_NOARGS,
    "Deactivate the object."},
   {NULL, NULL},
 };
@@ -249,7 +249,7 @@ CP_traverse(ProxyObject *self, visitproc visit, void *arg)
     return -1;
   if (self->__name__ != NULL && visit(self->__name__, arg) < 0)
     return -1;
-  
+
   return 0;
 }
 
@@ -266,7 +266,7 @@ CP_clear(ProxyObject *self)
   */
   if (cPersistenceCAPI->pertype->tp_clear != NULL)
     cPersistenceCAPI->pertype->tp_clear((PyObject*)self);
-  
+
   CLEAR(self->proxy_object);
   CLEAR(self->__parent__);
   CLEAR(self->__name__);
@@ -298,11 +298,11 @@ init_zope_container_contained(void)
   str_p_deactivate = PyString_FromString("_p_deactivate");
   if (str_p_deactivate == NULL)
     return;
-        
+
   /* Try to fake out compiler nag function */
   if (0) init_zope_proxy_proxy();
-  
-  m = Py_InitModule3("_zope_container_contained", 
+
+  m = Py_InitModule3("_zope_container_contained",
                      module_functions, module___doc__);
 
   if (m == NULL)
