@@ -74,6 +74,12 @@ typedef struct {
 /* Incude the proxy C source */
 #include "_zope_proxy_proxy.c"
 
+#ifdef PY3K
+  #define MAKE_PYSTRING(s) PyUnicode_FromString(s)
+#else
+  #define MAKE_PYSTRING(s) PyString_FromString(s)
+#endif
+
 #define SPECIAL(NAME) (                        \
     *(NAME) == '_' &&                          \
       (((NAME)[1] == 'p' && (NAME)[2] == '_')  \
@@ -100,7 +106,7 @@ CP_getattro(PyObject *self, PyObject *name)
 {
   char *cname;
 
-  cname = PyString_AsString(name);
+  cname = MAKE_STRING(name);
   if (cname == NULL)
     return NULL;
 
@@ -117,7 +123,7 @@ CP_setattro(PyObject *self, PyObject *name, PyObject *v)
 {
   char *cname;
 
-  cname = PyString_AsString(name);
+  cname = MAKE_STRING(name);
   if (cname == NULL)
     return -1;
 
@@ -172,7 +178,7 @@ CP_reduce(ProxyObject *self)
   if (! PER_USE(self))
     return NULL;
   result = Py_BuildValue("O(O)(OO)",
-                         self->ob_type,
+                         Py_TYPE(self),
                          self->proxy_object,
                          self->__parent__ ? self->__parent__ : Py_None,
                          self->__name__   ? self->__name__   : Py_None
@@ -287,37 +293,39 @@ CP_dealloc(ProxyObject *self)
   cPersistenceCAPI->pertype->tp_dealloc((PyObject*)self);
 }
 
-#ifndef PyMODINIT_FUNC	/* declarations for DLL import/export */
-#define PyMODINIT_FUNC void
-#endif
-PyMODINIT_FUNC
-init_zope_container_contained(void)
+MOD_INIT(_zope_container_contained)
 {
   PyObject *m;
 
-  str_p_deactivate = PyString_FromString("_p_deactivate");
+  str_p_deactivate = MAKE_PYSTRING("_p_deactivate");
   if (str_p_deactivate == NULL)
-    return;
+    return MOD_ERROR_VAL;
 
   /* Try to fake out compiler nag function */
   if (0) init_zope_proxy_proxy();
 
-  m = Py_InitModule3("_zope_container_contained",
-                     module_functions, module___doc__);
+  MOD_DEF(m, "_zope_container_contained", module___doc__, module_functions);
 
   if (m == NULL)
-    return;
+    return MOD_ERROR_VAL;
 
   if (empty_tuple == NULL)
     empty_tuple = PyTuple_New(0);
 
   /* Initialize the PyPersist_C_API and the type objects. */
-  cPersistenceCAPI = PyCObject_Import("persistent.cPersistence", "CAPI");
+#ifdef PY3K
+    cPersistenceCAPI = (cPersistenceCAPIstruct *)PyCapsule_Import(
+                "persistent.cPersistence.CAPI", 0);
+#else
+    cPersistenceCAPI = (cPersistenceCAPIstruct *)PyCObject_Import(
+                "persistent.cPersistence", "CAPI");
+#endif
+  
   if (cPersistenceCAPI == NULL)
-    return;
+    return MOD_ERROR_VAL;
 
   ProxyType.tp_name = "zope.container.contained.ContainedProxyBase";
-  ProxyType.ob_type = &PyType_Type;
+  Py_TYPE(&ProxyType) = &PyType_Type;
   ProxyType.tp_base = cPersistenceCAPI->pertype;
   ProxyType.tp_getattro = CP_getattro;
   ProxyType.tp_setattro = CP_setattro;
@@ -329,8 +337,10 @@ init_zope_container_contained(void)
   ProxyType.tp_weaklistoffset = offsetof(ProxyObject, po_weaklist);
 
   if (PyType_Ready(&ProxyType) < 0)
-    return;
+    return MOD_ERROR_VAL;
 
   Py_INCREF(&ProxyType);
   PyModule_AddObject(m, "ContainedProxyBase", (PyObject *)&ProxyType);
+
+  return MOD_SUCCESS_VAL(m);
 }
