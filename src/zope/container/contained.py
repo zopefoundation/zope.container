@@ -930,9 +930,11 @@ class ContainedProxy(ContainedProxyBase):
 
     __safe_for_unpickling__ = True
 
-    __providedBy__ = DecoratorSpecificationDescriptor()
+    __providedBy__ = zope.proxy.non_overridable(
+        DecoratorSpecificationDescriptor())
 
-    __Security_checker__ = DecoratedSecurityCheckerDescriptor()
+    __Security_checker__ = zope.proxy.non_overridable(
+        DecoratedSecurityCheckerDescriptor())
 
 ContainedProxy.__provides__ = ContainedProxyClassProvides(ContainedProxy, type)
 
