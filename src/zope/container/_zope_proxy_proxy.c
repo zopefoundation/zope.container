@@ -28,7 +28,7 @@
 #include "modsupport.h"
 
 #define PROXY_MODULE
-#include "proxy.h"
+#include "zope.proxy/proxy.h"
 
 static PyTypeObject ProxyType;
 
