@@ -17,7 +17,7 @@ __docformat__ = 'restructuredtext'
 
 import zope.component
 import zope.interface.declarations
-from zope.interface import providedBy
+from zope.interface import providedBy, Interface
 from zope.interface.declarations import getObjectSpecification
 from zope.interface.declarations import ObjectSpecification
 from zope.event import notify
@@ -37,7 +37,12 @@ from zope.lifecycleevent import ObjectMovedEvent
 from zope.lifecycleevent import ObjectAddedEvent
 from zope.lifecycleevent import ObjectRemovedEvent
 
-from ZODB.interfaces import IBroken
+try:
+    from ZODB.interfaces import IBroken
+except ImportError:
+    class IBroken(Interface):
+        pass
+
 
 @zope.interface.implementer(IContained)
 class Contained(object):
