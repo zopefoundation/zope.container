@@ -310,18 +310,18 @@ class ItemTypePrecondition(_TypesBased):
     >>> try:
     ...     precondition(None, 'foo', ob)
     ... except InvalidItemType as v:
-    ...     print(v.args[0], (v.args[1] is ob), (v.args[2] == (I1, I2)))
+    ...     v.args[0], (v.args[1] is ob), (v.args[2] == (I1, I2))
     ... else:
     ...     print('Should have failed')
-    None True True
+    (None, True, True)
 
     >>> try:
     ...     precondition.factory(None, 'foo', factory)
     ... except InvalidItemType as v:
-    ...     print(v.args[0], (v.args[1] is factory), (v.args[2] == (I1, I2)))
+    ...     v.args[0], (v.args[1] is factory), (v.args[2] == (I1, I2))
     ... else:
     ...     print('Should have failed')
-    None True True
+    (None, True, True)
 
     >>> zope.interface.classImplements(Ob, I2)
     >>> precondition(None, 'foo', ob)
@@ -416,15 +416,14 @@ class ContainerTypesConstraint(_TypesBased):
     >>> try:
     ...     constraint(ob)
     ... except InvalidContainerType as v:
-    ...     print((v.args[0] is ob), (v.args[1] == (I1, I2)))
+    ...     (v.args[0] is ob), (v.args[1] == (I1, I2))
     ... else:
     ...     print('Should have failed')
-    True True
+    (True, True)
 
     >>> zope.interface.classImplements(Ob, I2)
     >>> constraint(Ob())
     True
-
     """
     def __call__(self, object):
        for iface in self.types:

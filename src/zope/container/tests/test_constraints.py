@@ -13,12 +13,14 @@
 ##############################################################################
 """Container constraint tests
 """
+from __future__ import print_function
 import doctest
 import unittest
 from zope.testing import module
 from zope.container import testing
 
 def setUp(test):
+    test.globs['print_function'] = print_function
     module.setUp(test, 'zope.container.constraints_txt')
 
 def tearDown(test):

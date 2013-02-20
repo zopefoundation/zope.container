@@ -13,6 +13,7 @@
 ##############################################################################
 """Classes to support implementing `IContained`
 """
+import sys
 import zope.component
 import zope.interface.declarations
 from zope.interface import providedBy, Interface
@@ -46,6 +47,8 @@ try:
 except NameError:
     # Py3: Define unicode type.
     unicode = str
+
+PY3 = sys.version_info[0] >= 3
 
 @zope.interface.implementer(IContained)
 class Contained(object):
@@ -521,7 +524,8 @@ def setitem(container, setitemf, name, object):
     ...
     TypeError: name not unicode or ascii string
 
-    >>> setitem(container, container.__setitem__, b'hello ' + bytes([200]), item)
+    >>> c = bytes([200]) if PY3 else chr(200)
+    >>> setitem(container, container.__setitem__, b'hello ' + c, item)
     Traceback (most recent call last):
     ...
     TypeError: name not unicode or ascii string
