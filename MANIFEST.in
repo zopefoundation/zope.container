@@ -1,5 +1,6 @@
 include *.txt
 include MANIFEST.in
+include bootstrap.py
 include buildout.cfg
 include compat.cfg
 
