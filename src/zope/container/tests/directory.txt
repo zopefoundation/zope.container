@@ -21,11 +21,11 @@ The new folder isn't a site manager and doesn't have any entries:
   KeyError: 'test'
   >>> list(fs_folder.__iter__())
   []
-  >>> fs_folder.values()
+  >>> list(fs_folder.values())
   []
   >>> len(fs_folder)
   0
-  >>> fs_folder.items()
+  >>> list(fs_folder.items())
   []
   >>> 'test' in fs_folder
   False
@@ -37,7 +37,7 @@ access non-existing entries:
   >>> from zope.security.checker import NamesChecker
   >>> proxied_folder = ProxyFactory(fs_folder, NamesChecker(('get',)))
   >>> proxied_fs_folder = ReadDirectory(proxied_folder)
-  >>> print proxied_fs_folder['i dont exist']
+  >>> print(proxied_fs_folder['i dont exist'])
   Traceback (most recent call last):
   KeyError: 'i dont exist'
 

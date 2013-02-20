@@ -224,9 +224,6 @@ def test_suite():
     if not HAVE_ZODB:
         return unittest.TestSuite([])
     return unittest.TestSuite((
-        doctest.DocTestSuite('zope.container.contained',
-                             setUp=testing.setUp,
-                             tearDown=testing.tearDown),
         doctest.DocTestSuite(optionflags=doctest.NORMALIZE_WHITESPACE),
         ))
 

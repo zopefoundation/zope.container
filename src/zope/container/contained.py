@@ -13,8 +13,6 @@
 ##############################################################################
 """Classes to support implementing `IContained`
 """
-__docformat__ = 'restructuredtext'
-
 import zope.component
 import zope.interface.declarations
 from zope.interface import providedBy, Interface
@@ -43,6 +41,11 @@ except ImportError:
     class IBroken(Interface):
         pass
 
+try:
+    unicode
+except NameError:
+    # Py3: Define unicode type.
+    unicode = str
 
 @zope.interface.implementer(IContained)
 class Contained(object):
@@ -130,8 +133,7 @@ def dispatchToSublocations(object, event):
 
        Now, we should have seen all of the subobjects:
 
-         >>> seenreprs = map(repr, seen)
-         >>> seenreprs.sort()
+         >>> seenreprs = sorted(map(repr, seen))
          >>> seenreprs
          ['(C(11), C(1))', '(C(12), C(1))', '(L(111), C(1))',""" \
           """ '(L(112), C(1))', '(L(121), C(1))', '(L(122), C(1))',""" \
@@ -519,7 +521,7 @@ def setitem(container, setitemf, name, object):
     ...
     TypeError: name not unicode or ascii string
 
-    >>> setitem(container, container.__setitem__, 'hello ' + chr(200), item)
+    >>> setitem(container, container.__setitem__, b'hello ' + bytes([200]), item)
     Traceback (most recent call last):
     ...
     TypeError: name not unicode or ascii string
@@ -538,9 +540,9 @@ def setitem(container, setitemf, name, object):
 
     """
     # Do basic name check:
-    if isinstance(name, str):
+    if isinstance(name, bytes):
         try:
-            name = unicode(name)
+            name = name.decode('ascii')
         except UnicodeError:
             raise TypeError("name not unicode or ascii string")
     elif not isinstance(name, unicode):
@@ -746,8 +748,8 @@ class NameChooser(object):
         NameReserved: reserved
         """
 
-        if isinstance(name, str):
-            name = unicode(name)
+        if isinstance(name, bytes):
+            name = name.decode()
         elif not isinstance(name, unicode):
             raise TypeError("Invalid name type", type(name))
 
@@ -789,7 +791,10 @@ class NameChooser(object):
 
         the suggested name is converted to unicode:
 
-        >>> NameChooser(container).chooseName('foobar', object())
+        >>> NameChooser(container).chooseName(u'foobar', object())
+        u'foobar'
+
+        >>> NameChooser(container).chooseName(b'foobar', object())
         u'foobar'
 
         If it already exists, a number is appended but keeps the same extension:
@@ -812,14 +817,19 @@ class NameChooser(object):
         container = self.context
 
         # convert to unicode and remove characters that checkName does not allow
-        try:
-            name = unicode(name)
-        except:
-            name = u''
+        if isinstance(name, bytes):
+            name = name.decode()
+        if not isinstance(name, unicode):
+            try:
+                name = unicode(name)
+            except:
+                name = u''
         name = name.replace('/', '-').lstrip('+@')
 
         if not name:
-            name = unicode(object.__class__.__name__)
+            name = object.__class__.__name__
+            if isinstance(name, bytes):
+                name = name.decode()
 
         # for an existing name, append a number.
         # We should keep client's os.path.extsep (not ours), we assume it's '.'
@@ -834,7 +844,7 @@ class NameChooser(object):
         i = 1
         while n in container:
             i += 1
-            n = name + u'-' + unicode(i) + suffix
+            n = name + u'-' + str(i) + suffix
 
         # Make sure the name is valid.  We may have started with something bad.
         self.checkName(n, object)

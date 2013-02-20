@@ -23,10 +23,10 @@ class Folder(btree.BTreeContainer):
 
     # BBB: The data attribute used to be exposed. This should make it also
     # compatible with old pickles.
-    @apply
-    def data():
-        def getter(self):
-            return self._SampleContainer__data
-        def setter(self, value):
-            self._SampleContainer__data = value
-        return property(getter, setter)
+    @property
+    def data(self):
+        return self._SampleContainer__data
+
+    @data.setter
+    def data(self, value):
+        self._SampleContainer__data = value

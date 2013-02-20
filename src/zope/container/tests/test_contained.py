@@ -130,10 +130,10 @@ def test_ContainedProxy_instances_have_no_instance_dictionaries():
     >>> p.__dict__
     {'x': 1}
     >>> p.y = 3
-    >>> p.__dict__
-    {'y': 3, 'x': 1}
-    >>> c.__dict__
-    {'y': 3, 'x': 1}
+    >>> sorted(p.__dict__.items())
+    [('x', 1), ('y', 3)]
+    >>> sorted(c.__dict__.items())
+    [('x', 1), ('y', 3)]
 
     >>> p.__dict__ is c.__dict__
     True
@@ -219,17 +219,21 @@ class TestNameChooser(unittest.TestCase):
         class BadBoy:
             def __unicode__(self):
                 raise Exception
+            # Py3: Support
+            __str__ = __unicode__
 
         self.assertEqual(nc.chooseName(BadBoy(), set()), u'set')
 
 
 def test_suite():
-    return unittest.TestSuite((
-        doctest.DocTestSuite('zope.container.contained',
-                             setUp=testing.setUp,
-                             tearDown=testing.tearDown),
-        doctest.DocTestSuite(optionflags=doctest.NORMALIZE_WHITESPACE),
-        unittest.makeSuite(TestNameChooser),
-        ))
-
-if __name__ == '__main__': unittest.main()
+    suite = unittest.TestSuite((
+            unittest.makeSuite(TestNameChooser),
+            ))
+    suite.addTest(doctest.DocTestSuite(
+            'zope.container.contained',
+            setUp=testing.setUp, tearDown=testing.tearDown,
+            checker=testing.checker))
+    suite.addTest(doctest.DocTestSuite(
+        optionflags=doctest.NORMALIZE_WHITESPACE,
+        checker=testing.checker))
+    return suite

@@ -13,10 +13,10 @@
 ##############################################################################
 """Container constraint tests
 """
-
 import doctest
 import unittest
 from zope.testing import module
+from zope.container import testing
 
 def setUp(test):
     module.setUp(test, 'zope.container.constraints_txt')
@@ -26,9 +26,11 @@ def tearDown(test):
 
 def test_suite():
     return unittest.TestSuite((
-        doctest.DocTestSuite('zope.container.constraints'),
-        doctest.DocFileSuite('../constraints.txt',
-                             setUp=setUp, tearDown=tearDown),
+        doctest.DocTestSuite(
+                'zope.container.constraints', checker=testing.checker),
+        doctest.DocFileSuite(
+                '../constraints.txt',
+                setUp=setUp, tearDown=tearDown, checker=testing.checker),
         ))
 
 if __name__ == '__main__': unittest.main()

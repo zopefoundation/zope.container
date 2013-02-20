@@ -28,6 +28,8 @@ from zope.interface import implementer
 from zope.component.interfaces import ISite
 from zope.security.proxy import removeSecurityProxy
 import zope.filerepresentation.interfaces
+from six.moves import map
+from six.moves import zip
 
 MARKER = object()
 

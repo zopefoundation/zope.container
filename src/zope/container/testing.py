@@ -13,19 +13,44 @@
 ##############################################################################
 """Unit test logic for setting up and tearing down basic infrastructure
 """
+import re
+
+import zope.interface
+import zope.traversing.testing
 from zope import component
 from zope.component.testing import PlacelessSetup as CAPlacelessSetup
 from zope.component.eventtesting import PlacelessSetup as EventPlacelessSetup
-
 from zope.traversing.interfaces import ITraversable, IContainmentRoot
-import zope.traversing.testing
-import zope.interface
+from zope.testing import renormalizing
 
 from zope.container.interfaces import IWriteContainer, INameChooser
 from zope.container.contained import NameChooser
 from zope.container.interfaces import ISimpleReadContainer
 from zope.container.traversal import ContainerTraversable
 from zope.container.sample import SampleContainer
+
+checker = renormalizing.RENormalizing([
+    # Python 3 unicode removed the "u".
+    (re.compile("u('.*?')"),
+     r"\1"),
+    (re.compile('u(".*?")'),
+     r"\1"),
+    # Python 3 renamed type to class.
+    (re.compile('<type '),
+     r"<class "),
+    # Python 3 adds module name to exceptions.
+    (re.compile("zope.interface.exceptions.Invalid"),
+     r"Invalid"),
+    (re.compile("zope.container.interfaces.InvalidContainerType"),
+     r"InvalidContainerType"),
+    (re.compile("zope.container.interfaces.InvalidItemType"),
+     r"InvalidItemType"),
+    (re.compile("zope.container.interfaces.NameReserved"),
+     r"NameReserved"),
+    (re.compile("zope.schema._bootstrapinterfaces.ConstraintNotSatisfied"),
+     r"ConstraintNotSatisfied"),
+    ])
+
 
 # XXX we would like to swap the names of the *PlacelessSetup classes
 # in here as that would seem to follow the convention better, but

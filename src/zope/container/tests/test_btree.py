@@ -40,7 +40,7 @@ class TestBTreeSpecials(TestCase):
         bc = BTreeContainer()
         self.assertEqual(bc.__dict__['_BTreeContainer__len'](), 0)
         del bc.__dict__['_BTreeContainer__len']
-        self.failIf(bc.__dict__.has_key('_BTreeContainer__len'))
+        self.failIf('_BTreeContainer__len' in bc.__dict__)
         bc['1'] = 1
         self.assertEqual(len(bc), 1)
         self.assertEqual(bc.__dict__['_BTreeContainer__len'](), 1)
@@ -154,12 +154,11 @@ class TestBTreeSpecials(TestCase):
 
     def checkIterable(self, iterable):
         it = iter(iterable)
-        self.assert_(callable(it.next))
         self.assert_(callable(it.__iter__))
         self.assert_(iter(it) is it)
         # Exhaust the iterator:
         first_time = list(it)
-        self.assertRaises(StopIteration, it.next)
+        self.assertRaises(StopIteration, next, it)
         # Subsequent iterations will return the same values:
         self.assertEqual(list(iterable), first_time)
         self.assertEqual(list(iterable), first_time)

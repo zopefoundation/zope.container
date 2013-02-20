@@ -61,10 +61,10 @@ def test_order_events():
 def test_all_items_available_at_object_added_event():
     """
     Prepare the setup::
-    
+
       >>> from zope.container.sample import SampleContainer
       >>> root = SampleContainer()
-        
+
     Now register an event subscriber to object added events.
 
         >>> import zope.component
@@ -73,11 +73,11 @@ def test_all_items_available_at_object_added_event():
 
         >>> @zope.component.adapter(IObjectAddedEvent)
         ... def printContainerKeys(event):
-        ...     print event.newParent.keys()
+        ...     print(event.newParent.keys())
 
         >>> zope.component.provideHandler(printContainerKeys)
 
-    Now we are adding an object to the container. 
+    Now we are adding an object to the container.
 
         >>> from zope.container.ordered import OrderedContainer
         >>> oc = OrderedContainer()
@@ -138,7 +138,7 @@ def test_adding_none():
         [None]
         >>> oc.items()
         [('foo', None)]
-        >>> print oc['foo']
+        >>> print(oc['foo'])
         None
 
     """
@@ -147,10 +147,12 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(DocTestSuite("zope.container.ordered",
                                setUp=testing.setUp,
-                               tearDown=testing.tearDown))
+                               tearDown=testing.tearDown,
+                               checker=testing.checker))
     suite.addTest(DocTestSuite(
             setUp=testing.ContainerPlacefulSetup().setUp,
-            tearDown=testing.ContainerPlacefulSetup().tearDown))
+            tearDown=testing.ContainerPlacefulSetup().tearDown,
+            checker=testing.checker))
     return suite
 
 if __name__ == '__main__':

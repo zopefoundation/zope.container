@@ -24,8 +24,23 @@ from setuptools import setup, find_packages, Extension
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
+def alltests():
+    import os
+    import sys
+    import unittest
+    # use the zope.testrunner machinery to find all the
+    # test suites we've put under ourselves
+    import zope.testrunner.find
+    import zope.testrunner.options
+    here = os.path.abspath(os.path.join(os.path.dirname(__file__), 'src'))
+    args = sys.argv[:]
+    defaults = ["--test-path", here]
+    options = zope.testrunner.options.get_options(args, defaults)
+    suites = list(zope.testrunner.find.find_suites(options))
+    return unittest.TestSuite(suites)
+
 setup(name='zope.container',
-      version = '4.0.0dev',
+      version = '4.0.0a1.dev0',
       author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Container',
@@ -64,16 +79,17 @@ setup(name='zope.container',
                               ], include_dirs=['include']),
                    ],
       extras_require=dict(
-          test=['zope.testing',
+          test=['zope.testing', 'zope.testrunner'
                 ],
           zcml=[
                 'zope.component[zcml]',
                 'zope.configuration',
-                'zope.security[zcml]>=3.8',
+                'zope.security[zcml]>=4.0.0a3',
                 ],
           zodb=['ZODB>=3.10',
                 ]),
       install_requires=['setuptools',
+                        'six',
                         'zope.interface',
                         'zope.dottedname',
                         'zope.schema',
@@ -85,11 +101,15 @@ setup(name='zope.container',
                         'zope.i18nmessageid',
                         'zope.filerepresentation',
                         'zope.size',
-                        'zope.traversing',
+                        'zope.traversing>=4.0.0a1',
                         'zope.publisher',
                         'persistent',
                         'BTrees'
                         ],
+      tests_require = [
+          'zope.testing',
+          'zope.testrunner'],
+      test_suite = '__main__.alltests',
       include_package_data = True,
       zip_safe = False,
       )

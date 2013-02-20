@@ -89,7 +89,7 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
                 values.remove(v)
             except ValueError:
                 self.fail('Value not in list')
-                
+
         self.assertEqual(values, [])
 
     def test_len(self):
@@ -174,11 +174,11 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
         folder[name] = foo
 
         self.assertEquals(len(folder.keys()), 1)
-        self.assertEquals(folder.keys()[0], name)
+        self.assertEquals(list(folder.keys())[0], name)
         self.assertEquals(len(folder.values()), 1)
-        self.assertEquals(folder.values()[0], foo)
+        self.assertEquals(list(folder.values())[0], foo)
         self.assertEquals(len(folder.items()), 1)
-        self.assertEquals(folder.items()[0], (name, foo))
+        self.assertEquals(list(folder.items())[0], (name, foo))
         self.assertEquals(len(folder), 1)
 
         self.failUnless(name in folder)
@@ -192,7 +192,7 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
         self.assertRaises(KeyError, folder.__getitem__, data[6][0])
 
         foo2 = data[1][1]
-        
+
         name2 = data[1][0]
         folder[name2] = foo2
 
@@ -308,7 +308,7 @@ class TestSampleContainer(BaseTestIContainer, TestCase):
         return '10'
 
     def getBadKeyTypes(self):
-        return [None, ['foo'], 1, '\xf3abc']
+        return [None, [b'foo'], 1, b'\xf3abc']
 
 def test_suite():
     return makeSuite(TestSampleContainer)

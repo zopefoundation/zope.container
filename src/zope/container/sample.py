@@ -75,7 +75,7 @@ class SampleContainer(Contained):
 
     def __contains__(self, key):
         '''See interface `IReadContainer`'''
-        return self.__data.has_key(key)
+        return key in self.__data
 
     has_key = __contains__
 

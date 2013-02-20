@@ -20,16 +20,17 @@ from zope.traversing.interfaces import TraversalError
 
 from zope.container.traversal import ContainerTraversable
 from zope.container.interfaces import IContainer
+import six
 
 @implementer(IContainer)
 class Container(object):
 
     def __init__(self, attrs={}, objs={}):
-        for attr,value in attrs.iteritems():
+        for attr,value in six.iteritems(attrs):
             setattr(self, attr, value)
 
         self.__objs = {}
-        for name,value in objs.iteritems():
+        for name,value in six.iteritems(objs):
             self.__objs[name] = value
 
 
@@ -40,7 +41,7 @@ class Container(object):
         return self.__objs.get(name, default)
 
     def __contains__(self, name):
-        return self.__objs.has_key(name)
+        return name in self.__objs
 
 
 class Test(CleanUp, unittest.TestCase):

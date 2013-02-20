@@ -14,13 +14,12 @@
 """Ordered container implementation.
 """
 __docformat__ = 'restructuredtext'
-
-from zope.container.interfaces import IOrderedContainer
-from zope.interface import implementer
+import six
 from persistent import Persistent
 from persistent.dict import PersistentDict
 from persistent.list import PersistentList
-from types import StringTypes, TupleType, ListType
+from zope.container.interfaces import IOrderedContainer
+from zope.interface import implementer
 from zope.container.contained import Contained, setitem, uncontained
 from zope.container.contained import notifyContainerModified
 
@@ -157,7 +156,7 @@ class OrderedContainer(Persistent, Contained):
         0
         """
 
-        return self._data.has_key(key)
+        return key in self._data
 
     has_key = __contains__
 
@@ -184,12 +183,15 @@ class OrderedContainer(Persistent, Contained):
         ['foo', 'baz']
         """
 
-        existed = self._data.has_key(key)
+        existed = key in self._data
 
         bad = False
-        if isinstance(key, StringTypes):
+        if isinstance(key, six.string_types):
             try:
-                unicode(key)
+                key.decode()
+            except AttributeError:
+                # Py3 str cannot decode.
+                pass
             except UnicodeError:
                 bad = True
         else:
@@ -288,8 +290,8 @@ class OrderedContainer(Persistent, Contained):
         0
         """
 
-        if not isinstance(order, ListType) and \
-            not isinstance(order, TupleType):
+        if not isinstance(order, list) and \
+            not isinstance(order, tuple):
             raise TypeError('order must be a tuple or a list.')
 
         if len(order) != len(self._order):
