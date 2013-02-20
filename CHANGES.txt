@@ -5,6 +5,10 @@ CHANGES
 4.0.0 (unreleased)
 -------------------
 
+- Made ``Folder`` class inherit from ``BTreeContainer`` class, so that the
+  IContainer interface does not need to be re-implemented. Added a ``data``
+  attribute for BBB.
+
 - Replaced deprecated ``zope.component.adapts`` usage with equivalent
   ``zope.component.adapter`` decorator.
 

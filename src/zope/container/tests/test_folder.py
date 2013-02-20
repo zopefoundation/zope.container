@@ -1,24 +1,19 @@
 from unittest import TestCase, makeSuite
 
 from zope.container.folder import Folder
-
-from zope.container.tests.test_icontainer import BaseTestIContainer
-from zope.container.tests.test_icontainer import DefaultTestData
+from zope.container.tests.test_icontainer import TestSampleContainer
 
 
-class Test(BaseTestIContainer, TestCase):
+class Test(TestSampleContainer, TestCase):
 
     def makeTestObject(self):
         return Folder()
 
-    def makeTestData(self):
-        return DefaultTestData()
-
-    def getUnknownKey(self):
-        return '10'
-
-    def getBadKeyTypes(self):
-        return [None, ['foo'], 1, '\xf3abc']
+    def testDataAccess(self):
+        folder = self.makeTestObject()
+        self.assertNotEqual(folder.data, None)
+        folder.data = 'foo'
+        self.assertEqual(folder.data, 'foo')
 
 def test_suite():
     return makeSuite(Test)
