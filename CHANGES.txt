@@ -5,7 +5,9 @@ CHANGES
 4.0.0a2 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Allow testing without checkouts of unreleased zope.publisher and ZODB.
+
+- Added Python 3 Trove classifiers.
 
 
 4.0.0a1 (2013-02-20)

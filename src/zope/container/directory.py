@@ -1,7 +1,7 @@
 ##############################################################################
 # Copyright (c) 2003 Zope Foundation and Contributors.
 # All Rights Reserved.
-# 
+#
 # This software is subject to the provisions of the Zope Public License,
 # Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
 # THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
@@ -53,7 +53,7 @@ class Cloner(object):
         self.context = context
 
     def __call__(self, name):
-        
+
         # We remove the security proxy so we can actually call the
         # class and return an unproxied new object.  (We can't use a
         # trusted adapter, because the result must be unproxied.)  By
