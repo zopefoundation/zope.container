@@ -5,7 +5,8 @@ CHANGES
 4.0.0a3 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Restore ``Folder`` pickle forward/backward compatibility with
+  version 3.12.0 after making it inherit from ``BTreeContainer.``
 
 
 4.0.0a2 (2013-02-21)
@@ -108,7 +109,7 @@ CHANGES
 
 - Previous releases should be versioned 3.9.0 as they are not pure bugfix
   releases and worth a "feature" release, increasing feature version.
-  
+
   Packages that depend on any changes introduced in version 3.8.2 or 3.8.3
   should depend on version 3.9 or greater.
 
@@ -168,7 +169,7 @@ CHANGES
 3.7.2 (2009-03-12)
 ------------------
 
-- Fix: added missing ComponentLookupError, missing since revision 95429 and 
+- Fix: added missing ComponentLookupError, missing since revision 95429 and
   missing in last release.
 
 - Adapt to the move of IDefaultViewName from zope.component.interfaces
