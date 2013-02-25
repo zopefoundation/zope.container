@@ -21,8 +21,8 @@ from zope.container import btree, interfaces
 class Folder(btree.BTreeContainer):
     """The standard Zope Folder implementation."""
 
-    # BBB: The data attribute used to be exposed. This should make it also
-    # compatible with old pickles.
+    # BBB: The data attribute used to be exposed.
+    # For compatibility with existing pickles, we read and write that name
     @property
     def data(self):
         return self._SampleContainer__data
@@ -30,3 +30,15 @@ class Folder(btree.BTreeContainer):
     @data.setter
     def data(self, value):
         self._SampleContainer__data = value
+
+
+    def __getstate__( self ):
+        state = super(Folder,self).__getstate__()
+        data = state.pop( '_SampleContainer__data' )
+        state['data'] = data
+        return state
+
+    def __setstate__( self, state ):
+        if 'data' in state and '_SampleContainer__data' not in state:
+            state['_SampleContainer__data'] = state.pop( 'data' )
+        super(Folder,self).__setstate__( state )
