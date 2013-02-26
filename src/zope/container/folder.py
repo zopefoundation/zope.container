@@ -31,14 +31,13 @@ class Folder(btree.BTreeContainer):
     def data(self, value):
         self._SampleContainer__data = value
 
-
-    def __getstate__( self ):
-        state = super(Folder,self).__getstate__()
-        data = state.pop( '_SampleContainer__data' )
+    def __getstate__(self):
+        state = super(Folder, self).__getstate__()
+        data = state.pop('_SampleContainer__data')
         state['data'] = data
         return state
 
-    def __setstate__( self, state ):
+    def __setstate__(self, state):
         if 'data' in state and '_SampleContainer__data' not in state:
-            state['_SampleContainer__data'] = state.pop( 'data' )
-        super(Folder,self).__setstate__( state )
+            state['_SampleContainer__data'] = state.pop('data')
+        super(Folder, self).__setstate__(state)
