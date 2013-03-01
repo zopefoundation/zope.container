@@ -40,7 +40,7 @@ def alltests():
     return unittest.TestSuite(suites)
 
 setup(name='zope.container',
-      version='4.0.0a3',
+      version='4.0.0a4.dev0',
       author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Container',
