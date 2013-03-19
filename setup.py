@@ -57,11 +57,11 @@ setup(name='zope.container',
       packages=find_packages('src'),
       package_dir = {'': 'src'},
       namespace_packages=['zope'],
-      ext_modules=[Extension("zope.container._zope_container_contained",
-                             [os.path.join("src", "zope", "container",
-                                           "_zope_container_contained.c")
-                              ], include_dirs=['include']),
-                   ],
+      #ext_modules=[Extension("zope.container._zope_container_contained",
+      #                       [os.path.join("src", "zope", "container",
+      #                                     "_zope_container_contained.c")
+      #                        ], include_dirs=['include']),
+      #             ],
       extras_require=dict(
           test=[
               'zope.configuration',

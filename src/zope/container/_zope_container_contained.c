@@ -32,7 +32,7 @@
 
 
 #include "Python.h"
-#include "persistent/cPersistence.h"
+#include "persistent/Persistence.h"
 
 static PyObject *str_p_deactivate;
 
