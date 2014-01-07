@@ -76,7 +76,7 @@
    >>> checkObject(c1, "bob", O())
    Traceback (most recent call last):
    ...
-   ConstraintNotSatisfied: C1
+   ConstraintNotSatisfied: (C1, '__parent__')
 
    Note that the validation error isn't very informative. For that
    reason, it's better for constraints to raise Invalid errors when they
@@ -478,4 +478,3 @@ def containers(*types):
             )
         )
     f_locals['__parent__'] = __parent__
-
