@@ -29,8 +29,12 @@ from zope.location.interfaces import IContained
 from zope.container.interfaces import INameChooser
 from zope.container.interfaces import IReservedNames, NameReserved
 from zope.container.interfaces import IContainerModifiedEvent
-from zope.container._zope_container_contained import ContainedProxyBase
-from zope.container._zope_container_contained import getProxiedObject
+try:
+	from zope.container._zope_container_contained import ContainedProxyBase
+	from zope.container._zope_container_contained import getProxiedObject
+except ImportError: # PyPy
+	from _proxy import py_getProxiedObject as getProxiedObject
+	from _proxy import PyProxyBase as ContainedProxyBase
 
 from zope.lifecycleevent import ObjectMovedEvent
 from zope.lifecycleevent import ObjectAddedEvent
@@ -956,4 +960,3 @@ class ContainedProxy(ContainedProxyBase):
         DecoratedSecurityCheckerDescriptor())
 
 ContainedProxy.__provides__ = ContainedProxyClassProvides(ContainedProxy, type)
-

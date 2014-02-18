@@ -214,7 +214,7 @@ WrapperType_Lookup(PyTypeObject *type, PyObject *name)
         base = PyTuple_GET_ITEM(mro, i);
 
         if (((PyTypeObject *)base) != &ProxyType) {
-#if PY_MAJOR_VERSION < 3
+#if PY_MAJOR_VERSION < 3 && !defined(PYPY_VERSION)
             if (PyClass_Check(base))
                 dict = ((PyClassObject *)base)->cl_dict;
             else
@@ -1253,4 +1253,3 @@ MOD_INIT(_zope_proxy_proxy)
     return MOD_SUCCESS_VAL(m);
 
 }
-
