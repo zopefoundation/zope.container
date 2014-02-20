@@ -13,7 +13,7 @@
 ##############################################################################
 
 # This is very similar to the code in zope.proxy.__init__, but modified
-# not to have slots so that we can extend Persistent
+# to work properly when extending Persistent.
 
 import operator
 import sys
@@ -30,11 +30,10 @@ def _special_name(name):
     return (name.startswith('_Persistent')
             or name.startswith('_p_')
             or name.startswith('_v_')
-            or name in PyProxyBase.__slots__)
+            or name in PyContainedProxyBase.__slots__)
 
 
-class PyProxyBase(Persistent):
-
+class PyContainedProxyBase(Persistent):
     """Persistent proxy
     """
     __slots__ = ('_wrapped', '__parent__', '__name__')
@@ -140,17 +139,17 @@ class PyProxyBase(Persistent):
     # Attribute protocol
     def __getattribute__(self, name):
         if _special_name(name):
-            return super(PyProxyBase, self).__getattribute__(name)
+            return super(PyContainedProxyBase, self).__getattribute__(name)
 
         if name in ('__reduce__', '__reduce_ex__', '__getstate__', '__setstate__', '__getnewargs__'):
             return object.__getattribute__(self, name)
 
         # Only access this if we need it, otherwise persistence problems
         if name == '_wrapped':
-            return super(PyProxyBase, self).__getattribute__('_wrapped')
+            return super(PyContainedProxyBase, self).__getattribute__('_wrapped')
 
         try:
-            mine = super(PyProxyBase, self).__getattribute__(name)
+            mine = super(PyContainedProxyBase, self).__getattribute__(name)
         except AttributeError:
             mine = _MARKER
         else:  # pragma NO COVER PyPy
@@ -163,7 +162,7 @@ class PyProxyBase(Persistent):
                 return mine.desc.__get__(self)
         try:
             try:
-                wrapped = super(PyProxyBase, self).__getattribute__('_wrapped')
+                wrapped = super(PyContainedProxyBase, self).__getattribute__('_wrapped')
             except KeyError:
                 # During commit time of a persistent transaction, we can
                 # be in the state where we have an oid, but we are not actually
@@ -182,16 +181,16 @@ class PyProxyBase(Persistent):
 
     def __setattr__(self, name, value):
         if _special_name(name):
-            return super(PyProxyBase, self).__setattr__(name, value)
+            return super(PyContainedProxyBase, self).__setattr__(name, value)
         try:
-            super(PyProxyBase, self).__getattribute__(name)
+            super(PyContainedProxyBase, self).__getattribute__(name)
         except AttributeError:
             return setattr(self._wrapped, name, value)
         else:
-            return super(PyProxyBase, self).__setattr__(name, value)
+            return super(PyContainedProxyBase, self).__setattr__(name, value)
 
     def __delattr__(self, name):
-        if name in PyProxyBase.__slots__:
+        if name in PyContainedProxyBase.__slots__:
             raise AttributeError()
         delattr(self._wrapped, name)
 
@@ -439,13 +438,13 @@ class PyProxyBase(Persistent):
 
 
 def py_getProxiedObject(obj):
-    if isinstance(obj, PyProxyBase):
+    if isinstance(obj, PyContainedProxyBase):
         return obj._wrapped
     return obj
 
 
 def py_setProxiedObject(obj, new_value):
-    if not isinstance(obj, PyProxyBase):
+    if not isinstance(obj, PyContainedProxyBase):
         raise TypeError('Not a proxy')
     old, obj._wrapped = obj._wrapped, new_value
     return old

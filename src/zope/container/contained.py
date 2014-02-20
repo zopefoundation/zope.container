@@ -33,8 +33,8 @@ try:
 	from zope.container._zope_container_contained import ContainedProxyBase
 	from zope.container._zope_container_contained import getProxiedObject
 except ImportError: # PyPy
-	from _proxy import py_getProxiedObject as getProxiedObject
-	from _proxy import PyProxyBase as ContainedProxyBase
+	from zope.container._proxy import py_getProxiedObject as getProxiedObject
+	from zope.container._proxy import PyContainedProxyBase as ContainedProxyBase
 
 from zope.lifecycleevent import ObjectMovedEvent
 from zope.lifecycleevent import ObjectAddedEvent
