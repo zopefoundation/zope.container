@@ -57,6 +57,30 @@ else:
                               ], include_dirs=['include']),
                    ]
 
+install_requires = [
+    'setuptools',
+    'six',
+    'zope.interface',
+    'zope.dottedname',
+    'zope.schema',
+    'zope.component',
+    'zope.event',
+    'zope.location>=3.5.4',
+    'zope.security',
+    'zope.lifecycleevent>=3.5.2',
+    'zope.i18nmessageid',
+    'zope.filerepresentation',
+    'zope.size',
+    'zope.traversing>=4.0.0a1',
+    'zope.publisher',
+    'BTrees'
+]
+if not is_pypy:
+    install_requires.append('persistent')
+else:
+    install_requires.append('persistent>=4.0.7')
+
+
 setup(name='zope.container',
       version='4.0.0a4.dev0',
       author='Zope Foundation and Contributors',
@@ -106,24 +130,7 @@ setup(name='zope.container',
                 ],
           zodb=['ZODB>=3.10',
                 ]),
-      install_requires=['setuptools',
-                        'six',
-                        'zope.interface',
-                        'zope.dottedname',
-                        'zope.schema',
-                        'zope.component',
-                        'zope.event',
-                        'zope.location>=3.5.4',
-                        'zope.security',
-                        'zope.lifecycleevent>=3.5.2',
-                        'zope.i18nmessageid',
-                        'zope.filerepresentation',
-                        'zope.size',
-                        'zope.traversing>=4.0.0a1',
-                        'zope.publisher',
-                        'persistent',
-                        'BTrees'
-                        ],
+      install_requires=install_requires,
       tests_require = [
           'zope.testing',
           'zope.testrunner'],
