@@ -53,15 +53,16 @@ class Test(CleanUp, unittest.TestCase):
         c   = Container({'foo': foo}, {'bar': bar, 'foo': baz})
 
         T = ContainerTraversable(c)
-        self.failUnless(T.traverse('foo', []) is baz)
-        self.failUnless(T.traverse('bar', []) is bar)
+        self.assertTrue(T.traverse('foo', []) is baz)
+        self.assertTrue(T.traverse('bar', []) is bar)
 
         self.assertRaises(TraversalError , T.traverse, 'morebar', [])
     def test_unicode_attr(self):
         # test traversal with unicode
         voila = Container()
         c   = Container({}, {u'voil\xe0': voila})
-        self.failUnless(ContainerTraversable(c).traverse(u'voil\xe0', []) is voila)
+        self.assertTrue(ContainerTraversable(c).traverse(u'voil\xe0', [])
+                            is voila)
 
 
 def test_suite():

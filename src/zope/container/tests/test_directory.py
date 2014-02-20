@@ -30,7 +30,7 @@ class Test(TestCase):
         d = Directory()
         d.a = 1
         clone = zope.container.directory.Cloner(d)('foo')
-        self.assert_(clone != d)
+        self.assertTrue(clone != d)
         self.assertEqual(clone.__class__, d.__class__)
 
 def test_suite():

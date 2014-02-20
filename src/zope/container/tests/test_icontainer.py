@@ -147,13 +147,13 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
     def testEmpty(self):
         folder = self.makeTestObject()
         data = self.makeTestData()
-        self.failIf(folder.keys())
-        self.failIf(folder.values())
-        self.failIf(folder.items())
-        self.failIf(len(folder))
-        self.failIf(data[6][0] in folder)
+        self.assertFalse(folder.keys())
+        self.assertFalse(folder.values())
+        self.assertFalse(folder.items())
+        self.assertFalse(len(folder))
+        self.assertFalse(data[6][0] in folder)
 
-        self.assertEquals(folder.get(data[6][0], None), None)
+        self.assertEqual(folder.get(data[6][0], None), None)
         self.assertRaises(KeyError, folder.__getitem__, data[6][0])
 
         self.assertRaises(KeyError, folder.__delitem__, data[6][0])
@@ -173,21 +173,21 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
         name = data[0][0]
         folder[name] = foo
 
-        self.assertEquals(len(folder.keys()), 1)
-        self.assertEquals(list(folder.keys())[0], name)
-        self.assertEquals(len(folder.values()), 1)
-        self.assertEquals(list(folder.values())[0], foo)
-        self.assertEquals(len(folder.items()), 1)
-        self.assertEquals(list(folder.items())[0], (name, foo))
-        self.assertEquals(len(folder), 1)
+        self.assertEqual(len(folder.keys()), 1)
+        self.assertEqual(list(folder.keys())[0], name)
+        self.assertEqual(len(folder.values()), 1)
+        self.assertEqual(list(folder.values())[0], foo)
+        self.assertEqual(len(folder.items()), 1)
+        self.assertEqual(list(folder.items())[0], (name, foo))
+        self.assertEqual(len(folder), 1)
 
-        self.failUnless(name in folder)
+        self.assertTrue(name in folder)
         # Use an arbitrary id frpm the data set; don;t just use any id, since
         # there might be restrictions on their form
-        self.failIf(data[6][0] in folder)
+        self.assertFalse(data[6][0] in folder)
 
-        self.assertEquals(folder.get(name, None), foo)
-        self.assertEquals(folder[name], foo)
+        self.assertEqual(folder.get(name, None), foo)
+        self.assertEqual(folder[name], foo)
 
         self.assertRaises(KeyError, folder.__getitem__, data[6][0])
 
@@ -196,25 +196,25 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
         name2 = data[1][0]
         folder[name2] = foo2
 
-        self.assertEquals(len(folder.keys()), 2)
-        self.assertEquals(not not name2 in folder.keys(), True)
-        self.assertEquals(len(folder.values()), 2)
-        self.assertEquals(not not foo2 in folder.values(), True)
-        self.assertEquals(len(folder.items()), 2)
-        self.assertEquals(not not (name2, foo2) in folder.items(), True)
-        self.assertEquals(len(folder), 2)
+        self.assertEqual(len(folder.keys()), 2)
+        self.assertEqual(not not name2 in folder.keys(), True)
+        self.assertEqual(len(folder.values()), 2)
+        self.assertEqual(not not foo2 in folder.values(), True)
+        self.assertEqual(len(folder.items()), 2)
+        self.assertEqual(not not (name2, foo2) in folder.items(), True)
+        self.assertEqual(len(folder), 2)
 
         del folder[name]
         del folder[name2]
 
-        self.failIf(folder.keys())
-        self.failIf(folder.values())
-        self.failIf(folder.items())
-        self.failIf(len(folder))
-        self.failIf(name in folder)
+        self.assertFalse(folder.keys())
+        self.assertFalse(folder.values())
+        self.assertFalse(folder.items())
+        self.assertFalse(len(folder))
+        self.assertFalse(name in folder)
 
         self.assertRaises(KeyError, folder.__getitem__, name)
-        self.assertEquals(folder.get(name, None), None)
+        self.assertEqual(folder.get(name, None), None)
         self.assertRaises(KeyError, folder.__delitem__, name)
 
     def testManyItems(self):
@@ -230,53 +230,53 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
         folder[name2] = objects[2]
         folder[name3] = objects[3]
 
-        self.assertEquals(len(folder.keys()), len(objects))
-        self.failUnless(name0 in folder.keys())
-        self.failUnless(name1 in folder.keys())
-        self.failUnless(name2 in folder.keys())
-        self.failUnless(name3 in folder.keys())
+        self.assertEqual(len(folder.keys()), len(objects))
+        self.assertTrue(name0 in folder.keys())
+        self.assertTrue(name1 in folder.keys())
+        self.assertTrue(name2 in folder.keys())
+        self.assertTrue(name3 in folder.keys())
 
-        self.assertEquals(len(folder.values()), len(objects))
-        self.failUnless(objects[0] in folder.values())
-        self.failUnless(objects[1] in folder.values())
-        self.failUnless(objects[2] in folder.values())
-        self.failUnless(objects[3] in folder.values())
+        self.assertEqual(len(folder.values()), len(objects))
+        self.assertTrue(objects[0] in folder.values())
+        self.assertTrue(objects[1] in folder.values())
+        self.assertTrue(objects[2] in folder.values())
+        self.assertTrue(objects[3] in folder.values())
 
-        self.assertEquals(len(folder.items()), len(objects))
-        self.failUnless((name0, objects[0]) in folder.items())
-        self.failUnless((name1, objects[1]) in folder.items())
-        self.failUnless((name2, objects[2]) in folder.items())
-        self.failUnless((name3, objects[3]) in folder.items())
+        self.assertEqual(len(folder.items()), len(objects))
+        self.assertTrue((name0, objects[0]) in folder.items())
+        self.assertTrue((name1, objects[1]) in folder.items())
+        self.assertTrue((name2, objects[2]) in folder.items())
+        self.assertTrue((name3, objects[3]) in folder.items())
 
-        self.assertEquals(len(folder), len(objects))
+        self.assertEqual(len(folder), len(objects))
 
-        self.failUnless(name0 in folder)
-        self.failUnless(name1 in folder)
-        self.failUnless(name2 in folder)
-        self.failUnless(name3 in folder)
-        self.failIf(data[5][0] in folder)
+        self.assertTrue(name0 in folder)
+        self.assertTrue(name1 in folder)
+        self.assertTrue(name2 in folder)
+        self.assertTrue(name3 in folder)
+        self.assertFalse(data[5][0] in folder)
 
-        self.assertEquals(folder.get(name0, None), objects[0])
-        self.assertEquals(folder[name0], objects[0])
-        self.assertEquals(folder.get(name1, None), objects[1])
-        self.assertEquals(folder[name1], objects[1])
-        self.assertEquals(folder.get(name2, None), objects[2])
-        self.assertEquals(folder[name2], objects[2])
-        self.assertEquals(folder.get(name3, None), objects[3])
-        self.assertEquals(folder[name3], objects[3])
+        self.assertEqual(folder.get(name0, None), objects[0])
+        self.assertEqual(folder[name0], objects[0])
+        self.assertEqual(folder.get(name1, None), objects[1])
+        self.assertEqual(folder[name1], objects[1])
+        self.assertEqual(folder.get(name2, None), objects[2])
+        self.assertEqual(folder[name2], objects[2])
+        self.assertEqual(folder.get(name3, None), objects[3])
+        self.assertEqual(folder[name3], objects[3])
 
-        self.assertEquals(folder.get(data[5][0], None), None)
+        self.assertEqual(folder.get(data[5][0], None), None)
         self.assertRaises(KeyError, folder.__getitem__, data[5][0])
 
         del folder[name0]
-        self.assertEquals(len(folder), len(objects) - 1)
-        self.failIf(name0 in folder)
-        self.failIf(name0 in folder.keys())
+        self.assertEqual(len(folder), len(objects) - 1)
+        self.assertFalse(name0 in folder)
+        self.assertFalse(name0 in folder.keys())
 
-        self.failIf(objects[0] in folder.values())
-        self.failIf((name0, objects[0]) in folder.items())
+        self.assertFalse(objects[0] in folder.values())
+        self.assertFalse((name0, objects[0]) in folder.items())
 
-        self.assertEquals(folder.get(name0, None), None)
+        self.assertEqual(folder.get(name0, None), None)
         self.assertRaises(KeyError, folder.__getitem__, name0)
 
         self.assertRaises(KeyError, folder.__delitem__, name0)
@@ -285,14 +285,14 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
         del folder[name2]
         del folder[name3]
 
-        self.failIf(folder.keys())
-        self.failIf(folder.values())
-        self.failIf(folder.items())
-        self.failIf(len(folder))
-        self.failIf(name0 in folder)
-        self.failIf(name1 in folder)
-        self.failIf(name2 in folder)
-        self.failIf(name3 in folder)
+        self.assertFalse(folder.keys())
+        self.assertFalse(folder.values())
+        self.assertFalse(folder.items())
+        self.assertFalse(len(folder))
+        self.assertFalse(name0 in folder)
+        self.assertFalse(name1 in folder)
+        self.assertFalse(name2 in folder)
+        self.assertFalse(name3 in folder)
 
 
 class TestSampleContainer(BaseTestIContainer, TestCase):

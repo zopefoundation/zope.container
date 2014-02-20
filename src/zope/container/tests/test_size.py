@@ -34,7 +34,7 @@ class Test(unittest.TestCase):
     def testImplementsISized(self):
         from zope.container.size import ContainerSized
         sized = ContainerSized(DummyContainer(23))
-        self.assert_(ISized.providedBy(sized))
+        self.assertTrue(ISized.providedBy(sized))
 
     def testEmptyContainer(self):
         from zope.container.size import ContainerSized

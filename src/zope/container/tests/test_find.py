@@ -91,30 +91,30 @@ class Test(TestCase):
         find = FindAdapter(tree)
         # some simple searches
         result = find.find([SimpleIdFindFilter(['beta'])])
-        self.assertEquals([beta], result)
+        self.assertEqual([beta], result)
         result = find.find([SimpleIdFindFilter(['gamma'])])
-        self.assertEquals([gamma], result)
+        self.assertEqual([gamma], result)
         result = find.find([SimpleIdFindFilter(['delta'])])
-        self.assertEquals([delta], result)
+        self.assertEqual([delta], result)
         # we should not find the container we search on
         result = find.find([SimpleIdFindFilter(['tree'])])
-        self.assertEquals([], result)
+        self.assertEqual([], result)
         # search for multiple ids
         result = find.find([SimpleIdFindFilter(['alpha', 'beta'])])
-        self.assertEquals([alpha, beta], result)
+        self.assertEqual([alpha, beta], result)
         result = find.find([SimpleIdFindFilter(['beta', 'delta'])])
-        self.assertEquals([beta, delta], result)
+        self.assertEqual([beta, delta], result)
         # search without any filters, find everything
         result = find.find([])
-        self.assertEquals([alpha, beta, delta, gamma], result)
+        self.assertEqual([alpha, beta, delta, gamma], result)
         # search for something that doesn't exist
         result = find.find([SimpleIdFindFilter(['foo'])])
-        self.assertEquals([], result)
+        self.assertEqual([], result)
         # find for something that has two ids at the same time,
         # can't ever be the case
         result = find.find([SimpleIdFindFilter(['alpha']),
                             SimpleIdFindFilter(['beta'])])
-        self.assertEquals([], result)
+        self.assertEqual([], result)
 
     def test_objectFind(self):
         alpha = FakeContainer('alpha', [])
@@ -126,11 +126,11 @@ class Test(TestCase):
             [alpha, beta, gamma])
         find = FindAdapter(tree)
         result = find.find(object_filters=[TestObjectFindFilter(0)])
-        self.assertEquals([alpha, delta, gamma], result)
+        self.assertEqual([alpha, delta, gamma], result)
         result = find.find(object_filters=[TestObjectFindFilter(1)])
-        self.assertEquals([beta], result)
+        self.assertEqual([beta], result)
         result = find.find(object_filters=[TestObjectFindFilter(2)])
-        self.assertEquals([], result)
+        self.assertEqual([], result)
 
     def test_combinedFind(self):
         alpha = FakeContainer('alpha', [])
@@ -143,11 +143,11 @@ class Test(TestCase):
         find = FindAdapter(tree)
         result = find.find(id_filters=[SimpleIdFindFilter(['alpha'])],
                            object_filters=[TestObjectFindFilter(0)])
-        self.assertEquals([alpha], result)
+        self.assertEqual([alpha], result)
 
         result = find.find(id_filters=[SimpleIdFindFilter(['alpha'])],
                            object_filters=[TestObjectFindFilter(1)])
-        self.assertEquals([], result)
+        self.assertEqual([], result)
         
     def test_interfaceFind(self):
         alpha = FakeContainer('alpha', [])

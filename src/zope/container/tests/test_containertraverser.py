@@ -74,10 +74,10 @@ class TraverserTest(testing.ContainerPlacelessSetup, unittest.TestCase):
             self.traverser.publishTraverse, self.request, 'morebar')
 
     def test_viewTraversal(self):
-        self.assertEquals(
+        self.assertEqual(
             self.traverser.publishTraverse(self.request, 'viewfoo').__class__,
             View)
-        self.assertEquals(
+        self.assertEqual(
             self.traverser.publishTraverse(self.request, 'Foo'),
             self.container)
         self.assertRaises(
@@ -95,7 +95,7 @@ class TraverserTest(testing.ContainerPlacelessSetup, unittest.TestCase):
         component.provideAdapter(
             'myDefaultView', (Interface, IDefaultBrowserLayer),
             IDefaultViewName)
-        self.assertEquals((self.subcontainer, ('@@myDefaultView',)),
+        self.assertEqual((self.subcontainer, ('@@myDefaultView',)),
                           self.traverser.browserDefault(self.request))
 
 
