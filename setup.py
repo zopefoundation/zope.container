@@ -19,6 +19,8 @@
 """Setup for zope.container package
 """
 import os
+import platform
+import sys
 from setuptools import setup, find_packages, Extension
 
 def read(*rnames):
@@ -38,6 +40,22 @@ def alltests():
     options = zope.testrunner.options.get_options(args, defaults)
     suites = list(zope.testrunner.find.find_suites(options))
     return unittest.TestSuite(suites)
+
+# PyPy cannot correctly build the C optimizations, and even if it
+# could they would be anti-optimizations (the C extension
+# compatibility layer is known-slow, and defeats JIT opportunities).
+py_impl = getattr(platform, 'python_implementation', lambda: None)
+pure_python = os.environ.get('PURE_PYTHON', False)
+is_pypy = py_impl() == 'PyPy'
+
+if pure_python or is_pypy:
+    ext_modules = []
+else:
+    ext_modules = [Extension("zope.container._zope_container_contained",
+                             [os.path.join("src", "zope", "container",
+                                           "_zope_container_contained.c")
+                              ], include_dirs=['include']),
+                   ]
 
 setup(name='zope.container',
       version='4.0.0a4.dev0',
@@ -66,6 +84,7 @@ setup(name='zope.container',
           'Programming Language :: Python :: 3',
           'Programming Language :: Python :: 3.3',
           'Programming Language :: Python :: Implementation :: CPython',
+          'Programming Language :: Python :: Implementation :: PyPy',
           'Natural Language :: English',
           'Operating System :: OS Independent',
           'Topic :: Internet :: WWW/HTTP',
@@ -76,11 +95,7 @@ setup(name='zope.container',
       packages=find_packages('src'),
       package_dir = {'': 'src'},
       namespace_packages=['zope'],
-      ext_modules=[Extension("zope.container._zope_container_contained",
-                             [os.path.join("src", "zope", "container",
-                                           "_zope_container_contained.c")
-                              ], include_dirs=['include']),
-                   ],
+      ext_modules=ext_modules,
       extras_require=dict(
           test=['zope.testing', 'zope.testrunner'
                 ],
