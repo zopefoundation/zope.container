@@ -5,7 +5,9 @@ CHANGES
 4.0.0a4 (unreleased)
 --------------------
 
-- Support PyPy.
+- Added support for Python 3.4.
+
+- Added support for PyPy.
 
 
 4.0.0a3 (2013-02-28)

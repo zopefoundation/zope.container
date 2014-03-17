@@ -82,7 +82,7 @@ else:
 
 
 setup(name='zope.container',
-      version='4.0.0a4.dev0',
+      version='4.0.0dev',
       author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Container',
@@ -107,6 +107,7 @@ setup(name='zope.container',
           'Programming Language :: Python :: 2.7',
           'Programming Language :: Python :: 3',
           'Programming Language :: Python :: 3.3',
+          'Programming Language :: Python :: 3.4',
           'Programming Language :: Python :: Implementation :: CPython',
           'Programming Language :: Python :: Implementation :: PyPy',
           'Natural Language :: English',
