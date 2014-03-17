@@ -297,14 +297,14 @@ MOD_INIT(_zope_container_contained)
 {
   PyObject *m;
 
+  MOD_DEF(m, "_zope_container_contained", module___doc__, module_functions);
+
   str_p_deactivate = MAKE_PYSTRING("_p_deactivate");
   if (str_p_deactivate == NULL)
     return MOD_ERROR_VAL;
 
   /* Try to fake out compiler nag function */
   if (0) init_zope_proxy_proxy();
-
-  MOD_DEF(m, "_zope_container_contained", module___doc__, module_functions);
 
   if (m == NULL)
     return MOD_ERROR_VAL;
