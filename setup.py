@@ -87,13 +87,13 @@ setup(name='zope.container',
       author_email='zope-dev@zope.org',
       description='Zope Container',
       long_description=(
-          read('README.txt')
+          read('README.rst')
           + '\n\n' +
           '.. contents::\n'
           + '\n\n' +
           read('src', 'zope', 'container', 'constraints.txt')
           + '\n\n' +
-          read('CHANGES.txt')
+          read('CHANGES.rst')
           ),
       keywords = "zope container",
       classifiers = [
