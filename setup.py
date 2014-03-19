@@ -82,7 +82,7 @@ else:
 
 
 setup(name='zope.container',
-      version='4.0.0a4.dev',
+      version='4.0.0',
       author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Container',
