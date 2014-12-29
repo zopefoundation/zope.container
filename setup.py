@@ -89,8 +89,6 @@ setup(name='zope.container',
       long_description=(
           read('README.rst')
           + '\n\n' +
-          '.. contents::\n'
-          + '\n\n' +
           read('src', 'zope', 'container', 'constraints.txt')
           + '\n\n' +
           read('CHANGES.rst')
