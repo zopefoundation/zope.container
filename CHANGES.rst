@@ -1,6 +1,11 @@
 Changes
 =======
 
+4.1.0 (unreleased)
+------------------
+
+- Drop deprecated BBB imports module, ``zope.container.dependency``.
+
 4.0.0 (2014-03-19)
 ------------------
 
