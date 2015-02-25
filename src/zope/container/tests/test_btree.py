@@ -202,9 +202,6 @@ def test_suite():
         makeSuite(TestBTreeContainer),
         makeSuite(TestBTreeSpecials),
         makeSuite(TestBTreeEvents),
-        DocTestSuite('zope.container.btree',
-                     setUp=setUp,
-                     tearDown=tearDown),
         ))
 
 if __name__=='__main__':

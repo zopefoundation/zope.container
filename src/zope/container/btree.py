@@ -65,17 +65,8 @@ class BTreeContainer(Contained, Persistent):
         return OOBTree()
 
     def __contains__(self, key):
-        '''See interface IReadContainer
-
-        >>> c = BTreeContainer()
-        >>> "a" in c
-        False
-        >>> c["a"] = 1
-        >>> "a" in c
-        True
-        >>> "A" in c
-        False
-        '''
+        """See interface IReadContainer
+        """
         return key in self._SampleContainer__data
 
     @Lazy
