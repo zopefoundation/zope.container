@@ -120,6 +120,7 @@ setup(name='zope.container',
       namespace_packages=['zope'],
       ext_modules=ext_modules,
       extras_require=dict(
+          docs=['Sphinx', 'repoze.sphinx.autointerface'],
           test=['zope.testing', 'zope.testrunner'
                 ],
           zcml=[
