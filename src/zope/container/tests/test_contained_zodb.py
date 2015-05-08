@@ -62,7 +62,8 @@ def test_basic_persistent_w_non_persistent_proxied():
     >>> p2._p_changed
     0
     >>> p2._p_deactivate()
-    >>> p2._p_changed
+    >>> bool(p2._p_changed)
+    False
     >>> p2.__name__
     'test'
 
@@ -188,7 +189,7 @@ def test_proxy_cache_interaction():
     We've also accessed the root object. If we garbage-collect the
     cache:
 
-    >>> conn._cache.incrgc()
+    >>> _ = conn._cache.incrgc()
 
     Then the root object will still be active, because it was accessed
     recently:
@@ -204,7 +205,8 @@ def test_proxy_cache_interaction():
 
     But it's a ghost:
 
-    >>> conn.root()['p']._p_changed
+    >>> bool(conn.root()['p']._p_changed)
+    False
 
     If we deactivate the root object:
 
