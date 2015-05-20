@@ -35,7 +35,7 @@ def _special_name(name):
 class PyContainedProxyBase(AbstractPyProxyBase, Persistent):
     """Persistent proxy
     """
-    __slots__ = ('_wrapped', '__parent__', '__name__')
+    __slots__ = ('_wrapped', '__parent__', '__name__', '__weakref__')
 
     def __new__(cls, obj):
         inst = super(PyContainedProxyBase, cls).__new__(cls, obj)
