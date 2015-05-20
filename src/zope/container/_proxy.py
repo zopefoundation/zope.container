@@ -12,13 +12,6 @@
 #
 ##############################################################################
 
-# This is very similar to the code in zope.proxy.__init__, but modified
-# to work properly when extending Persistent.
-
-import operator
-import sys
-
-from zope.proxy import PyNonOverridable
 from zope.proxy import AbstractPyProxyBase
 
 _MARKER = object()
