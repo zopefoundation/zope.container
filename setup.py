@@ -73,6 +73,8 @@ install_requires = [
     'zope.size',
     'zope.traversing>=4.0.0a1',
     'zope.publisher',
+    'zope.proxy>=4.1.5',
+    'persistent>=4.1.0',
     'BTrees'
 ]
 if not is_pypy:
