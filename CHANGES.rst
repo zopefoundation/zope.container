@@ -1,7 +1,7 @@
 Changes
 =======
 
-4.1.0 (unreleased)
+4.1.0 (2015-05-22)
 ------------------
 
 - Make ``zope.container._proxy.PytContainedProxyBase`` inherit directly
