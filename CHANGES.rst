@@ -4,6 +4,14 @@ Changes
 4.1.0 (unreleased)
 ------------------
 
+- Make ``zope.container._proxy.PytContainedProxyBase`` inherit directly
+  from ``persistent.AbstractProxyBase``, removing a bunch of redundant
+  code, and fixing bugs in interaction with pure-Python persistence.
+  See:  https://github.com/zopefoundation/zope.container/pull/4
+
+- Add direct dependencies on ``zope.proxy`` and ``persistent`` since we
+  import from them; pin them to the versions needed for pure-Python.
+
 - Drop deprecated BBB imports module, ``zope.container.dependency``.
 
 4.0.0 (2014-03-19)
