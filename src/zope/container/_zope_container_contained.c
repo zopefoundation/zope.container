@@ -303,9 +303,6 @@ MOD_INIT(_zope_container_contained)
   if (str_p_deactivate == NULL)
     return MOD_ERROR_VAL;
 
-  /* Try to fake out compiler nag function */
-  if (0) init_zope_proxy_proxy();
-
   if (m == NULL)
     return MOD_ERROR_VAL;
 
