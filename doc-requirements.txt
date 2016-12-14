@@ -1,0 +1,5 @@
+pip>=9.0.0
+sphinx>=1.4
+setuptools>=23.0.0
+repoze.sphinx.autointerface
+sphinx_rtd_theme

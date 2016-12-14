@@ -26,7 +26,7 @@ from zope.publisher.interfaces import IDefaultViewName, NotFound
 from zope.container.interfaces import ISimpleReadContainer, IItemContainer
 from zope.container.interfaces import IReadContainer
 from six.moves import map
-from six.moves import zip
+
 
 # Note that the next two classes are included here because they
 # can be used for multiple view types.

@@ -20,11 +20,12 @@
 """
 import os
 import platform
-import sys
+
 from setuptools import setup, find_packages, Extension
 
 def read(*rnames):
-    return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
+    with open(os.path.join(os.path.dirname(__file__), *rnames)) as f:
+        return f.read()
 
 def alltests():
     import os
@@ -84,7 +85,7 @@ else:
 
 
 setup(name='zope.container',
-      version='4.2.0.dev0',
+      version=read('version.txt'),
       author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Container',
@@ -113,7 +114,7 @@ setup(name='zope.container',
           'Topic :: Internet :: WWW/HTTP',
           'Framework :: Zope3',
           ],
-      url='http://pypi.python.org/pypi/zope.container',
+      url='http:///zopecontainer.readthedocs.io',
       license='ZPL 2.1',
       packages=find_packages('src'),
       package_dir = {'': 'src'},

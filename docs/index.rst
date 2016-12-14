@@ -1,5 +1,4 @@
-:mod:`zope.container`
-=====================
+.. include:: ../README.rst
 
 Contents:
 
@@ -9,6 +8,7 @@ Contents:
    narrative
    constraints
    api
+   changelog
 
 
 Indices and tables
@@ -17,4 +17,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

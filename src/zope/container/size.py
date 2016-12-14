@@ -22,6 +22,10 @@ from zope.interface import implementer
 
 @implementer(ISized)
 class ContainerSized(object):
+    """
+    Implements :class:`zope.size.interfaces.ISize` for
+    :class:`zope.container.interfaces.IReadContainer`
+    """
 
     def __init__(self, container):
         self._container = container

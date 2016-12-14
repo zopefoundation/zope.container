@@ -29,7 +29,7 @@ from zope.component.interfaces import ISite
 from zope.security.proxy import removeSecurityProxy
 import zope.filerepresentation.interfaces
 from six.moves import map
-from six.moves import zip
+
 
 MARKER = object()
 
@@ -70,6 +70,7 @@ class RootDirectoryFactory(object):
         pass
 
     def __call__(self, name):
+        from zope.container.folder import Folder
         return Folder()
 
 
