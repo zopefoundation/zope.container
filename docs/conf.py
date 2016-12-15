@@ -48,7 +48,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'zope.container'
-copyright = '2015, Zope Foundation and Contributors'
+copyright = '2016, Zope Foundation and Contributors'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -249,7 +249,8 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'zopecontainer', 'zope.container Documentation',
-   'Zope Foundation and Contributors', 'zopecontainer', 'One line description of project.',
+   'Zope Foundation and Contributors', 'zopecontainer',
+   'Interfaces for object container components, and implementations such as a BTreeContainer and OrderedContainer',
    'Miscellaneous'),
 ]
 
@@ -270,9 +271,11 @@ texinfo_documents = [
 intersphinx_mapping = {
     'https://docs.python.org/': None,
     'http://zodb.readthedocs.io/en/latest/': None,
-    'http://relstorage.readthedocs.io/en/latest/': None,
     'http://persistent.readthedocs.io/en/latest/': None,
     'http://zopesize.readthedocs.io/en/latest/': None,
+    'http://zopesite.readthedocs.io/en/latest/': None,
+    'http://zopefilerepresentation.readthedocs.io/en/latest/': None,
+    'http://zopelifecycleevent.readthedocs.io/en/latest/': None,
 }
 
 extlinks = {'issue': ('https://github.com/zopefoundation/zope.container/issues/%s',
