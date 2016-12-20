@@ -26,10 +26,12 @@ __docformat__ = 'restructuredtext'
 from zope.interface import implementer
 
 from zope.component.interfaces import ISite
+from zope.container.folder import Folder
 from zope.security.proxy import removeSecurityProxy
 import zope.filerepresentation.interfaces
+
 from six.moves import map
-from six.moves import zip
+
 
 MARKER = object()
 
@@ -44,7 +46,10 @@ def noop(container):
 
 @implementer(zope.filerepresentation.interfaces.IDirectoryFactory)
 class Cloner(object):
-    """`IContainer` to `IDirectoryFactory` adapter that clones
+    """
+    `IContainer` to
+    :class:`zope.filerepresentation.interfaces.IDirectoryFactory` adapter
+    that clones.
 
     This adapter provides a factory that creates a new empty container
     of the same class as it's context.

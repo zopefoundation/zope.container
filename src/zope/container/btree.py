@@ -25,8 +25,8 @@ from zope.interface import implementer
 
 
 class Lazy(object):
-    """Lazy Attributes.
-    """
+    #Lazy Attributes.
+
 
     def __init__(self, func, name=None):
         if name is None:
@@ -46,6 +46,7 @@ class Lazy(object):
 
 @implementer(IBTreeContainer)
 class BTreeContainer(Contained, Persistent):
+    """OOBTree-based container"""
 
     def __init__(self):
         # We keep the previous attribute to store the data
@@ -119,6 +120,3 @@ class BTreeContainer(Contained, Persistent):
 
     def values(self, key=None):
         return self._SampleContainer__data.values(key)
-
-
-
