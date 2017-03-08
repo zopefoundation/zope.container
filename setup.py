@@ -78,10 +78,6 @@ install_requires = [
     'persistent>=4.1.0',
     'BTrees'
 ]
-if not is_pypy:
-    install_requires.append('persistent')
-else:
-    install_requires.append('persistent>=4.0.7')
 
 
 setup(name='zope.container',
