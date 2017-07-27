@@ -28,7 +28,6 @@ def read(*rnames):
         return f.read()
 
 def alltests():
-    import os
     import sys
     import unittest
     # use the zope.testrunner machinery to find all the
@@ -55,8 +54,8 @@ else:
     ext_modules = [Extension("zope.container._zope_container_contained",
                              [os.path.join("src", "zope", "container",
                                            "_zope_container_contained.c")
-                              ], include_dirs=['include']),
-                   ]
+                             ], include_dirs=['include']),
+    ]
 
 install_requires = [
     'setuptools',
@@ -81,7 +80,7 @@ install_requires = [
 
 
 setup(name='zope.container',
-      version=read('version.txt'),
+      version=read('version.txt').strip(),
       author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Container',
@@ -89,9 +88,9 @@ setup(name='zope.container',
           read('README.rst')
           + '\n\n' +
           read('CHANGES.rst')
-          ),
-      keywords = "zope container",
-      classifiers = [
+      ),
+      keywords="zope container",
+      classifiers=[
           'Development Status :: 5 - Production/Stable',
           'Environment :: Web Environment',
           'Intended Audience :: Developers',
@@ -100,38 +99,46 @@ setup(name='zope.container',
           'Programming Language :: Python :: 2',
           'Programming Language :: Python :: 2.7',
           'Programming Language :: Python :: 3',
-          'Programming Language :: Python :: 3.3',
           'Programming Language :: Python :: 3.4',
           'Programming Language :: Python :: 3.5',
+          'Programming Language :: Python :: 3.6',
           'Programming Language :: Python :: Implementation :: CPython',
           'Programming Language :: Python :: Implementation :: PyPy',
           'Natural Language :: English',
           'Operating System :: OS Independent',
           'Topic :: Internet :: WWW/HTTP',
           'Framework :: Zope3',
-          ],
-      url='http:///zopecontainer.readthedocs.io',
+      ],
+      url='http://github.com/zopefoundation/zope.container',
       license='ZPL 2.1',
       packages=find_packages('src'),
-      package_dir = {'': 'src'},
+      package_dir={'': 'src'},
       namespace_packages=['zope'],
       ext_modules=ext_modules,
-      extras_require=dict(
-          docs=['Sphinx', 'repoze.sphinx.autointerface'],
-          test=['zope.testing', 'zope.testrunner'
-                ],
-          zcml=[
-                'zope.component[zcml]',
-                'zope.configuration',
-                'zope.security[zcml]>=4.0.0a3',
-                ],
-          zodb=['ZODB>=3.10',
-                ]),
+      extras_require={
+          'docs': [
+              'Sphinx',
+              'repoze.sphinx.autointerface',
+          ],
+          'test': [
+              'zope.testing',
+              'zope.testrunner',
+          ],
+          'zcml': [
+              'zope.component[zcml]',
+              'zope.configuration',
+              'zope.security[zcml]>=4.0.0a3',
+          ],
+          'zodb': [
+              'ZODB>=3.10',
+          ],
+      },
       install_requires=install_requires,
-      tests_require = [
+      tests_require=[
           'zope.testing',
-          'zope.testrunner'],
-      test_suite = '__main__.alltests',
-      include_package_data = True,
-      zip_safe = False,
-      )
+          'zope.testrunner',
+      ],
+      test_suite='__main__.alltests',
+      include_package_data=True,
+      zip_safe=False,
+)
