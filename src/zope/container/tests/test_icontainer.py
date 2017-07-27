@@ -100,6 +100,13 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
         container, data = self.__setUp()
         self.assertEqual(len(container), len(data))
 
+    def test_iter(self):
+        container = self.makeTestObject()
+        self.assertEqual(list(container), [])
+
+        container, data = self.__setUp()
+        self.assertEqual(len(list(container)), len(data))
+
     def test_items(self):
         # See interface IReadContainer
         container = self.makeTestObject()
