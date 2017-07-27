@@ -148,6 +148,42 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
         for i in (0, 2, 9, 6, 5):
             self.assertEqual(container[data[i][0]], data[i][1])
 
+    def test_bytes_keys_converted_to_unicode(self):
+        # https://github.com/zopefoundation/zope.container/issues/17
+        container = self.makeTestObject()
+        container[b'abc'] = 1
+        self.assertIn(u'abc', container)
+        del container[u'abc']
+        self.assertNotIn(u'abc', container)
+
+    def test_exception_in_subscriber_leaves_item_in_place(self):
+        # Now register an event subscriber to object added events that
+        # throws an error.
+        # https://github.com/zopefoundation/zope.container/issues/18
+
+        import zope.component
+        from zope.lifecycleevent.interfaces import IObjectAddedEvent
+
+        class MyException(Exception):
+            pass
+
+        @zope.component.adapter(IObjectAddedEvent)
+        def raiseException(event):
+            raise MyException()
+
+        zope.component.provideHandler(raiseException)
+
+        # Now we are adding an object to the container.
+
+        container = self.makeTestObject()
+        with self.assertRaises(MyException):
+            container['foo'] = 'FOO'
+
+        # The key 'foo' should still be present
+        self.assertIn('foo', container.keys())
+        self.assertEqual(list(iter(container)), ['foo'])
+        self.assertIn('foo', container)
+
     ############################################################
     # Tests from Folder
 

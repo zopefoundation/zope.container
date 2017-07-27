@@ -9,6 +9,15 @@
 
 - Drop support for Python 2.6 and 3.3.
 
+- Make ``OrderedContainer`` properly store the decoded text keys for
+  maintaining order instead of the raw bytes. Also make it able to
+  accept raw bytes under Python 3 in the first place. Fixes
+  https://github.com/zopefoundation/zope.container/issues/17
+
+- Fix ``OrderedContainer`` becoming inconsistent if an event
+  subscriber threw an exception when adding an item. See
+  https://github.com/zopefoundation/zope.container/issues/18
+
 4.1.0 (2015-05-22)
 ==================
 

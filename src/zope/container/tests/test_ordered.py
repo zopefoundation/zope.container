@@ -18,9 +18,9 @@ from doctest import DocTestSuite
 
 from zope.component.eventtesting import getEvents, clearEvents
 from zope.container import testing
+from zope.container.tests.test_icontainer import TestSampleContainer
 
-class TestOrderedContainer(testing.ContainerPlacefulSetup,
-                           unittest.TestCase):
+class TestOrderedContainer(TestSampleContainer):
 
     def test_order_events(self):
         # Prepare the setup::
@@ -55,7 +55,7 @@ class TestOrderedContainer(testing.ContainerPlacefulSetup,
         self.assertTrue(IObjectModifiedEvent.providedBy(events[0]))
 
 
-    def test_all_items_available_at_object_added_event(self):
+    def test_order_all_items_available_at_object_added_event(self):
         # Now register an event subscriber to object added events.
         import zope.component
         from zope.lifecycleevent.interfaces import IObjectAddedEvent
@@ -76,42 +76,7 @@ class TestOrderedContainer(testing.ContainerPlacefulSetup,
 
         self.assertEqual(keys, ['foo'])
 
-
-    def test_exception_causes_order_fix(self):
-        # Now register an event subscriber to object added events that
-        # throws an error.
-
-        import zope.component
-        from zope.lifecycleevent.interfaces import IObjectAddedEvent
-
-        class MyException(Exception):
-            pass
-
-        @zope.component.adapter(IObjectAddedEvent)
-        def raiseException(event):
-            raise MyException()
-
-        zope.component.provideHandler(raiseException)
-
-        # Now we are adding an object to the container.
-
-        from zope.container.ordered import OrderedContainer
-        oc = OrderedContainer()
-        with self.assertRaises(MyException):
-            oc['foo'] = 'FOO'
-
-        # The key 'foo' should not be around:
-
-        self.assertNotIn('foo', oc.keys())
-        self.assertEqual(list(iter(oc)), [])
-
-        # Except, yes, it's still in __contains__.
-        # This is inconsistent with everything else.
-        # It should really be both places.
-        # https://github.com/zopefoundation/zope.container/issues/18
-        self.assertIn('foo', oc)
-
-    def test_adding_none(self):
+    def test_order_adding_none(self):
         # This is a regression test: adding None to an OrderedContainer
         # used to corrupt its internal data structure (_order and _data
         # would get out of sync, causing KeyErrors when you tried to iterate).
@@ -126,6 +91,7 @@ class TestOrderedContainer(testing.ContainerPlacefulSetup,
         # None got proxied, so 'is None is not true
         self.assertIsNotNone(oc['foo'])
         self.assertEqual(None, oc['foo'])
+
 
 def test_suite():
     suite = unittest.TestSuite([
