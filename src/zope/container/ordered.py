@@ -14,7 +14,7 @@
 """Ordered container implementation.
 """
 __docformat__ = 'restructuredtext'
-import six
+
 from persistent import Persistent
 from persistent.dict import PersistentDict
 from persistent.list import PersistentList
