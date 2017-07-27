@@ -34,9 +34,13 @@ class TestBTreeContainer(TestSampleContainer, unittest.TestCase):
 class TestBTreeSpecials(unittest.TestCase):
 
     def testStoredLength(self):
-        # This is lazy for backward compatibility.  If the len is not
+        # This is a lazy property for backward compatibility.  If the len is not
         # stored already we set it to the length of the underlying
         # btree.
+        lazy = BTreeContainer._BTreeContainer__len
+        self.assertIs(lazy, BTreeContainer.__dict__['_BTreeContainer__len'])
+        self.assertTrue(hasattr(lazy, '__get__'))
+
         bc = BTreeContainer()
         self.assertEqual(bc.__dict__['_BTreeContainer__len'](), 0)
         del bc.__dict__['_BTreeContainer__len']
@@ -44,6 +48,12 @@ class TestBTreeSpecials(unittest.TestCase):
         bc['1'] = 1
         self.assertEqual(len(bc), 1)
         self.assertEqual(bc.__dict__['_BTreeContainer__len'](), 1)
+
+        del bc.__dict__['_BTreeContainer__len']
+        self.assertFalse('_BTreeContainer__len' in bc.__dict__)
+        self.assertEqual(len(bc), 1)
+        self.assertEqual(bc.__dict__['_BTreeContainer__len'](), 1)
+
 
     # The tests which follow test the additional signatures and declarations
     # for the BTreeContainer that allow it to provide the IBTreeContainer
