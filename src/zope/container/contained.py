@@ -754,7 +754,7 @@ class NameChooser(object):
         """
 
         if isinstance(name, bytes):
-            name = name.decode()
+            name = name.decode('ascii')
         elif not isinstance(name, text_type):
             raise TypeError("Invalid name type", type(name))
 
@@ -823,18 +823,18 @@ class NameChooser(object):
 
         # convert to unicode and remove characters that checkName does not allow
         if isinstance(name, bytes):
-            name = name.decode()
+            name = name.decode('ascii')
         if not isinstance(name, text_type):
             try:
                 name = text_type(name)
-            except:
+            except Exception:
                 name = u''
         name = name.replace('/', '-').lstrip('+@')
 
         if not name:
             name = object.__class__.__name__
             if isinstance(name, bytes):
-                name = name.decode()
+                name = name.decode('ascii')
 
         # for an existing name, append a number.
         # We should keep client's os.path.extsep (not ours), we assume it's '.'

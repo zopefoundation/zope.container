@@ -21,6 +21,14 @@
 - Attain 100% test coverage. See
   https://github.com/zopefoundation/zope.container/issues/15
 
+- Make the default ``NameChooser`` always decode bytes using ASCII instead of
+  whatever the current system codec happens to be.
+
+- Make the default ``NameChooser`` stop catching ``KeyboardInterrupt``
+  and other ``BaseException`` types when it potentially calls
+  user-defined code to convert a name to a text string. Instead, just
+  catch ``Exception``.
+
 4.1.0 (2015-05-22)
 ==================
 
