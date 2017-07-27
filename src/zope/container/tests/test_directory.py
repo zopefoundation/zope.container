@@ -23,7 +23,7 @@ import zope.container.directory
 
 class Directory(object):
     pass
- 
+
 class Test(TestCase):
 
     def test_Cloner(self):
@@ -37,7 +37,7 @@ def test_suite():
     flags = doctest.ELLIPSIS|doctest.NORMALIZE_WHITESPACE
     return TestSuite((
         makeSuite(Test),
-        doctest.DocFileSuite("directory.txt",
+        doctest.DocFileSuite("directory.rst",
                              setUp=testing.setUp, tearDown=testing.tearDown,
                              optionflags=flags),
         ))

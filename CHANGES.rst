@@ -12,10 +12,11 @@
 4.1.0 (2015-05-22)
 ==================
 
-- Make ``zope.container._proxy.PytContainedProxyBase`` inherit directly
-  from ``persistent.AbstractProxyBase``, removing a bunch of redundant
-  code, and fixing bugs in interaction with pure-Python persistence.
-  See:  https://github.com/zopefoundation/zope.container/pull/4
+- Make ``zope.container._proxy.PytContainedProxyBase`` inherit
+  directly from ``zope.proxy.AbstractProxyBase`` as well as
+  ``persistent.Persistent``, removing a bunch of redundant code, and
+  fixing bugs in interaction with pure-Python persistence. See:
+  https://github.com/zopefoundation/zope.container/pull/4
 
 - Add direct dependencies on ``zope.proxy`` and ``persistent`` since we
   import from them; pin them to the versions needed for pure-Python.

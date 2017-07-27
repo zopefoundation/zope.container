@@ -30,11 +30,11 @@ from zope.container.interfaces import INameChooser
 from zope.container.interfaces import IReservedNames, NameReserved
 from zope.container.interfaces import IContainerModifiedEvent
 try:
-	from zope.container._zope_container_contained import ContainedProxyBase
-	from zope.container._zope_container_contained import getProxiedObject
+    from zope.container._zope_container_contained import ContainedProxyBase
+    from zope.container._zope_container_contained import getProxiedObject
 except ImportError: # PyPy
-	from zope.container._proxy import py_getProxiedObject as getProxiedObject
-	from zope.container._proxy import PyContainedProxyBase as ContainedProxyBase
+    from zope.container._proxy import py_getProxiedObject as getProxiedObject
+    from zope.container._proxy import PyContainedProxyBase as ContainedProxyBase
 
 from zope.lifecycleevent import ObjectMovedEvent
 from zope.lifecycleevent import ObjectAddedEvent
@@ -861,7 +861,7 @@ class NameChooser(object):
 
 
 class DecoratorSpecificationDescriptor(
-    zope.interface.declarations.ObjectSpecificationDescriptor):
+        zope.interface.declarations.ObjectSpecificationDescriptor):
     """Support for interface declarations on decorators
 
     >>> from zope.interface import *
