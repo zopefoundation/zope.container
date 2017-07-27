@@ -18,6 +18,9 @@
   subscriber threw an exception when adding an item. See
   https://github.com/zopefoundation/zope.container/issues/18
 
+- Attain 100% test coverage. See
+  https://github.com/zopefoundation/zope.container/issues/15
+
 4.1.0 (2015-05-22)
 ==================
 
