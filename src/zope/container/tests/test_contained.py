@@ -25,6 +25,8 @@ import zope.component
 
 from zope.container.contained import ContainedProxy
 from zope.container.contained import NameChooser
+from zope.container.contained import contained
+from zope.container.contained import uncontained
 from zope.container.sample import SampleContainer
 from zope.container import testing
 from zope.container.interfaces import NameReserved, IContainer, IReservedNames
@@ -219,6 +221,26 @@ class TestNameChooser(unittest.TestCase):
 
         self.assertEqual(nc.chooseName(BadBoy(), set()), u'set')
 
+class TestFunctions(unittest.TestCase):
+
+    def test_contained(self):
+        obj = contained(self, 42, 'name')
+        self.assertEqual(obj, self)
+        self.assertEqual(obj.__name__, 'name')
+        self.assertEqual(obj.__parent__, 42)
+
+    def test_uncontained_no_attr(self):
+        with self.assertRaises(AttributeError):
+            uncontained(self, 42)
+
+    def test_uncontained_no_attr_fixing_up(self):
+        # Causes the attribute error to be ignored
+        import zope.container.contained
+        zope.container.contained.fixing_up = True
+        try:
+            uncontained(self, 42)
+        finally:
+            zope.container.contained.fixing_up = False
 
 def test_suite():
     suite = unittest.defaultTestLoader.loadTestsFromName(__name__)

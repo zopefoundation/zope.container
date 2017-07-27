@@ -159,8 +159,7 @@ def dispatchToSublocations(object, event):
     subs = ISublocations(object, None)
     if subs is not None:
         for sub in subs.sublocations():
-            for ignored in zope.component.subscribers((sub, event), None):
-                pass # They do work in the adapter fetch
+            zope.component.handle(sub, event)
 
 class ContainerSublocations(object):
     """Get the sublocations for a container
@@ -880,7 +879,6 @@ class DecoratorSpecificationDescriptor(
     ... class D1(ContainedProxy):
     ...   pass
 
-
     >>> @implementer(I2)
     ... class D2(ContainedProxy):
     ...   pass
@@ -907,43 +905,77 @@ class DecoratorSpecificationDescriptor(
     ['I4', 'I3', 'I1', 'IContained', 'IPersistent', 'I2']
     """
     def __get__(self, inst, cls=None):
-        if inst is None:
+        if inst is None: # pragma: no cover (Not sure how we can get here)
             return getObjectSpecification(cls)
-        else:
-            provided = providedBy(getProxiedObject(inst))
 
-            # Use type rather than __class__ because inst is a proxy and
-            # will return the proxied object's class.
-            cls = type(inst)
-            return ObjectSpecification(provided, cls)
+        provided = providedBy(getProxiedObject(inst))
+
+        # Use type rather than __class__ because inst is a proxy and
+        # will return the proxied object's class.
+        cls = type(inst)
+        return ObjectSpecification(provided, cls)
 
 
 class DecoratedSecurityCheckerDescriptor(object):
-    """Descriptor for a Decorator that provides a decorated security checker.
+    """
+    Descriptor for a Decorator that provides a decorated security
+    checker.
+
+    >>> class WithChecker(object):
+    ...     __Security_checker__ = object()
+
+    >>> class D1(ContainedProxy):
+    ...    pass
+
+
+    >>> d = D1(object())
+    >>> d.__Security_checker__ # doctest: +ELLIPSIS
+    <...Checker...>
+
+    An existing checker is added to this one:
+
+    >>> d = D1(WithChecker())
+    >>> d.__Security_checker__ # doctest: +ELLIPSIS
+    <...CombinedChecker...>
     """
     def __get__(self, inst, cls=None):
-        if inst is None:
+        if inst is None: # pragma: no cover (Not sure how we can get here)
             return self
-        else:
-            proxied_object = getProxiedObject(inst)
-            checker = getattr(proxied_object, '__Security_checker__', None)
-            if checker is None:
-                checker = selectChecker(proxied_object)
-            wrapper_checker = selectChecker(inst)
-            if wrapper_checker is None:
-                return checker
-            elif checker is None:
-                return wrapper_checker
-            else:
-                return CombinedChecker(wrapper_checker, checker)
+
+        proxied_object = getProxiedObject(inst)
+        checker = getattr(proxied_object, '__Security_checker__', None)
+        if checker is None:
+            checker = selectChecker(proxied_object)
+        wrapper_checker = selectChecker(inst)
+        if wrapper_checker is None: # pragma: no cover
+            return checker
+        if checker is None:
+            return wrapper_checker
+        return CombinedChecker(wrapper_checker, checker)
 
 class ContainedProxyClassProvides(zope.interface.declarations.ClassProvides):
+    """
+    Delegates __provides__ to the instance.
 
+    >>> class D1(ContainedProxy):
+    ...    pass
+    >>> class Base(object):
+    ...    pass
+    >>> base = Base()
+    >>> d = D1(base)
+    >>> d.__provides__ = 42
+    >>> base.__provides__
+    42
+    >>> del d.__provides__
+    >>> hasattr(base, '__provides__')
+    False
+    """
     def __set__(self, inst, value):
         inst = getProxiedObject(inst)
         inst.__provides__ = value
 
     def __delete__(self, inst):
+        # CPython can hit this, PyPy/PURE_PYTHON cannot
         inst = getProxiedObject(inst)
         del inst.__provides__
 
