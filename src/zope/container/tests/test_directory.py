@@ -18,20 +18,34 @@ import doctest
 import unittest
 
 from zope.container import testing
-import zope.container.directory
+from zope.container import directory
 
 
 class Directory(object):
-    pass
+    a = None
 
-class Test(unittest.TestCase):
+class TestCloner(unittest.TestCase):
 
     def test_Cloner(self):
         d = Directory()
         d.a = 1
-        clone = zope.container.directory.Cloner(d)('foo')
-        self.assertTrue(clone != d)
+        clone = directory.Cloner(d)('foo')
+        self.assertIsNot(clone, d)
         self.assertEqual(clone.__class__, d.__class__)
+
+
+class TestNoop(unittest.TestCase):
+
+    def test_noop(self):
+        self.assertIs(self, directory.noop(self))
+
+
+class TestRootDirectoryFactory(unittest.TestCase):
+
+    def test_returns_folder(self):
+        from zope.container.folder import Folder
+        factory = directory.RootDirectoryFactory(None)
+        self.assertIsInstance(factory(None), Folder)
 
 def test_suite():
     flags = doctest.ELLIPSIS|doctest.NORMALIZE_WHITESPACE
