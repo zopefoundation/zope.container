@@ -4,5 +4,8 @@ include bootstrap.py
 include buildout.cfg
 include compat.cfg
 
-recursive-include src *.py *.txt *.zcml *.c
+recursive-include src *.py
+recursive-include src *.rst
+recursive-include src *.zcml
+recursive-include src *.c
 recursive-include include *.h *.txt

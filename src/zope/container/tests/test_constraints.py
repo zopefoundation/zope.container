@@ -20,5 +20,9 @@ def test_suite():
     from zope.container import testing
     return unittest.TestSuite((
         doctest.DocTestSuite(
-                'zope.container.constraints', checker=testing.checker),
-        ))
+            'zope.container.constraints',
+            checker=testing.checker),
+        doctest.DocFileSuite(
+            '../constraints.rst',
+            checker=testing.checker),
+    ))
