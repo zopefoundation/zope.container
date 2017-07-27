@@ -13,7 +13,8 @@
 ##############################################################################
 """Find functionality tests
 """
-from unittest import TestCase, main, makeSuite
+import unittest
+
 from zope.container.interfaces import IReadContainer
 from zope.container.interfaces import IObjectFindFilter
 from zope.container.find import FindAdapter, SimpleIdFindFilter
@@ -27,43 +28,18 @@ class FakeContainer(object):
         self._id = id
         self._objects = objects
 
-    def keys(self):
-        return [object._id for object in self._objects]
-
-    def values(self):
-        return self._objects
-
     def items(self):
         return [(object._id, object) for object in self._objects]
 
-    def __getitem__(self, id):
-        for object in self._objects:
-            if object._id == id:
-                return object
-        raise KeyError("Could not find %s" % id)
-
-    def get(self, id, default=None):
-        for object in self._objects:
-            if object._id == id:
-                return object
-
-        return default
-
-    def __contains__(self, id):
-        for object in self._objects:
-            if object.id == id:
-                return True
-        return False
-
     def __len__(self):
         return len(self._objects)
-    
+
 class FakeInterfaceFoo(Interface):
     """Test interface Foo"""
-    
+
 class FakeInterfaceBar(Interface):
     """Test interface Bar"""
-    
+
 class FakeInterfaceSpam(Interface):
     """Test interface Spam"""
 
@@ -74,12 +50,12 @@ class TestObjectFindFilter(object):
         self._count = count
 
     def matches(self, object):
-        if IReadContainer.providedBy(object):
-            return len(object) == self._count
-        else:
-            return False
+        if not IReadContainer.providedBy(object):
+            raise AssertionError("Expecting container")
+        return len(object) == self._count
 
-class Test(TestCase):
+
+class Test(unittest.TestCase):
     def test_idFind(self):
         alpha = FakeContainer('alpha', [])
         delta = FakeContainer('delta', [])
@@ -148,7 +124,7 @@ class Test(TestCase):
         result = find.find(id_filters=[SimpleIdFindFilter(['alpha'])],
                            object_filters=[TestObjectFindFilter(1)])
         self.assertEqual([], result)
-        
+
     def test_interfaceFind(self):
         alpha = FakeContainer('alpha', [])
         directlyProvides(alpha, FakeInterfaceBar)
@@ -165,8 +141,12 @@ class Test(TestCase):
             SimpleInterfacesFindFilter(FakeInterfaceFoo, FakeInterfaceSpam)])
         self.assertEqual([beta, delta], result)
 
-def test_suite():
-    return makeSuite(Test)
+    def test_find_non_container_return_default(self):
+        data = {'a': 42}
+        self.assertEqual(FindAdapter(data).find(), [42])
 
-if __name__=='__main__':
-    main(defaultTest='test_suite')
+def test_suite():
+    return unittest.defaultTestLoader.loadTestsFromName(__name__)
+
+if __name__ == '__main__':
+    unittest.main(defaultTest='test_suite')
