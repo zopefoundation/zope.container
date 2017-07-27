@@ -185,27 +185,13 @@ class OrderedContainer(Persistent, Contained):
 
         existed = key in self._data
 
-        bad = False
-        if isinstance(key, six.string_types):
-            try:
-                key.decode()
-            except AttributeError:
-                # Py3 str cannot decode.
-                pass
-            except UnicodeError:
-                bad = True
-        else:
-            bad = True
-        if bad:
-            raise TypeError("'%s' is invalid, the key must be an "
-                            "ascii or unicode string" % key)
-        if len(key) == 0:
-            raise ValueError("The key cannot be an empty string")
-
         # We have to first update the order, so that the item is available,
         # otherwise most API functions will lie about their available values
         # when an event subscriber tries to do something with the container.
         if not existed:
+            # XXX: This is not using the decoded key that setitem will use.
+            # In the case of a bytes key. This is bad on Python 3. But also not tested.
+            # See https://github.com/zopefoundation/zope.container/issues/17
             self._order.append(key)
 
         # This function creates a lot of events that other code listens to.
@@ -290,8 +276,7 @@ class OrderedContainer(Persistent, Contained):
         0
         """
 
-        if not isinstance(order, list) and \
-            not isinstance(order, tuple):
+        if not isinstance(order, (list, tuple)):
             raise TypeError('order must be a tuple or a list.')
 
         if len(order) != len(self._order):
@@ -301,10 +286,10 @@ class OrderedContainer(Persistent, Contained):
         will_be_dict = {}
         new_order = PersistentList()
 
-        for i in range(len(order)):
+        for i, obj in enumerate(order):
             was_dict[self._order[i]] = 1
-            will_be_dict[order[i]] = 1
-            new_order.append(order[i])
+            will_be_dict[obj] = 1
+            new_order.append(obj)
 
         if will_be_dict != was_dict:
             raise ValueError("Incompatible key set.")
