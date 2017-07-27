@@ -13,6 +13,7 @@
 ##############################################################################
 """Container Traverser tests.
 """
+from __future__ import absolute_import
 import unittest
 from zope.testing.cleanup import CleanUp
 from zope.interface import implementer
@@ -50,12 +51,17 @@ class Test(CleanUp, unittest.TestCase):
         self.assertTrue(T.traverse('bar', []) is bar)
         self.assertRaises(TraversalError, T.traverse, 'morebar', [])
 
-    def test_unicode_attr(self):
+    def test_unicode_obj(self):
         # test traversal with unicode
         voila = Container()
-        c  = Container({}, {u'voil\xe0': voila})
+        c = Container({}, {u'voil\xe0': voila})
         self.assertIs(ContainerTraversable(c).traverse(u'voil\xe0', []),
                       voila)
+
+    def test_unicode_attr(self):
+        c = Container()
+        with self.assertRaises(TraversalError):
+            ContainerTraversable(c).traverse(u'voil\xe0', [])
 
 
 def test_suite():

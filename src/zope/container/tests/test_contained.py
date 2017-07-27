@@ -242,6 +242,18 @@ class TestFunctions(unittest.TestCase):
         finally:
             zope.container.contained.fixing_up = False
 
+
+class TestPlacefulSetup(unittest.TestCase):
+
+    def test_cover(self):
+        # We don't actually use this anywhere in this package, this just makes sure
+        # it's still around.
+        from zope.container.testing import ContainerPlacefulSetup
+        setup = ContainerPlacefulSetup()
+        setup.setUp()
+        setup.buildFolders()
+        setup.tearDown()
+
 def test_suite():
     suite = unittest.defaultTestLoader.loadTestsFromName(__name__)
     suite.addTest(doctest.DocTestSuite(

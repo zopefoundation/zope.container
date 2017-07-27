@@ -48,11 +48,7 @@ except ImportError:
     class IBroken(Interface):
         pass
 
-try:
-    unicode
-except NameError:
-    # Py3: Define unicode type.
-    unicode = str
+from six import text_type
 
 PY3 = sys.version_info[0] >= 3
 
@@ -554,7 +550,7 @@ def setitem(container, setitemf, name, object):
             name = name.decode('ascii')
         except UnicodeError:
             raise TypeError("name not unicode or ascii string")
-    elif not isinstance(name, unicode):
+    elif not isinstance(name, text_type):
         raise TypeError("name not unicode or ascii string")
 
     if not name:
@@ -759,7 +755,7 @@ class NameChooser(object):
 
         if isinstance(name, bytes):
             name = name.decode()
-        elif not isinstance(name, unicode):
+        elif not isinstance(name, text_type):
             raise TypeError("Invalid name type", type(name))
 
         if not name:
@@ -828,9 +824,9 @@ class NameChooser(object):
         # convert to unicode and remove characters that checkName does not allow
         if isinstance(name, bytes):
             name = name.decode()
-        if not isinstance(name, unicode):
+        if not isinstance(name, text_type):
             try:
-                name = unicode(name)
+                name = text_type(name)
             except:
                 name = u''
         name = name.replace('/', '-').lstrip('+@')
