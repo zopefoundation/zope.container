@@ -15,7 +15,7 @@
 """
 
 import doctest
-from unittest import TestCase, TestSuite, main, makeSuite
+import unittest
 
 from zope.container import testing
 import zope.container.directory
@@ -24,7 +24,7 @@ import zope.container.directory
 class Directory(object):
     pass
 
-class Test(TestCase):
+class Test(unittest.TestCase):
 
     def test_Cloner(self):
         d = Directory()
@@ -35,12 +35,12 @@ class Test(TestCase):
 
 def test_suite():
     flags = doctest.ELLIPSIS|doctest.NORMALIZE_WHITESPACE
-    return TestSuite((
-        makeSuite(Test),
+    return unittest.TestSuite((
+        unittest.defaultTestLoader.loadTestsFromName(__name__),
         doctest.DocFileSuite("directory.rst",
                              setUp=testing.setUp, tearDown=testing.tearDown,
                              optionflags=flags),
         ))
 
-if __name__=='__main__':
-    main(defaultTest='test_suite')
+if __name__ == '__main__':
+    unittest.main(defaultTest='test_suite')
