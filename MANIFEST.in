@@ -1,11 +1,21 @@
 include *.txt
+include *.rst
 include MANIFEST.in
 include bootstrap.py
 include buildout.cfg
 include compat.cfg
+include tox.ini
+include .travis.yml
+include appveyor.yml
+include .coveragerc
 
 recursive-include src *.py
 recursive-include src *.rst
 recursive-include src *.zcml
 recursive-include src *.c
 recursive-include include *.h *.txt
+
+recursive-include docs *.bat
+recursive-include docs *.py
+recursive-include docs *.rst
+recursive-include docs Makefile
