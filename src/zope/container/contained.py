@@ -13,6 +13,7 @@
 ##############################################################################
 """Classes to support implementing `IContained`
 """
+import os
 import sys
 import zope.component
 import zope.interface.declarations
@@ -29,14 +30,18 @@ from zope.location.interfaces import IContained
 from zope.container.interfaces import INameChooser
 from zope.container.interfaces import IReservedNames, NameReserved
 from zope.container.interfaces import IContainerModifiedEvent
-try:
-    from zope.container._zope_container_contained import ContainedProxyBase
-    from zope.container._zope_container_contained import getProxiedObject
-    from zope.container._zope_container_contained import setProxiedObject
-except ImportError: # PyPy
-    from zope.container._proxy import py_getProxiedObject as getProxiedObject
-    from zope.container._proxy import py_setProxiedObject as setProxiedObject
-    from zope.container._proxy import PyContainedProxyBase as ContainedProxyBase
+
+from zope.container._proxy import py_getProxiedObject as getProxiedObject
+from zope.container._proxy import py_setProxiedObject as setProxiedObject
+from zope.container._proxy import PyContainedProxyBase as ContainedProxyBase
+if not os.getenv('PURE_PYTHON'):
+    try:
+        from zope.container._zope_container_contained import ContainedProxyBase
+    except ImportError: # PyPy
+        pass
+    else:
+        from zope.container._zope_container_contained import getProxiedObject
+        from zope.container._zope_container_contained import setProxiedObject
 
 from zope.lifecycleevent import ObjectMovedEvent
 from zope.lifecycleevent import ObjectAddedEvent
