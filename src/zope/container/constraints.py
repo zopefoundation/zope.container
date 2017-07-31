@@ -184,13 +184,12 @@ def checkObject(container, name, object):
 
     # check the constraint on __parent__
     __parent__ = providedBy(object).get('__parent__')
-    if __parent__ is not None:
-        try:
-            validate = __parent__.validate
-        except AttributeError:
-            pass
-        else:
-            validate(container)
+    try:
+        validate = __parent__.validate
+    except AttributeError:
+        pass
+    else:
+        validate(container)
 
 
     if not containerProvided.extends(IContainer):
@@ -201,31 +200,29 @@ def checkObject(container, name, object):
 
 def checkFactory(container, name, factory):
     __setitem__ = providedBy(container).get('__setitem__')
-    if __setitem__ is not None:
+
+    try:
         precondition = __setitem__.queryTaggedValue('precondition')
-        if precondition is not None:
-            try:
-                precondition = precondition.factory
-            except AttributeError:
-                pass
-            else:
-                try:
-                    precondition(container, name, factory)
-                except zope.interface.Invalid:
-                    return False
+        precondition = precondition.factory
+    except AttributeError:
+        pass
+    else:
+        try:
+            precondition(container, name, factory)
+        except zope.interface.Invalid:
+            return False
 
     # check the constraint on __parent__
     __parent__ = factory.getInterfaces().get('__parent__')
-    if __parent__ is not None:
+    try:
+        validate = __parent__.validate
+    except AttributeError:
+        pass
+    else:
         try:
-            validate = __parent__.validate
-        except AttributeError:
-            pass
-        else:
-            try:
-                validate(container)
-            except zope.interface.Invalid:
-                return False
+            validate(container)
+        except zope.interface.Invalid:
+            return False
 
     return True
 
@@ -341,7 +338,7 @@ class ItemTypePrecondition(_TypesBased):
 
         for iface in self.types:
             if implemented.isOrExtends(iface):
-               return
+                return
         raise InvalidItemType(container, factory, self.types)
 
 
@@ -378,11 +375,15 @@ def contains(*types):
     if not (f_locals is not f_globals
             and f_locals.get('__module__')
             and f_locals.get('__module__') == f_globals.get('__name__')
-            ):
+    ):
         raise TypeError("contains not called from suite")
 
     def __setitem__(key, value):
-        pass
+        """
+        This serves as a copy of IContainer.__setitem__ to hold
+        the ``precondition`` attribute. Note that it replaces a local
+        __setitem__ defined before.
+        """
     __setitem__.__doc__ = IContainer['__setitem__'].__doc__
     __setitem__.precondition = ItemTypePrecondition(
         *types,
@@ -426,11 +427,10 @@ class ContainerTypesConstraint(_TypesBased):
     True
     """
     def __call__(self, object):
-       for iface in self.types:
-           if iface.providedBy(object):
-               return True
-       else:
-           raise InvalidContainerType(object, self.types)
+        for iface in self.types:
+            if iface.providedBy(object):
+                return True
+        raise InvalidContainerType(object, self.types)
 
 
 def containers(*types):
@@ -468,13 +468,13 @@ def containers(*types):
     if not (f_locals is not f_globals
             and f_locals.get('__module__')
             and f_locals.get('__module__') == f_globals.get('__name__')
-            ):
+    ):
         raise TypeError("containers not called from suite")
 
     __parent__ = zope.schema.Field(
-        constraint = ContainerTypesConstraint(
+        constraint=ContainerTypesConstraint(
             *types,
             **dict(module=f_globals['__name__'])
-            )
         )
+    )
     f_locals['__parent__'] = __parent__

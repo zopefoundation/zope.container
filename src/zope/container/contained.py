@@ -32,8 +32,10 @@ from zope.container.interfaces import IContainerModifiedEvent
 try:
     from zope.container._zope_container_contained import ContainedProxyBase
     from zope.container._zope_container_contained import getProxiedObject
+    from zope.container._zope_container_contained import setProxiedObject
 except ImportError: # PyPy
     from zope.container._proxy import py_getProxiedObject as getProxiedObject
+    from zope.container._proxy import py_setProxiedObject as setProxiedObject
     from zope.container._proxy import PyContainedProxyBase as ContainedProxyBase
 
 from zope.lifecycleevent import ObjectMovedEvent
@@ -46,11 +48,7 @@ except ImportError:
     class IBroken(Interface):
         pass
 
-try:
-    unicode
-except NameError:
-    # Py3: Define unicode type.
-    unicode = str
+from six import text_type
 
 PY3 = sys.version_info[0] >= 3
 
@@ -157,8 +155,7 @@ def dispatchToSublocations(object, event):
     subs = ISublocations(object, None)
     if subs is not None:
         for sub in subs.sublocations():
-            for ignored in zope.component.subscribers((sub, event), None):
-                pass # They do work in the adapter fetch
+            zope.component.handle(sub, event)
 
 class ContainerSublocations(object):
     """Get the sublocations for a container
@@ -553,7 +550,7 @@ def setitem(container, setitemf, name, object):
             name = name.decode('ascii')
         except UnicodeError:
             raise TypeError("name not unicode or ascii string")
-    elif not isinstance(name, unicode):
+    elif not isinstance(name, text_type):
         raise TypeError("name not unicode or ascii string")
 
     if not name:
@@ -757,8 +754,8 @@ class NameChooser(object):
         """
 
         if isinstance(name, bytes):
-            name = name.decode()
-        elif not isinstance(name, unicode):
+            name = name.decode('ascii')
+        elif not isinstance(name, text_type):
             raise TypeError("Invalid name type", type(name))
 
         if not name:
@@ -826,18 +823,18 @@ class NameChooser(object):
 
         # convert to unicode and remove characters that checkName does not allow
         if isinstance(name, bytes):
-            name = name.decode()
-        if not isinstance(name, unicode):
+            name = name.decode('ascii')
+        if not isinstance(name, text_type):
             try:
-                name = unicode(name)
-            except:
+                name = text_type(name)
+            except Exception:
                 name = u''
         name = name.replace('/', '-').lstrip('+@')
 
         if not name:
             name = object.__class__.__name__
             if isinstance(name, bytes):
-                name = name.decode()
+                name = name.decode('ascii')
 
         # for an existing name, append a number.
         # We should keep client's os.path.extsep (not ours), we assume it's '.'
@@ -878,7 +875,6 @@ class DecoratorSpecificationDescriptor(
     ... class D1(ContainedProxy):
     ...   pass
 
-
     >>> @implementer(I2)
     ... class D2(ContainedProxy):
     ...   pass
@@ -905,43 +901,77 @@ class DecoratorSpecificationDescriptor(
     ['I4', 'I3', 'I1', 'IContained', 'IPersistent', 'I2']
     """
     def __get__(self, inst, cls=None):
-        if inst is None:
+        if inst is None: # pragma: no cover (Not sure how we can get here)
             return getObjectSpecification(cls)
-        else:
-            provided = providedBy(getProxiedObject(inst))
 
-            # Use type rather than __class__ because inst is a proxy and
-            # will return the proxied object's class.
-            cls = type(inst)
-            return ObjectSpecification(provided, cls)
+        provided = providedBy(getProxiedObject(inst))
+
+        # Use type rather than __class__ because inst is a proxy and
+        # will return the proxied object's class.
+        cls = type(inst)
+        return ObjectSpecification(provided, cls)
 
 
 class DecoratedSecurityCheckerDescriptor(object):
-    """Descriptor for a Decorator that provides a decorated security checker.
+    """
+    Descriptor for a Decorator that provides a decorated security
+    checker.
+
+    >>> class WithChecker(object):
+    ...     __Security_checker__ = object()
+
+    >>> class D1(ContainedProxy):
+    ...    pass
+
+
+    >>> d = D1(object())
+    >>> d.__Security_checker__ # doctest: +ELLIPSIS
+    <...Checker...>
+
+    An existing checker is added to this one:
+
+    >>> d = D1(WithChecker())
+    >>> d.__Security_checker__ # doctest: +ELLIPSIS
+    <...CombinedChecker...>
     """
     def __get__(self, inst, cls=None):
-        if inst is None:
+        if inst is None: # pragma: no cover (Not sure how we can get here)
             return self
-        else:
-            proxied_object = getProxiedObject(inst)
-            checker = getattr(proxied_object, '__Security_checker__', None)
-            if checker is None:
-                checker = selectChecker(proxied_object)
-            wrapper_checker = selectChecker(inst)
-            if wrapper_checker is None:
-                return checker
-            elif checker is None:
-                return wrapper_checker
-            else:
-                return CombinedChecker(wrapper_checker, checker)
+
+        proxied_object = getProxiedObject(inst)
+        checker = getattr(proxied_object, '__Security_checker__', None)
+        if checker is None:
+            checker = selectChecker(proxied_object)
+        wrapper_checker = selectChecker(inst)
+        if wrapper_checker is None: # pragma: no cover
+            return checker
+        if checker is None:
+            return wrapper_checker
+        return CombinedChecker(wrapper_checker, checker)
 
 class ContainedProxyClassProvides(zope.interface.declarations.ClassProvides):
+    """
+    Delegates __provides__ to the instance.
 
+    >>> class D1(ContainedProxy):
+    ...    pass
+    >>> class Base(object):
+    ...    pass
+    >>> base = Base()
+    >>> d = D1(base)
+    >>> d.__provides__ = 42
+    >>> base.__provides__
+    42
+    >>> del d.__provides__
+    >>> hasattr(base, '__provides__')
+    False
+    """
     def __set__(self, inst, value):
         inst = getProxiedObject(inst)
         inst.__provides__ = value
 
     def __delete__(self, inst):
+        # CPython can hit this, PyPy/PURE_PYTHON cannot
         inst = getProxiedObject(inst)
         del inst.__provides__
 

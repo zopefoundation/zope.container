@@ -15,32 +15,46 @@
 """
 
 import doctest
-from unittest import TestCase, TestSuite, main, makeSuite
+import unittest
 
 from zope.container import testing
-import zope.container.directory
+from zope.container import directory
 
 
 class Directory(object):
-    pass
+    a = None
 
-class Test(TestCase):
+class TestCloner(unittest.TestCase):
 
     def test_Cloner(self):
         d = Directory()
         d.a = 1
-        clone = zope.container.directory.Cloner(d)('foo')
-        self.assertTrue(clone != d)
+        clone = directory.Cloner(d)('foo')
+        self.assertIsNot(clone, d)
         self.assertEqual(clone.__class__, d.__class__)
+
+
+class TestNoop(unittest.TestCase):
+
+    def test_noop(self):
+        self.assertIs(self, directory.noop(self))
+
+
+class TestRootDirectoryFactory(unittest.TestCase):
+
+    def test_returns_folder(self):
+        from zope.container.folder import Folder
+        factory = directory.RootDirectoryFactory(None)
+        self.assertIsInstance(factory(None), Folder)
 
 def test_suite():
     flags = doctest.ELLIPSIS|doctest.NORMALIZE_WHITESPACE
-    return TestSuite((
-        makeSuite(Test),
+    return unittest.TestSuite((
+        unittest.defaultTestLoader.loadTestsFromName(__name__),
         doctest.DocFileSuite("directory.rst",
                              setUp=testing.setUp, tearDown=testing.tearDown,
                              optionflags=flags),
         ))
 
-if __name__=='__main__':
-    main(defaultTest='test_suite')
+if __name__ == '__main__':
+    unittest.main(defaultTest='test_suite')

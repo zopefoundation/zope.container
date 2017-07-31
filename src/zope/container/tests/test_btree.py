@@ -13,10 +13,10 @@
 ##############################################################################
 """BTree Container Tests
 """
-from doctest import DocTestSuite
-from unittest import TestCase, main, makeSuite, TestSuite
+import unittest
+
 from zope.interface.verify import verifyObject
-from zope.component.testing import setUp, tearDown
+
 from zope.container.tests.test_icontainer import TestSampleContainer
 from zope.container.btree import BTreeContainer
 from zope.container.interfaces import IBTreeContainer
@@ -25,18 +25,22 @@ from zope.container.contained import Contained
 from zope.lifecycleevent.interfaces import IObjectRemovedEvent
 
 
-class TestBTreeContainer(TestSampleContainer, TestCase):
+class TestBTreeContainer(TestSampleContainer, unittest.TestCase):
 
     def makeTestObject(self):
         return BTreeContainer()
 
 
-class TestBTreeSpecials(TestCase):
+class TestBTreeSpecials(unittest.TestCase):
 
     def testStoredLength(self):
-        # This is lazy for backward compatibility.  If the len is not
+        # This is a lazy property for backward compatibility.  If the len is not
         # stored already we set it to the length of the underlying
         # btree.
+        lazy = BTreeContainer._BTreeContainer__len
+        self.assertIs(lazy, BTreeContainer.__dict__['_BTreeContainer__len'])
+        self.assertTrue(hasattr(lazy, '__get__'))
+
         bc = BTreeContainer()
         self.assertEqual(bc.__dict__['_BTreeContainer__len'](), 0)
         del bc.__dict__['_BTreeContainer__len']
@@ -44,6 +48,12 @@ class TestBTreeSpecials(TestCase):
         bc['1'] = 1
         self.assertEqual(len(bc), 1)
         self.assertEqual(bc.__dict__['_BTreeContainer__len'](), 1)
+
+        del bc.__dict__['_BTreeContainer__len']
+        self.assertFalse('_BTreeContainer__len' in bc.__dict__)
+        self.assertEqual(len(bc), 1)
+        self.assertEqual(bc.__dict__['_BTreeContainer__len'](), 1)
+
 
     # The tests which follow test the additional signatures and declarations
     # for the BTreeContainer that allow it to provide the IBTreeContainer
@@ -164,7 +174,7 @@ class TestBTreeSpecials(TestCase):
         self.assertEqual(list(iterable), first_time)
 
 
-class TestBTreeEvents(TestCase):
+class TestBTreeEvents(unittest.TestCase):
 
     def setUp(self):
         from zope.event import subscribers
@@ -198,11 +208,7 @@ class TestBTreeEvents(TestCase):
 
 
 def test_suite():
-    return TestSuite((
-        makeSuite(TestBTreeContainer),
-        makeSuite(TestBTreeSpecials),
-        makeSuite(TestBTreeEvents),
-        ))
+    return unittest.defaultTestLoader.loadTestsFromName(__name__)
 
-if __name__=='__main__':
-    main(defaultTest='test_suite')
+if __name__ == '__main__':
+    unittest.main(defaultTest='test_suite')

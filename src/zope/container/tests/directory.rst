@@ -30,6 +30,20 @@ The new folder isn't a site manager and doesn't have any entries:
   >>> 'test' in fs_folder
   False
 
+If we pretend that our folder is a site, we have that entry:
+
+  >>> from zope.component.interfaces import ISite
+  >>> from zope.interface import alsoProvides
+  >>> alsoProvides(folder, ISite)
+  >>> folder.getSiteManager = lambda: 42
+  >>> list(fs_folder.keys())
+  ['++etc++site']
+  >>> fs_folder['++etc++site']
+  42
+  >>> len(fs_folder)
+  1
+
+
 This is a short regression test for #728: we get a KeyError when trying to
 access non-existing entries:
 
@@ -40,4 +54,3 @@ access non-existing entries:
   >>> print(proxied_fs_folder['i dont exist'])
   Traceback (most recent call last):
   KeyError: 'i dont exist'
-

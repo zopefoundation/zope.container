@@ -9,6 +9,26 @@
 
 - Drop support for Python 2.6 and 3.3.
 
+- Make ``OrderedContainer`` properly store the decoded text keys for
+  maintaining order instead of the raw bytes. Also make it able to
+  accept raw bytes under Python 3 in the first place. Fixes
+  https://github.com/zopefoundation/zope.container/issues/17
+
+- Fix ``OrderedContainer`` becoming inconsistent if an event
+  subscriber threw an exception when adding an item. See
+  https://github.com/zopefoundation/zope.container/issues/18
+
+- Attain 100% test coverage. See
+  https://github.com/zopefoundation/zope.container/issues/15
+
+- Make the default ``NameChooser`` always decode bytes using ASCII instead of
+  whatever the current system codec happens to be.
+
+- Make the default ``NameChooser`` stop catching ``KeyboardInterrupt``
+  and other ``BaseException`` types when it potentially calls
+  user-defined code to convert a name to a text string. Instead, just
+  catch ``Exception``.
+
 4.1.0 (2015-05-22)
 ==================
 

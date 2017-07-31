@@ -13,6 +13,7 @@
 ##############################################################################
 """Container Traverser Tests
 """
+
 import unittest
 from zope.interface import Interface, implementer
 from zope import component
@@ -21,6 +22,7 @@ from zope.publisher.browser import TestRequest
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 from zope.container.traversal import ContainerTraverser
+from zope.container.traversal import ItemTraverser
 from zope.container.interfaces import IReadContainer
 from zope.container import testing
 
@@ -29,11 +31,17 @@ class TestContainer(object):
 
     def __init__(self, **kw):
         for name, value in kw.items():
-            setattr(self, name , value)
+            setattr(self, name, value)
 
     def get(self, name, default=None):
         return getattr(self, name, default)
 
+    def __getitem__(self, name):
+        v = object()
+        o = self.get(name, v)
+        if o is v:
+            raise KeyError(name)
+        return o
 
 class View(object):
     def __init__(self, context, request):
@@ -96,13 +104,17 @@ class TraverserTest(testing.ContainerPlacelessSetup, unittest.TestCase):
             'myDefaultView', (Interface, IDefaultBrowserLayer),
             IDefaultViewName)
         self.assertEqual((self.subcontainer, ('@@myDefaultView',)),
-                          self.traverser.browserDefault(self.request))
+                         self.traverser.browserDefault(self.request))
 
+
+class TestItemTraverser(TraverserTest):
+
+    def _getTraverser(self, context, request):
+        return ItemTraverser(context, request)
 
 def test_suite():
-    return unittest.TestSuite((
-        unittest.makeSuite(TraverserTest),
-        ))
+    return unittest.defaultTestLoader.loadTestsFromName(__name__)
+
 
 if __name__ == '__main__':
     unittest.main(defaultTest='test_suite')

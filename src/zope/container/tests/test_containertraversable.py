@@ -13,6 +13,7 @@
 ##############################################################################
 """Container Traverser tests.
 """
+from __future__ import absolute_import
 import unittest
 from zope.testing.cleanup import CleanUp
 from zope.interface import implementer
@@ -25,23 +26,16 @@ import six
 @implementer(IContainer)
 class Container(object):
 
-    def __init__(self, attrs={}, objs={}):
-        for attr,value in six.iteritems(attrs):
+    def __init__(self, attrs=None, objs=None):
+        for attr, value in six.iteritems(attrs or {}):
             setattr(self, attr, value)
 
         self.__objs = {}
-        for name,value in six.iteritems(objs):
+        for name, value in six.iteritems(objs or {}):
             self.__objs[name] = value
-
-
-    def __getitem__(self, name):
-        return self.__objs[name]
 
     def get(self, name, default=None):
         return self.__objs.get(name, default)
-
-    def __contains__(self, name):
-        return name in self.__objs
 
 
 class Test(CleanUp, unittest.TestCase):
@@ -50,25 +44,28 @@ class Test(CleanUp, unittest.TestCase):
         foo = Container()
         bar = Container()
         baz = Container()
-        c   = Container({'foo': foo}, {'bar': bar, 'foo': baz})
+        c = Container({'foo': foo}, {'bar': bar, 'foo': baz})
 
         T = ContainerTraversable(c)
         self.assertTrue(T.traverse('foo', []) is baz)
         self.assertTrue(T.traverse('bar', []) is bar)
+        self.assertRaises(TraversalError, T.traverse, 'morebar', [])
 
-        self.assertRaises(TraversalError , T.traverse, 'morebar', [])
-    def test_unicode_attr(self):
+    def test_unicode_obj(self):
         # test traversal with unicode
         voila = Container()
-        c   = Container({}, {u'voil\xe0': voila})
-        self.assertTrue(ContainerTraversable(c).traverse(u'voil\xe0', [])
-                            is voila)
+        c = Container({}, {u'voil\xe0': voila})
+        self.assertIs(ContainerTraversable(c).traverse(u'voil\xe0', []),
+                      voila)
+
+    def test_unicode_attr(self):
+        c = Container()
+        with self.assertRaises(TraversalError):
+            ContainerTraversable(c).traverse(u'voil\xe0', [])
 
 
 def test_suite():
-    loader = unittest.TestLoader()
-    return loader.loadTestsFromTestCase(Test)
-
+    return unittest.defaultTestLoader.loadTestsFromName(__name__)
 
 if __name__ == '__main__':
-    unittest.TextTestRunner().run(test_suite())
+    unittest.main()

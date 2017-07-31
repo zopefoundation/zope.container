@@ -14,7 +14,7 @@
 """Ordered container implementation.
 """
 __docformat__ = 'restructuredtext'
-import six
+
 from persistent import Persistent
 from persistent.dict import PersistentDict
 from persistent.list import PersistentList
@@ -160,6 +160,11 @@ class OrderedContainer(Persistent, Contained):
 
     has_key = __contains__
 
+    def _setitemf(self, key, value):
+        if key not in self._data:
+            self._order.append(key)
+        self._data[key] = value
+
     def __setitem__(self, key, object):
         """ See `IOrderedContainer`.
 
@@ -182,40 +187,11 @@ class OrderedContainer(Persistent, Contained):
         >>> oc._order
         ['foo', 'baz']
         """
-
-        existed = key in self._data
-
-        bad = False
-        if isinstance(key, six.string_types):
-            try:
-                key.decode()
-            except AttributeError:
-                # Py3 str cannot decode.
-                pass
-            except UnicodeError:
-                bad = True
-        else:
-            bad = True
-        if bad:
-            raise TypeError("'%s' is invalid, the key must be an "
-                            "ascii or unicode string" % key)
-        if len(key) == 0:
-            raise ValueError("The key cannot be an empty string")
-
-        # We have to first update the order, so that the item is available,
-        # otherwise most API functions will lie about their available values
-        # when an event subscriber tries to do something with the container.
-        if not existed:
-            self._order.append(key)
-
-        # This function creates a lot of events that other code listens to.
-        try:
-            setitem(self, self._data.__setitem__, key, object)
-        except Exception:
-            if not existed:
-                self._order.remove(key)
-            raise
-
+        # This function creates a lot of events that other code
+        # listens to. None of them are fired (notified) though, before
+        # _setitemf is called. At that point we need to be sure that
+        # we have the key in _order too.
+        setitem(self, self._setitemf, key, object)
         return key
 
     def __delitem__(self, key):
@@ -290,8 +266,7 @@ class OrderedContainer(Persistent, Contained):
         0
         """
 
-        if not isinstance(order, list) and \
-            not isinstance(order, tuple):
+        if not isinstance(order, (list, tuple)):
             raise TypeError('order must be a tuple or a list.')
 
         if len(order) != len(self._order):
@@ -301,10 +276,10 @@ class OrderedContainer(Persistent, Contained):
         will_be_dict = {}
         new_order = PersistentList()
 
-        for i in range(len(order)):
+        for i, obj in enumerate(order):
             was_dict[self._order[i]] = 1
-            will_be_dict[order[i]] = 1
-            new_order.append(order[i])
+            will_be_dict[obj] = 1
+            new_order.append(obj)
 
         if will_be_dict != was_dict:
             raise ValueError("Incompatible key set.")

@@ -14,7 +14,6 @@
 """Contained Tests
 """
 
-import doctest
 import gc
 import unittest
 
@@ -23,211 +22,183 @@ try:
     from ZODB.DB import DB
     import transaction
     HAVE_ZODB = True
-except ImportError:
+except ImportError: # pragma: no cover
     HAVE_ZODB = False
 
 from persistent import Persistent
 
-import zope.interface
-import zope.component
+from zope.container.contained import ContainedProxy
 
-from zope.container.contained import ContainedProxy, NameChooser
-from zope.container.sample import SampleContainer
-from zope.container import testing
-from zope.container.interfaces import NameReserved, IContainer, IReservedNames
 
 class MyOb(Persistent):
     pass
 
+@unittest.skipUnless(HAVE_ZODB, "Needs ZODB")
+class TestContainedZODB(unittest.TestCase):
 
-def test_basic_persistent_w_non_persistent_proxied():
-    """
-    >>> p = ContainedProxy([1])
-    >>> p.__parent__ = 2
-    >>> p.__name__ = 'test'
-    >>> db = DB(DemoStorage('test_storage'))
-    >>> c = db.open()
-    >>> c.root()['p'] = p
-    >>> transaction.commit()
+    def setUp(self):
+        self.db = DB(DemoStorage('test_storage'))
 
-    >>> c2 = db.open()
-    >>> p2 = c2.root()['p']
-    >>> p2
-    [1]
-    >>> p2.__parent__
-    2
-    >>> p2.__name__
-    'test'
+    def tearDown(self):
+        self.db.close()
 
-    >>> p2._p_changed
-    0
-    >>> p2._p_deactivate()
-    >>> bool(p2._p_changed)
-    False
-    >>> p2.__name__
-    'test'
+    def test_basic_persistent_w_non_persistent_proxied(self):
+        p = ContainedProxy([1])
+        p.__parent__ = 2
+        p.__name__ = 'test'
+        db = self.db
+        c = db.open()
+        c.root()['p'] = p
+        transaction.commit()
 
-    >>> db.close()
-    """
+        c2 = db.open()
+        p2 = c2.root()['p']
+        self.assertEqual([1], p2)
+        self.assertEqual(2, p2.__parent__)
+        self.assertEqual('test', p2.__name__)
+
+        self.assertEqual(0, p2._p_changed)
+        p2._p_deactivate()
+        self.assertFalse(bool(p2._p_changed))
+
+        self.assertEqual(p2.__name__, 'test')
+
+    def test_basic_persistent_w_persistent_proxied(self):
+        # Here, we'll verify that shared references work and
+        # that updates to both the proxies and the proxied objects
+        # are made correctly.
+        #
+        #        ----------------------
+        #        |                    |
+        #      parent                other
+        #        |                 /
+        #       ob  <--------------
+
+        # Here we have an object, parent, that contains ob.  There is another
+        # object, other, that has a non-container reference to ob.
+
+        parent = MyOb()
+        parent.ob = ContainedProxy(MyOb())
+        parent.ob.__parent__ = parent
+        parent.ob.__name__ = 'test'
+        other = MyOb()
+        other.ob = parent.ob
+
+        # We can change ob through either parent or other
+
+        parent.ob.x = 1
+        other.ob.y = 2
+
+        # Now we'll save the data:
+
+        db = self.db
+        c1 = db.open()
+        c1.root()['parent'] = parent
+        c1.root()['other'] = other
+        transaction.commit()
+
+        # We'll open a second connection and verify that we have the data we
+        # expect:
+
+        c2 = db.open()
+        p2 = c2.root()['parent']
+        self.assertIs(p2.ob.__parent__, p2)
+
+        self.assertEqual(1, p2.ob.x)
+        self.assertEqual(2, p2.ob.y)
+
+        o2 = c2.root()['other']
+        self.assertIs(o2.ob, p2.ob)
+        self.assertIs(o2.ob, p2.ob)
+        self.assertEqual('test', o2.ob.__name__)
 
 
-def test_basic_persistent_w_persistent_proxied():
-    """
+        # Now we'll change things around a bit. We'll move things around
+        # a bit. We'll also add an attribute to ob
 
-    Here, we'll verify that shared references work and
-    that updates to both the proxies and the proxied objects
-    are made correctly.
+        o2.ob.__name__ = 'test 2'
+        o2.ob.__parent__ = o2
+        o2.ob.z = 3
 
-            ----------------------
-            |                    |
-          parent                other
-            |                 /
-           ob  <--------------
+        self.assertIsNot(p2.ob.__parent__, p2)
+        self.assertIs(p2.ob.__parent__, o2)
 
-    Here we have an object, parent, that contains ob.  There is another
-    object, other, that has a non-container reference to ob.
+        # And save the changes:
 
-    >>> parent = MyOb()
-    >>> parent.ob = ContainedProxy(MyOb())
-    >>> parent.ob.__parent__ = parent
-    >>> parent.ob.__name__ = 'test'
-    >>> other = MyOb()
-    >>> other.ob = parent.ob
+        transaction.commit()
 
-    We can change ob through either parent or other
+        # Now we'll reopen the first connection and verify that we can see
+        # the changes:
 
-    >>> parent.ob.x = 1
-    >>> other.ob.y = 2
+        c1.close()
+        c1 = db.open()
+        p2 = c1.root()['parent']
+        self.assertEqual('test 2', p2.ob.__name__)
 
-    Now we'll save the data:
+        self.assertEqual(3, p2.ob.z)
+        self.assertIs(p2.ob.__parent__, c1.root()['other'])
 
-    >>> db = DB(DemoStorage('test_storage'))
-    >>> c1 = db.open()
-    >>> c1.root()['parent'] = parent
-    >>> c1.root()['other'] = other
-    >>> transaction.commit()
+    def test_proxy_cache_interaction(self):
+        # Test to make sure the proxy properly interacts with the object cache
 
-    We'll open a second connection and verify that we have the data we
-    expect:
+        # Persistent objects are their own weak refs.  Thier deallocators
+        # need to notify their connection's cache that their object is being
+        # deallocated, so that it is removed from the cache.
 
-    >>> c2 = db.open()
-    >>> p2 = c2.root()['parent']
-    >>> p2.ob.__parent__ is p2
-    1
-    >>> p2.ob.x
-    1
-    >>> p2.ob.y
-    2
-    >>> o2 = c2.root()['other']
-    >>> o2.ob is p2.ob
-    1
-    >>> o2.ob is p2.ob
-    1
-    >>> o2.ob.__name__
-    'test'
+        db = self.db
+        db.setCacheSize(5)
+        conn = db.open()
+        conn.root()['p'] = ContainedProxy(None)
 
-    Now we'll change things around a bit. We'll move things around
-    a bit. We'll also add an attribute to ob
+        # We need to create some filler objects to push our proxy out of the cache:
 
-    >>> o2.ob.__name__ = 'test 2'
-    >>> o2.ob.__parent__ = o2
-    >>> o2.ob.z = 3
+        for i in range(10):
+            conn.root()[i] = MyOb()
 
-    >>> p2.ob.__parent__ is p2
-    0
-    >>> p2.ob.__parent__ is o2
-    1
+        transaction.commit()
 
-    And save the changes:
+        # Let's get the oid of our proxy:
 
-    >>> transaction.commit()
+        oid = conn.root()['p']._p_oid
 
-    Now we'll reopen the first connection and verify that we can see
-    the changes:
+        # Now, we'll access the filler object's:
+        for i in range(10):
+            getattr(conn.root()[i], 'x', 0)
 
-    >>> c1.close()
-    >>> c1 = db.open()
-    >>> p2 = c1.root()['parent']
-    >>> p2.ob.__name__
-    'test 2'
-    >>> p2.ob.z
-    3
-    >>> p2.ob.__parent__ is c1.root()['other']
-    1
+        # We've also accessed the root object. If we garbage-collect the
+        # cache:
 
-    >>> db.close()
-    """
+        conn._cache.incrgc()
 
-def test_proxy_cache_interaction():
-    """Test to make sure the proxy properly interacts with the object cache
+        # Then the root object will still be active, because it was accessed
+        # recently:
 
-    Persistent objects are their own weak refs.  Thier deallocators
-    need to notify their connection's cache that their object is being
-    deallocated, so that it is removed from the cache.
+        self.assertEqual(0, conn.root()._p_changed)
 
-    >>> from ZODB.tests.util import DB
-    >>> db = DB()
-    >>> db.setCacheSize(5)
-    >>> conn = db.open()
-    >>> conn.root()['p'] = ContainedProxy(None)
+        # And the proxy will be in the cache, because it's refernced from
+        # the root object:
 
-    We need to create some filler objects to push our proxy out of the cache:
+        self.assertIsNotNone(conn._cache.get(oid))
 
-    >>> for i in range(10):
-    ...     conn.root()[i] = MyOb()
+        # But it's a ghost:
 
-    >>> transaction.commit()
+        self.assertFalse(bool(conn.root()['p']._p_changed))
 
-    Let's get the oid of our proxy:
 
-    >>> oid = conn.root()['p']._p_oid
+        # If we deactivate the root object:
 
-    Now, we'll access the filler object's:
+        conn.root()._p_deactivate()
 
-    >>> x = [getattr(conn.root()[i], 'x', 0) for i in range(10)]
+        # Then we'll release the last reference to the proxy and it should
+        # no longer be in the cache. To be sure, we'll call gc:
 
-    We've also accessed the root object. If we garbage-collect the
-    cache:
-
-    >>> _ = conn._cache.incrgc()
-
-    Then the root object will still be active, because it was accessed
-    recently:
-
-    >>> conn.root()._p_changed
-    0
-
-    And the proxy will be in the cache, because it's refernced from
-    the root object:
-
-    >>> conn._cache.get(oid) is not None
-    True
-
-    But it's a ghost:
-
-    >>> bool(conn.root()['p']._p_changed)
-    False
-
-    If we deactivate the root object:
-
-    >>> conn.root()._p_deactivate()
-
-    Then we'll release the last reference to the proxy and it should
-    no longer be in the cache. To be sure, we'll call gc:
-
-    >>> x = gc.collect()
-    >>> conn._cache.get(oid) is not None
-    False
-
-    """
+        gc.collect()
+        self.assertIsNone(conn._cache.get(oid))
 
 
 def test_suite():
-    if not HAVE_ZODB:
-        return unittest.TestSuite([])
-    return unittest.TestSuite((
-        doctest.DocTestSuite(optionflags=doctest.NORMALIZE_WHITESPACE),
-        ))
+    return unittest.defaultTestLoader.loadTestsFromName(__name__)
 
 
-if __name__ == '__main__': unittest.main()
+if __name__ == '__main__':
+    unittest.main()

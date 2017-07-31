@@ -24,6 +24,7 @@ def DefaultTestData():
     return [('3', '0'), ('2', '1'), ('4', '2'), ('6', '3'), ('0', '4'),
             ('5', '5'), ('1', '6'), ('8', '7'), ('7', '8'), ('9', '9')]
 
+
 class BaseTestIContainer(testing.ContainerPlacelessSetup):
     """Base test cases for containers.
 
@@ -34,6 +35,8 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
     the test container.  The list must be at least ten items long.
     'NoSuchKey' may not be used as a key value in the returned list.
     """
+    __container = None
+    __data = None
 
     def __setUp(self):
         self.__container = container = self.makeTestObject()
@@ -56,8 +59,8 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
 
         container, data = self.__setUp()
         keys = container.keys()
-        keys = list(keys); keys.sort() # convert to sorted list
-        ikeys = [ k for k, v in data ]; ikeys.sort() # sort input keys
+        keys = sorted(keys) # convert to sorted list
+        ikeys = sorted([k for k, _v in data]) # sort input keys
         self.assertEqual(keys, ikeys)
 
     def test_get(self):
@@ -84,11 +87,8 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
 
         container, data = self.__setUp()
         values = list(container.values())
-        for k, v in data:
-            try:
-                values.remove(v)
-            except ValueError:
-                self.fail('Value not in list')
+        for _k, v in data:
+            values.remove(v)
 
         self.assertEqual(values, [])
 
@@ -100,6 +100,13 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
         container, data = self.__setUp()
         self.assertEqual(len(container), len(data))
 
+    def test_iter(self):
+        container = self.makeTestObject()
+        self.assertEqual(list(container), [])
+
+        container, data = self.__setUp()
+        self.assertEqual(len(list(container)), len(data))
+
     def test_items(self):
         # See interface IReadContainer
         container = self.makeTestObject()
@@ -108,20 +115,20 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
 
         container, data = self.__setUp()
         items = container.items()
-        items = list(items); items.sort() # convert to sorted list
-        data.sort()                       # sort input data
+        items = sorted(items) # convert to sorted list
+        data.sort() # sort input data
         self.assertEqual(items, data)
 
     def test___contains__(self):
         # See interface IReadContainer
         container = self.makeTestObject()
         data = self.makeTestData()
-        self.assertEqual(not not (data[6][0] in container), False)
+        self.assertNotIn(data[6][0], container)
 
         container, data = self.__setUp()
-        self.assertEqual(not not (data[6][0] in container), True)
+        self.assertIn(data[6][0], container)
         for i in (1, 8, 7, 3, 4):
-            self.assertEqual(not not (data[i][0] in container), 1)
+            self.assertIn(data[i][0], container)
 
     def test_delObject(self):
         # See interface IWriteContainer
@@ -140,6 +147,42 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
             self.assertEqual(container.get(data[i][0], default), default)
         for i in (0, 2, 9, 6, 5):
             self.assertEqual(container[data[i][0]], data[i][1])
+
+    def test_bytes_keys_converted_to_unicode(self):
+        # https://github.com/zopefoundation/zope.container/issues/17
+        container = self.makeTestObject()
+        container[b'abc'] = 1
+        self.assertIn(u'abc', container)
+        del container[u'abc']
+        self.assertNotIn(u'abc', container)
+
+    def test_exception_in_subscriber_leaves_item_in_place(self):
+        # Now register an event subscriber to object added events that
+        # throws an error.
+        # https://github.com/zopefoundation/zope.container/issues/18
+
+        import zope.component
+        from zope.lifecycleevent.interfaces import IObjectAddedEvent
+
+        class MyException(Exception):
+            pass
+
+        @zope.component.adapter(IObjectAddedEvent)
+        def raiseException(event):
+            raise MyException()
+
+        zope.component.provideHandler(raiseException)
+
+        # Now we are adding an object to the container.
+
+        container = self.makeTestObject()
+        with self.assertRaises(MyException):
+            container['foo'] = 'FOO'
+
+        # The key 'foo' should still be present
+        self.assertIn('foo', container.keys())
+        self.assertEqual(list(iter(container)), ['foo'])
+        self.assertIn('foo', container)
 
     ############################################################
     # Tests from Folder
@@ -197,11 +240,11 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
         folder[name2] = foo2
 
         self.assertEqual(len(folder.keys()), 2)
-        self.assertEqual(not not name2 in folder.keys(), True)
+        self.assertIn(name2, folder.keys())
         self.assertEqual(len(folder.values()), 2)
-        self.assertEqual(not not foo2 in folder.values(), True)
+        self.assertIn(foo2, folder.values())
         self.assertEqual(len(folder.items()), 2)
-        self.assertEqual(not not (name2, foo2) in folder.items(), True)
+        self.assertIn((name2, foo2), folder.items())
         self.assertEqual(len(folder), 2)
 
         del folder[name]
@@ -220,7 +263,7 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
     def testManyItems(self):
         folder = self.makeTestObject()
         data = self.makeTestData()
-        objects = [ data[i][1] for i in range(4) ]
+        objects = [data[i][1] for i in range(4)]
         name0 = data[0][0]
         name1 = data[1][0]
         name2 = data[2][0]
@@ -313,5 +356,5 @@ class TestSampleContainer(BaseTestIContainer, TestCase):
 def test_suite():
     return makeSuite(TestSampleContainer)
 
-if __name__=='__main__':
+if __name__ == '__main__':
     main(defaultTest='test_suite')

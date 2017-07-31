@@ -60,8 +60,7 @@ class Test(unittest.TestCase):
         self.assertEqual(sized.sizeForDisplay().mapping['items'], '2')
 
 def test_suite():
-    loader = unittest.TestLoader()
-    return loader.loadTestsFromTestCase(Test)
+    return unittest.defaultTestLoader.loadTestsFromName(__name__)
 
-if __name__=='__main__':
-    unittest.TextTestRunner().run(test_suite())
+if __name__ == '__main__':
+    unittest.main()
