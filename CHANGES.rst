@@ -29,6 +29,11 @@
   user-defined code to convert a name to a text string. Instead, just
   catch ``Exception``.
 
+- Respect the ``PURE_PYTHON`` environment variable at runtime in
+  addition to build time. This makes it possible to use the
+  pure-Python implementation of the container proxy on CPython for
+  ease of debugging. See https://github.com/zopefoundation/zope.container/issues/13
+
 4.1.0 (2015-05-22)
 ==================
 
