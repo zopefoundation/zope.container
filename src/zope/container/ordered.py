@@ -281,6 +281,6 @@ class OrderedContainer(Persistent, Contained):
         if order == self._order:
             return
 
-        self._order.sort(key=order.index)
+        self._order[:] = order
 
         notifyContainerModified(self)

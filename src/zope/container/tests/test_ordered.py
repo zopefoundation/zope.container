@@ -102,14 +102,12 @@ class TestOrderedContainer(TestSampleContainer):
 
         self.assertEqual(keys, oc.keys())
 
+        # Updating with bytes keys...
         oc.updateOrder((b'b', b'a'))
-
+        # still produces text keys
         text_type = str if str is not bytes else unicode
         self.assertEqual(list(reversed(keys)), oc.keys())
         self.assertIsInstance(oc.keys()[0], text_type)
-
-        # It also kept the exact key objects as given
-        self.assertIs(oc.keys()[0], keys[1])
 
 
 def test_suite():
