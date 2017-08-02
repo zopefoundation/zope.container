@@ -5,7 +5,9 @@
 4.2.1 (unreleased)
 ==================
 
-- Nothing changed yet.
+- Make ``OrderedContainer.updateOrder`` normalize and store text keys
+  the same way that ``__setitem__`` does. Fixes
+  https://github.com/zopefoundation/zope.container/issues/21
 
 
 4.2.0 (2017-07-31)

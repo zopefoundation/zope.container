@@ -344,6 +344,22 @@ def notifyContainerModified(object, *descriptions):
 
 _SENTINEL = object()
 
+def checkAndConvertName(name):
+    # Basic name checks, including converting bytes to text.
+    # Not a documented public API function.
+
+    if isinstance(name, bytes):
+        try:
+            name = name.decode('ascii')
+        except UnicodeError:
+            raise TypeError("name not unicode or ascii string")
+    elif not isinstance(name, text_type):
+        raise TypeError("name not unicode or ascii string")
+
+    if not name:
+        raise ValueError("empty names are not allowed")
+    return name
+
 def setitem(container, setitemf, name, object):
     """Helper function to set an item and generate needed events
 
@@ -550,16 +566,7 @@ def setitem(container, setitemf, name, object):
 
     """
     # Do basic name check:
-    if isinstance(name, bytes):
-        try:
-            name = name.decode('ascii')
-        except UnicodeError:
-            raise TypeError("name not unicode or ascii string")
-    elif not isinstance(name, text_type):
-        raise TypeError("name not unicode or ascii string")
-
-    if not name:
-        raise ValueError("empty names are not allowed")
+    name = checkAndConvertName(name)
 
     old = container.get(name, _SENTINEL)
     if old is object:

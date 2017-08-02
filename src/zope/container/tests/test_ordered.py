@@ -92,6 +92,25 @@ class TestOrderedContainer(TestSampleContainer):
         self.assertIsNotNone(oc['foo'])
         self.assertEqual(None, oc['foo'])
 
+    def test_order_updateOrder_bytes(self):
+        # https://github.com/zopefoundation/zope.container/issues/21
+        from zope.container.ordered import OrderedContainer
+        keys = [u'a', u'b']
+        oc = OrderedContainer()
+        oc[keys[0]] = 0
+        oc[keys[1]] = 1
+
+        self.assertEqual(keys, oc.keys())
+
+        oc.updateOrder((b'b', b'a'))
+
+        text_type = str if str is not bytes else unicode
+        self.assertEqual(list(reversed(keys)), oc.keys())
+        self.assertIsInstance(oc.keys()[0], text_type)
+
+        # It also kept the exact key objects as given
+        self.assertIs(oc.keys()[0], keys[1])
+
 
 def test_suite():
     suite = unittest.TestSuite([
