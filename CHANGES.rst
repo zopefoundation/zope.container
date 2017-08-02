@@ -2,7 +2,7 @@
  Changes
 =========
 
-4.2.1 (unreleased)
+4.2.1 (2017-08-02)
 ==================
 
 - Make ``OrderedContainer.updateOrder`` normalize and store text keys
