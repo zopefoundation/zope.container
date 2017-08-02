@@ -22,6 +22,7 @@ from zope.container.interfaces import IOrderedContainer
 from zope.interface import implementer
 from zope.container.contained import Contained, setitem, uncontained
 from zope.container.contained import notifyContainerModified
+from zope.container.contained import checkAndConvertName
 
 @implementer(IOrderedContainer)
 class OrderedContainer(Persistent, Contained):
@@ -272,17 +273,14 @@ class OrderedContainer(Persistent, Contained):
         if len(order) != len(self._order):
             raise ValueError("Incompatible key set.")
 
-        was_dict = {}
-        will_be_dict = {}
-        new_order = PersistentList()
+        order = [checkAndConvertName(x) for x in order]
 
-        for i, obj in enumerate(order):
-            was_dict[self._order[i]] = 1
-            will_be_dict[obj] = 1
-            new_order.append(obj)
-
-        if will_be_dict != was_dict:
+        if frozenset(order) != frozenset(self._order):
             raise ValueError("Incompatible key set.")
 
-        self._order = new_order
+        if order == self._order:
+            return
+
+        self._order[:] = order
+
         notifyContainerModified(self)
