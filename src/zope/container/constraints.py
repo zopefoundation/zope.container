@@ -153,6 +153,7 @@ __docformat__ = 'restructuredtext'
 
 import sys
 
+from zope.cachedescriptors.property import readproperty
 from zope.dottedname.resolve import resolve
 import zope.schema
 from zope.interface import providedBy
@@ -225,19 +226,6 @@ def checkFactory(container, name, factory):
             return False
 
     return True
-
-
-class readproperty(object):
-
-    def __init__(self, func):
-        self.func = func
-
-    def __get__(self, inst, class_):
-        if inst is None:
-            return self
-
-        func = self.func
-        return func(inst)
 
 
 class IItemTypePrecondition(zope.interface.Interface):

@@ -5,7 +5,10 @@
 4.2.2 (unreleased)
 ==================
 
-- Nothing changed yet.
+- Add a dependency on ``zope.cachedescriptors``, previously removed in
+  3.11. ``zope.cachedescriptors`` is a lightweight package, and the
+  copied code had diverged from the source. See
+  https://github.com/zopefoundation/zope.container/issues/16
 
 
 4.2.1 (2017-08-02)
