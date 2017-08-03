@@ -58,24 +58,25 @@ else:
     ]
 
 install_requires = [
-    'setuptools',
+    'BTrees',
+    'persistent>=4.1.0',
     'six',
-    'zope.interface',
-    'zope.dottedname',
-    'zope.schema',
+    'zope.cachedescriptors',
     'zope.component',
+    'zope.dottedname',
     'zope.event',
-    'zope.location>=3.5.4',
-    'zope.security',
-    'zope.lifecycleevent>=3.5.2',
-    'zope.i18nmessageid',
     'zope.filerepresentation',
+    'zope.i18nmessageid',
+    'zope.interface',
+    'zope.lifecycleevent>=3.5.2',
+    'zope.location>=3.5.4',
+    'zope.proxy>=4.1.5',
+    'zope.publisher',
+    'zope.schema',
+    'zope.security',
     'zope.size',
     'zope.traversing>=4.0.0a1',
-    'zope.publisher',
-    'zope.proxy>=4.1.5',
-    'persistent>=4.1.0',
-    'BTrees'
+    'setuptools',
 ]
 
 
