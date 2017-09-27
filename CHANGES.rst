@@ -10,6 +10,8 @@
   copied code had diverged from the source. See
   https://github.com/zopefoundation/zope.container/issues/16
 
+- Fix the possibility of a rare crash in the C extension when deallocating items. See
+  https://github.com/zopefoundation/zope.container/issues/24
 
 4.2.1 (2017-08-02)
 ==================
