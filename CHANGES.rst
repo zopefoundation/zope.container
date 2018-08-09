@@ -13,6 +13,9 @@
 - Fix the possibility of a rare crash in the C extension when deallocating items. See
   https://github.com/zopefoundation/zope.container/issues/24
 
+- Add support for Python 3.7.
+
+
 4.2.1 (2017-08-02)
 ==================
 
