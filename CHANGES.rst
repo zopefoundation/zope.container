@@ -2,7 +2,7 @@
  Changes
 =========
 
-4.2.2 (unreleased)
+4.2.2 (2018-08-10)
 ==================
 
 - Add a dependency on ``zope.cachedescriptors``, previously removed in
