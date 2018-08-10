@@ -23,9 +23,11 @@ import platform
 
 from setuptools import setup, find_packages, Extension
 
+
 def read(*rnames):
     with open(os.path.join(os.path.dirname(__file__), *rnames)) as f:
         return f.read()
+
 
 def alltests():
     import sys
@@ -41,6 +43,7 @@ def alltests():
     suites = list(zope.testrunner.find.find_suites(options))
     return unittest.TestSuite(suites)
 
+
 # PyPy cannot correctly build the C optimizations, and even if it
 # could they would be anti-optimizations (the C extension
 # compatibility layer is known-slow, and defeats JIT opportunities).
@@ -51,10 +54,13 @@ is_pypy = py_impl() == 'PyPy'
 if pure_python or is_pypy:
     ext_modules = []
 else:
-    ext_modules = [Extension("zope.container._zope_container_contained",
-                             [os.path.join("src", "zope", "container",
-                                           "_zope_container_contained.c")
-                             ], include_dirs=['include']),
+    ext_modules = [
+        Extension(
+            "zope.container._zope_container_contained",
+            [os.path.join("src", "zope", "container",
+                          "_zope_container_contained.c")],
+            include_dirs=['include'],
+        ),
     ]
 
 install_requires = [
@@ -103,6 +109,7 @@ setup(name='zope.container',
           'Programming Language :: Python :: 3.4',
           'Programming Language :: Python :: 3.5',
           'Programming Language :: Python :: 3.6',
+          'Programming Language :: Python :: 3.7',
           'Programming Language :: Python :: Implementation :: CPython',
           'Programming Language :: Python :: Implementation :: PyPy',
           'Natural Language :: English',
