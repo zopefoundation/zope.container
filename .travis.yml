@@ -1,28 +1,26 @@
 language: python
-sudo: false
-matrix:
-  include:
-    - python: 2.7
-      env: PURE_PYTHON=1
-    - python: 3.7
-      dist: xenial
-      sudo: true
 python:
-    - 2.7
-    - 3.4
-    - 3.5
-    - 3.6
-    - pypy
-    - pypy3.5-5.8.0
+  - 2.7
+  - 3.5
+  - 3.6
+  - 3.7
+  - 3.8
+  - pypy
+  - pypy3
+jobs:
+  include:
+    - name: "Python: 2.7, pure (no C extensions)"
+      python: 2.7
+      env: PURE_PYTHON=1
 install:
-    - pip install -U pip setuptools
-    - pip install -U coverage coveralls
-    - pip install -U -e .[test]
-    - if [[ $PURE_PYTHON ]]; then pip install -U -e .[zodb,zcml]; fi
+  - pip install -U pip setuptools
+  - pip install -U coverage coveralls
+  - pip install -U -e .[test]
+  - if [[ $PURE_PYTHON ]]; then pip install -U -e .[zodb,zcml]; fi
 script:
-    - coverage run -m zope.testrunner --test-path=src
+  - coverage run -m zope.testrunner --test-path=src
 after_success:
-    - coveralls
+  - coveralls
 notifications:
-    email: false
+  email: false
 cache: pip
