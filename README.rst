@@ -14,6 +14,9 @@
 .. image:: https://travis-ci.org/zopefoundation/zope.container.svg?branch=master
         :target: https://travis-ci.org/zopefoundation/zope.container
 
+.. image:: https://ci.appveyor.com/api/projects/status/iawcghgqox42af70/branch/master?svg=true
+        :target: https://ci.appveyor.com/project/mgedmin/zope-container
+
 .. image:: https://readthedocs.org/projects/zopecontainer/badge/?version=latest
         :target: http://zopecontainer.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
