@@ -18,8 +18,9 @@ from six import text_type
 
 import zope.component
 
-import zope.interface.declarations
-from zope.interface import providedBy, Interface
+from zope.interface import providedBy
+from zope.interface import Interface
+from zope.interface import implementedBy
 from zope.interface.declarations import getObjectSpecification
 from zope.interface.declarations import Provides
 
@@ -902,12 +903,13 @@ class DecoratorSpecificationDescriptor(
 
     When we decorate objects, what order should the interfaces come in? One
     could argue that decorators are less specific, so they should come last.
+    This is subject to respecting the C3 resolution order, of course.
 
     >>> [interface.getName() for interface in list(providedBy(D1(x)))]
     ['I4', 'I3', 'I1', 'IContained', 'IPersistent']
 
     >>> [interface.getName() for interface in list(providedBy(D2(D1(x))))]
-    ['I4', 'I3', 'I1', 'IContained', 'IPersistent', 'I2']
+    ['I4', 'I3', 'I1', 'I2', 'IContained', 'IPersistent']
     """
     def __get__(self, inst, cls=None):
         if inst is None: # pragma: no cover (Not sure how we can get here)
@@ -918,6 +920,10 @@ class DecoratorSpecificationDescriptor(
         # Use type rather than __class__ because inst is a proxy and
         # will return the proxied object's class.
         cls = type(inst)
+        implemented_by_cls = implementedBy(cls)
+        for iface in list(provided):
+            if implemented_by_cls.isOrExtends(iface):
+                provided = provided - iface
         return Provides(cls, provided)
 
 

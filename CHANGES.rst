@@ -12,6 +12,9 @@
 
 - Drop support for the deprecated ``python setup.py test`` command.
 
+- Ensure all objects have consistent interface resolution orders. This
+  may slightly change the order of interfaces for ``ContainedProxy``
+  objects. See `issue 34 <https://github.com/zopefoundation/zope.container/issues/34>`_.
 
 4.3.0 (2019-11-11)
 ==================
