@@ -74,7 +74,7 @@ typedef struct {
 
 #define CLEAR(O) Py_CLEAR(O)
 
-/* Incude the proxy  source */
+/* Incude the proxy C source */
 #include "_zope_proxy_proxy.c"
 
 #ifdef PY3K

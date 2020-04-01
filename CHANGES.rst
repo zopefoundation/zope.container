@@ -18,7 +18,14 @@
 
 - Stop including outdated versions of ``zope.proxy`` (implementation)
   and ``persistent`` headers. Instead, locate and use the installed
-  versions. See `issue 32 <https://github.com/zopefoundation/zope.container/issues/32>`_.
+  versions. See `issue 32
+  <https://github.com/zopefoundation/zope.container/issues/32>`_.
+
+  .. caution::
+
+     This change is somewhat experimental, especially for
+     buildout users on platforms that do not have ready-made binary
+     wheels available. The maintainers appreciate issue reports.
 
 
 4.3.0 (2019-11-11)
