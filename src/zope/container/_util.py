@@ -178,8 +178,16 @@ def use_c_impl(py_impl, name=None, globs=None):
             if static:
                 v = staticmethod(v)
             setattr(py_impl, k, v)
-        # copy the interface declarations.
+        # copy the interface declarations, being careful not
+        # to redeclare interfaces already implemented (through
+        # inheritance usually)
         implements = list(implementedBy(py_impl))
-        if implements:
+        implemented_by_c = implementedBy(c_impl)
+        implements = [
+            iface
+            for iface in implements
+            if not implemented_by_c.isOrExtends(iface)
+        ]
+        if implements: # pragma: no cover
             classImplements(c_impl, *implements)
     return c_impl
