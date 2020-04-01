@@ -54,7 +54,10 @@ except ImportError: # pragma: no cover
 
 @zope.interface.implementer(IContained)
 class Contained(object):
-    """Stupid mix-in that defines `__parent__` and `__name__` attributes"""
+    """
+    Simple mix-in that defines ``__parent__`` and ``__name__``
+    attributes and implements `IContained`.
+    """
 
     __parent__ = __name__ = None
 
@@ -195,8 +198,8 @@ def containedEvent(object, container, name=None): # pylint:disable=redefined-bui
     `ContainedProxy` around the original object. The event is an added
     event, a moved event, or None.
 
-    If the object implements `IContained`, simply set its `__parent__`
-    and `__name__` attributes:
+    If the object implements `IContained`, simply set its ``__parent__``
+    and ``__name__`` attributes:
 
         >>> container = {}
         >>> item = Contained()
@@ -252,8 +255,8 @@ def containedEvent(object, container, name=None): # pylint:disable=redefined-bui
         >>> event.oldName
         u'foo'
 
-    If the `object` implements `ILocation`, but not `IContained`, set its
-    `__parent__` and `__name__` attributes *and* declare that it
+    If the *object* implements `ILocation`, but not `IContained`, set its
+    ``__parent__`` and ``__name__`` attributes *and* declare that it
     implements `IContained`:
 
         >>> from zope.location import Location
@@ -271,7 +274,7 @@ def containedEvent(object, container, name=None): # pylint:disable=redefined-bui
         True
 
 
-    If the `object` doesn't even implement `ILocation`, put a
+    If the *object* doesn't even implement `ILocation`, put a
     `ContainedProxy` around it:
 
         >>> item = []
@@ -356,13 +359,13 @@ def checkAndConvertName(name):
     return name
 
 def setitem(container, setitemf, name, object): # pylint:disable=redefined-builtin
-    """Helper function to set an item and generate needed events
+    r"""Helper function to set an item and generate needed events
 
     This helper is needed, in part, because the events need to get
-    published after the `object` has been added to the `container`.
+    published after the *object* has been added to the *container*.
 
-    If the item implements `IContained`, simply set its `__parent__`
-    and `__name__` attributes:
+    If the item implements `IContained`, simply set its ``__parent__``
+    and ``__name__`` attributes:
 
     >>> class IItem(zope.interface.Interface):
     ...     pass
@@ -427,8 +430,8 @@ def setitem(container, setitemf, name, object): # pylint:disable=redefined-built
     >>> item.moved is event
     1
 
-    We can suppress events and hooks by setting the `__parent__` and
-    `__name__` first:
+    We can suppress events and hooks by setting the ``__parent__`` and
+    ``__name__`` first:
 
     >>> item = Item()
     >>> item.__parent__, item.__name__ = container, 'c2'
@@ -483,7 +486,7 @@ def setitem(container, setitemf, name, object): # pylint:disable=redefined-built
 
 
     If the object implements `ILocation`, but not `IContained`, set it's
-    `__parent__` and `__name__` attributes *and* declare that it
+    ``__parent__`` and ``__name__`` attributes *and* declare that it
     implements `IContained`:
 
     >>> from zope.location import Location
@@ -541,8 +544,7 @@ def setitem(container, setitemf, name, object): # pylint:disable=redefined-built
     ...
     TypeError: name not unicode or ascii string
 
-    >>> c = bytes([200]) if str is not bytes else chr(200)
-    >>> setitem(container, container.__setitem__, b'hello ' + c, item)
+    >>> setitem(container, container.__setitem__, b'hello \xc8', item)
     Traceback (most recent call last):
     ...
     TypeError: name not unicode or ascii string
@@ -577,8 +579,8 @@ def setitem(container, setitemf, name, object): # pylint:disable=redefined-built
 
 fixing_up = False
 def uncontained(object, container, name=None): # pylint:disable=redefined-builtin
-    """Clear the containment relationship between the `object` and
-    the `container`.
+    """Clear the containment relationship between the *object* and
+    the *container*.
 
     If we run this using the testing framework, we'll use `getEvents` to
     track the events generated:
@@ -984,6 +986,13 @@ class ContainedProxyClassProvides(zope.interface.declarations.ClassProvides):
 
 @zope.interface.implementer(IContained)
 class ContainedProxy(ContainedProxyBase):
+    """
+    Wraps an object to implement :class:`zope.container.interfaces.IContained`
+    with a new ``__name__`` and ``__parent__``.
+
+    The new object provides everything the wrapped object did, plus
+    `IContained` and `IPersistent`.
+    """
 
     # Prevent proxies from having their own instance dictionaries:
     __slots__ = ()

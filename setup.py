@@ -63,6 +63,7 @@ extras = {
     'docs': [
         'Sphinx',
         'repoze.sphinx.autointerface',
+        'sphinx_rtd_theme',
     ],
     'test': [
         'zope.testing',
@@ -82,7 +83,7 @@ extras['test'] += (extras['zodb'] + extras['zcml'])
 
 
 setup(name='zope.container',
-      version=read('version.txt').strip(),
+      version='4.4.0.dev0',
       author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Container',
