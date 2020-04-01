@@ -13,53 +13,51 @@
 ##############################################################################
 """Classes to support implementing `IContained`
 """
-import os
-import sys
+# pylint:disable=too-many-lines
+from six import text_type
+
 import zope.component
+
 import zope.interface.declarations
 from zope.interface import providedBy, Interface
 from zope.interface.declarations import getObjectSpecification
-from zope.interface.declarations import ObjectSpecification
+from zope.interface.declarations import Provides
+
 from zope.event import notify
+
 from zope.location.interfaces import ILocation, ISublocations
-from zope.security.checker import selectChecker, CombinedChecker
-from zope.lifecycleevent import ObjectModifiedEvent
-
-from zope.container.i18n import ZopeMessageFactory as _
 from zope.location.interfaces import IContained
-from zope.container.interfaces import INameChooser
-from zope.container.interfaces import IReservedNames, NameReserved
-from zope.container.interfaces import IContainerModifiedEvent
 
-from zope.container._proxy import py_getProxiedObject as getProxiedObject
-from zope.container._proxy import py_setProxiedObject as setProxiedObject
-from zope.container._proxy import PyContainedProxyBase as ContainedProxyBase
-if not os.getenv('PURE_PYTHON'):
-    try:
-        from zope.container._zope_container_contained import ContainedProxyBase
-    except ImportError: # PyPy
-        pass
-    else:
-        from zope.container._zope_container_contained import getProxiedObject
-        from zope.container._zope_container_contained import setProxiedObject
+from zope.security.checker import selectChecker, CombinedChecker
 
+from zope.lifecycleevent import ObjectModifiedEvent
 from zope.lifecycleevent import ObjectMovedEvent
 from zope.lifecycleevent import ObjectAddedEvent
 from zope.lifecycleevent import ObjectRemovedEvent
 
+
+from zope.container.i18n import ZopeMessageFactory as _
+from zope.container.interfaces import INameChooser
+from zope.container.interfaces import IReservedNames, NameReserved
+from zope.container.interfaces import IContainerModifiedEvent
+
+from zope.container._proxy import getProxiedObject
+from zope.container._proxy import ContainedProxyBase
+
+
 try:
     from ZODB.interfaces import IBroken
-except ImportError:
-    class IBroken(Interface):
+except ImportError: # pragma: no cover
+    class IBroken(Interface): # pylint:disable=inherit-non-class
         pass
 
-from six import text_type
-
-PY3 = sys.version_info[0] >= 3
 
 @zope.interface.implementer(IContained)
 class Contained(object):
-    """Stupid mix-in that defines `__parent__` and `__name__` attributes"""
+    """
+    Simple mix-in that defines ``__parent__`` and ``__name__``
+    attributes and implements `IContained`.
+    """
 
     __parent__ = __name__ = None
 
@@ -70,7 +68,7 @@ class ContainerModifiedEvent(ObjectModifiedEvent):
 
 
 
-def dispatchToSublocations(object, event):
+def dispatchToSublocations(object, event): # pylint:disable=redefined-builtin
     """Dispatch an event to sublocations of a given object
 
        When a move event happens for an object, it's important to notify
@@ -193,15 +191,15 @@ class ContainerSublocations(object):
             yield container[key]
 
 
-def containedEvent(object, container, name=None):
+def containedEvent(object, container, name=None): # pylint:disable=redefined-builtin
     """Establish the containment of the object in the container
 
     The object and necessary event are returned. The object may be a
     `ContainedProxy` around the original object. The event is an added
     event, a moved event, or None.
 
-    If the object implements `IContained`, simply set its `__parent__`
-    and `__name__` attributes:
+    If the object implements `IContained`, simply set its ``__parent__``
+    and ``__name__`` attributes:
 
         >>> container = {}
         >>> item = Contained()
@@ -257,8 +255,8 @@ def containedEvent(object, container, name=None):
         >>> event.oldName
         u'foo'
 
-    If the `object` implements `ILocation`, but not `IContained`, set its
-    `__parent__` and `__name__` attributes *and* declare that it
+    If the *object* implements `ILocation`, but not `IContained`, set its
+    ``__parent__`` and ``__name__`` attributes *and* declare that it
     implements `IContained`:
 
         >>> from zope.location import Location
@@ -276,7 +274,7 @@ def containedEvent(object, container, name=None):
         True
 
 
-    If the `object` doesn't even implement `ILocation`, put a
+    If the *object* doesn't even implement `ILocation`, put a
     `ContainedProxy` around it:
 
         >>> item = []
@@ -326,7 +324,7 @@ def containedEvent(object, container, name=None):
 
     return object, event
 
-def contained(object, container, name=None):
+def contained(object, container, name=None): # pylint:disable=redefined-builtin
     """Establish the containment of the object in the container
 
     Just return the contained object without an event. This is a convenience
@@ -338,7 +336,7 @@ def contained(object, container, name=None):
     """
     return containedEvent(object, container, name)[0]
 
-def notifyContainerModified(object, *descriptions):
+def notifyContainerModified(object, *descriptions): # pylint:disable=redefined-builtin
     """Notify that the container was modified."""
     notify(ContainerModifiedEvent(object, *descriptions))
 
@@ -360,14 +358,14 @@ def checkAndConvertName(name):
         raise ValueError("empty names are not allowed")
     return name
 
-def setitem(container, setitemf, name, object):
-    """Helper function to set an item and generate needed events
+def setitem(container, setitemf, name, object): # pylint:disable=redefined-builtin
+    r"""Helper function to set an item and generate needed events
 
     This helper is needed, in part, because the events need to get
-    published after the `object` has been added to the `container`.
+    published after the *object* has been added to the *container*.
 
-    If the item implements `IContained`, simply set its `__parent__`
-    and `__name__` attributes:
+    If the item implements `IContained`, simply set its ``__parent__``
+    and ``__name__`` attributes:
 
     >>> class IItem(zope.interface.Interface):
     ...     pass
@@ -432,8 +430,8 @@ def setitem(container, setitemf, name, object):
     >>> item.moved is event
     1
 
-    We can suppress events and hooks by setting the `__parent__` and
-    `__name__` first:
+    We can suppress events and hooks by setting the ``__parent__`` and
+    ``__name__`` first:
 
     >>> item = Item()
     >>> item.__parent__, item.__name__ = container, 'c2'
@@ -488,7 +486,7 @@ def setitem(container, setitemf, name, object):
 
 
     If the object implements `ILocation`, but not `IContained`, set it's
-    `__parent__` and `__name__` attributes *and* declare that it
+    ``__parent__`` and ``__name__`` attributes *and* declare that it
     implements `IContained`:
 
     >>> from zope.location import Location
@@ -546,8 +544,7 @@ def setitem(container, setitemf, name, object):
     ...
     TypeError: name not unicode or ascii string
 
-    >>> c = bytes([200]) if PY3 else chr(200)
-    >>> setitem(container, container.__setitem__, b'hello ' + c, item)
+    >>> setitem(container, container.__setitem__, b'hello \xc8', item)
     Traceback (most recent call last):
     ...
     TypeError: name not unicode or ascii string
@@ -581,9 +578,9 @@ def setitem(container, setitemf, name, object):
         notifyContainerModified(container)
 
 fixing_up = False
-def uncontained(object, container, name=None):
-    """Clear the containment relationship between the `object` and
-    the `container`.
+def uncontained(object, container, name=None): # pylint:disable=redefined-builtin
+    """Clear the containment relationship between the *object* and
+    the *container*.
 
     If we run this using the testing framework, we'll use `getEvents` to
     track the events generated:
@@ -710,7 +707,7 @@ class NameChooser(object):
     def __init__(self, context):
         self.context = context
 
-    def checkName(self, name, object):
+    def checkName(self, name, object): # pylint:disable=redefined-builtin
         """See zope.container.interfaces.INameChooser
 
         We create and populate a dummy container
@@ -793,7 +790,7 @@ class NameChooser(object):
         return True
 
 
-    def chooseName(self, name, object):
+    def chooseName(self, name, object): # pylint:disable=redefined-builtin
         """See zope.container.interfaces.INameChooser
 
         The name chooser is expected to choose a name without error
@@ -921,7 +918,7 @@ class DecoratorSpecificationDescriptor(
         # Use type rather than __class__ because inst is a proxy and
         # will return the proxied object's class.
         cls = type(inst)
-        return ObjectSpecification(provided, cls)
+        return Provides(cls, provided)
 
 
 class DecoratedSecurityCheckerDescriptor(object):
@@ -989,6 +986,13 @@ class ContainedProxyClassProvides(zope.interface.declarations.ClassProvides):
 
 @zope.interface.implementer(IContained)
 class ContainedProxy(ContainedProxyBase):
+    """
+    Wraps an object to implement :class:`zope.container.interfaces.IContained`
+    with a new ``__name__`` and ``__parent__``.
+
+    The new object provides everything the wrapped object did, plus
+    `IContained` and `IPersistent`.
+    """
 
     # Prevent proxies from having their own instance dictionaries:
     __slots__ = ()

@@ -5,6 +5,11 @@ env:
     TWINE_USERNAME: zope.wheelbuilder
     TWINE_PASSWORD:
       secure: "G1ORcUIV439Iws2toGhxPvYvQKQt6L1wyXfIMspz2xtjJvQ2D1XrqK8dRYyQ0YaGLY/OAI8BrEdTp/l7jrhiG0gXMeAs0k1KFbp7ATahcVT8rWOzvcLGMAiYRVloQ3rz5x5HjMm0CWpDjo1MAeJMmesyq8RlmYzaMu4aw1mBd/Y="
+  jobs:
+    # We want to require the C extensions to build and function
+    # everywhere (except where we specifically opt-out)
+    - PURE_PYTHON: 0
+    - PURE_PYTHON: 1
 
 python:
   - 2.7
@@ -12,13 +17,14 @@ python:
   - 3.6
   - 3.7
   - 3.8
-  - pypy
-  - pypy3
 
 jobs:
   include:
-    - name: "Python: 2.7, pure (no C extensions)"
-      python: 2.7
+    # Don't test C extensions on PyPy.
+    - python: pypy
+      env: PURE_PYTHON=1
+
+    - python: pypy3
       env: PURE_PYTHON=1
 
     # manylinux wheel builds
@@ -73,7 +79,6 @@ install:
   - pip install -U pip setuptools
   - pip install -U coverage coveralls
   - pip install -U -e .[test]
-  - if [[ $PURE_PYTHON ]]; then pip install -U -e .[zodb,zcml]; fi
 
 script:
   - python --version
