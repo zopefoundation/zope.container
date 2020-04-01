@@ -59,6 +59,27 @@ install_requires = [
     'setuptools',
 ]
 
+extras = {
+    'docs': [
+        'Sphinx',
+        'repoze.sphinx.autointerface',
+    ],
+    'test': [
+        'zope.testing',
+        'zope.testrunner',
+    ],
+    'zcml': [
+        'zope.component[zcml]',
+        'zope.configuration',
+        'zope.security[zcml]>=4.0.0a3',
+    ],
+    'zodb': [
+        'ZODB>=3.10',
+    ],
+}
+
+extras['test'] += (extras['zodb'] + extras['zcml'])
+
 
 setup(name='zope.container',
       version=read('version.txt').strip(),
@@ -97,29 +118,9 @@ setup(name='zope.container',
       package_dir={'': 'src'},
       namespace_packages=['zope'],
       ext_modules=ext_modules,
-      extras_require={
-          'docs': [
-              'Sphinx',
-              'repoze.sphinx.autointerface',
-          ],
-          'test': [
-              'zope.testing',
-              'zope.testrunner',
-          ],
-          'zcml': [
-              'zope.component[zcml]',
-              'zope.configuration',
-              'zope.security[zcml]>=4.0.0a3',
-          ],
-          'zodb': [
-              'ZODB>=3.10',
-          ],
-      },
+      extras_require=extras,
       install_requires=install_requires,
-      tests_require=[
-          'zope.testing',
-          'zope.testrunner',
-      ],
+      tests_require=extras['test'],
       include_package_data=True,
       zip_safe=False,
       python_requires=', '.join([

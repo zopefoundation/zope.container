@@ -17,23 +17,19 @@
 import gc
 import unittest
 
-try:
-    from ZODB.DemoStorage import DemoStorage
-    from ZODB.DB import DB
-    import transaction
-    HAVE_ZODB = True
-except ImportError: # pragma: no cover
-    HAVE_ZODB = False
+from ZODB.DemoStorage import DemoStorage
+from ZODB.DB import DB
+import transaction
 
 from persistent import Persistent
 
 from zope.container.contained import ContainedProxy
 
+# pylint:disable=protected-access
 
 class MyOb(Persistent):
-    pass
+    ob = None
 
-@unittest.skipUnless(HAVE_ZODB, "Needs ZODB")
 class TestContainedZODB(unittest.TestCase):
 
     def setUp(self):

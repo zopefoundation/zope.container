@@ -47,7 +47,7 @@ from zope.container._proxy import ContainedProxyBase
 
 try:
     from ZODB.interfaces import IBroken
-except ImportError:
+except ImportError: # pragma: no cover
     class IBroken(Interface): # pylint:disable=inherit-non-class
         pass
 
