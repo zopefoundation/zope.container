@@ -19,7 +19,6 @@
 """Setup for zope.container package
 """
 import os
-import platform
 
 from setuptools import setup, find_packages, Extension
 
@@ -29,39 +28,14 @@ def read(*rnames):
         return f.read()
 
 
-def alltests():
-    import sys
-    import unittest
-    # use the zope.testrunner machinery to find all the
-    # test suites we've put under ourselves
-    import zope.testrunner.find
-    import zope.testrunner.options
-    here = os.path.abspath(os.path.join(os.path.dirname(__file__), 'src'))
-    args = sys.argv[:]
-    defaults = ["--test-path", here]
-    options = zope.testrunner.options.get_options(args, defaults)
-    suites = list(zope.testrunner.find.find_suites(options))
-    return unittest.TestSuite(suites)
-
-
-# PyPy cannot correctly build the C optimizations, and even if it
-# could they would be anti-optimizations (the C extension
-# compatibility layer is known-slow, and defeats JIT opportunities).
-py_impl = getattr(platform, 'python_implementation', lambda: None)
-pure_python = os.environ.get('PURE_PYTHON', False)
-is_pypy = py_impl() == 'PyPy'
-
-if pure_python or is_pypy:
-    ext_modules = []
-else:
-    ext_modules = [
-        Extension(
-            "zope.container._zope_container_contained",
-            [os.path.join("src", "zope", "container",
-                          "_zope_container_contained.c")],
-            include_dirs=['include'],
-        ),
-    ]
+ext_modules = [
+    Extension(
+        "zope.container._zope_container_contained",
+        [os.path.join("src", "zope", "container",
+                      "_zope_container_contained.c")],
+        include_dirs=['include'],
+    ),
+]
 
 install_requires = [
     'BTrees',
@@ -117,7 +91,7 @@ setup(name='zope.container',
           'Topic :: Internet :: WWW/HTTP',
           'Framework :: Zope :: 3',
       ],
-      url='http://github.com/zopefoundation/zope.container',
+      url='https://github.com/zopefoundation/zope.container',
       license='ZPL 2.1',
       packages=find_packages('src'),
       package_dir={'': 'src'},
@@ -146,7 +120,14 @@ setup(name='zope.container',
           'zope.testing',
           'zope.testrunner',
       ],
-      test_suite='__main__.alltests',
       include_package_data=True,
       zip_safe=False,
+      python_requires=', '.join([
+          '>=2.7',
+          '!=3.0.*',
+          '!=3.1.*',
+          '!=3.2.*',
+          '!=3.3.*',
+          '!=3.4.*',
+      ]),
 )

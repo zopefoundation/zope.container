@@ -2,10 +2,15 @@
  Changes
 =========
 
-4.3.1 (unreleased)
+4.4.0 (unreleased)
 ==================
 
-- Nothing changed yet.
+- Support the ``PURE_PYTHON`` environment variable at runtime instead
+  of just at wheel build time. A value of 0 forces the C extensions to
+  be used failing if they aren't present. Any other value forces the
+  Python implementation to be used, ignoring the C extensions.
+
+- Drop support for the deprecated ``python setup.py test`` command.
 
 
 4.3.0 (2019-11-11)
@@ -73,7 +78,7 @@
 4.1.0 (2015-05-22)
 ==================
 
-- Make ``zope.container._proxy.PytContainedProxyBase`` inherit
+- Make ``zope.container._proxy.PyContainedProxyBase`` inherit
   directly from ``zope.proxy.AbstractProxyBase`` as well as
   ``persistent.Persistent``, removing a bunch of redundant code, and
   fixing bugs in interaction with pure-Python persistence. See:

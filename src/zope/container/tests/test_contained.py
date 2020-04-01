@@ -62,7 +62,7 @@ class TestContainedProxy(unittest.TestCase):
         from zope.container.interfaces import IContained
         from persistent.interfaces import IPersistent
 
-        class I1(zope.interface.Interface):
+        class I1(zope.interface.Interface): # pylint:disable=inherit-non-class
             pass
         @zope.interface.implementer(I1)
         class C(object):
@@ -86,7 +86,7 @@ class TestContainedProxy(unittest.TestCase):
         self.assertEqual(tuple(zope.interface.providedBy(p)),
                          (I1, IContained, IPersistent))
 
-        class I2(zope.interface.Interface):
+        class I2(zope.interface.Interface): # pylint:disable=inherit-non-class
             pass
         zope.interface.directlyProvides(c, I2)
         self.assertEqual(tuple(zope.interface.providedBy(p)),
@@ -94,7 +94,7 @@ class TestContainedProxy(unittest.TestCase):
 
         # We can declare interfaces through the proxy:
 
-        class I3(zope.interface.Interface):
+        class I3(zope.interface.Interface): # pylint:disable=inherit-non-class
             pass
         zope.interface.directlyProvides(p, I3)
         self.assertEqual(tuple(zope.interface.providedBy(p)),
@@ -104,10 +104,10 @@ class TestContainedProxy(unittest.TestCase):
     def test_ContainedProxy_instances_have_no_instance_dictionaries(self):
         # Make sure that proxies don't introduce extra instance dictionaries
         class C(object):
-            pass
+            def __init__(self, x):
+                self.x = x
 
-        c = C()
-        c.x = 1
+        c = C(1)
         self.assertEqual(dict(c.__dict__), {'x': 1})
 
         p = ContainedProxy(c)
@@ -120,8 +120,8 @@ class TestContainedProxy(unittest.TestCase):
         self.assertIs(p.__dict__, c.__dict__)
 
     def test_get_set_ProxiedObject(self):
-        from zope.container.contained import getProxiedObject
-        from zope.container.contained import setProxiedObject
+        from zope.container._proxy import getProxiedObject
+        from zope.container._proxy import setProxiedObject
 
         proxy = ContainedProxy(self)
         self.assertIs(self, getProxiedObject(proxy))

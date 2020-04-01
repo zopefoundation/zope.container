@@ -13,31 +13,34 @@
 ##############################################################################
 
 from zope.proxy import AbstractPyProxyBase
-
-_MARKER = object()
+from zope.container._util import use_c_impl
 
 from persistent import Persistent
+
+
+_MARKER = object()
 
 def _special_name(name):
     "attribute names we delegate to Persistent for"
     return (name.startswith('_Persistent')
             or name.startswith('_p_')
             or name.startswith('_v_')
-            or name in PyContainedProxyBase.__slots__)
+            or name in ContainedProxyBase.__slots__)
 
-class PyContainedProxyBase(AbstractPyProxyBase, Persistent):
+@use_c_impl
+class ContainedProxyBase(AbstractPyProxyBase, Persistent):
     """Persistent proxy
     """
     __slots__ = ('_wrapped', '__parent__', '__name__', '__weakref__')
 
     def __new__(cls, obj):
-        inst = super(PyContainedProxyBase, cls).__new__(cls, obj)
+        inst = super(ContainedProxyBase, cls).__new__(cls, obj)
         inst.__parent__ = None
         inst.__name__ = None
         return inst
 
     def __init__(self, obj):
-        super(PyContainedProxyBase, self).__init__(obj)
+        super(ContainedProxyBase, self).__init__(obj)
         self.__parent__ = None
         self.__name__ = None
 
@@ -57,7 +60,7 @@ class PyContainedProxyBase(AbstractPyProxyBase, Persistent):
         return (self.__parent__, self.__name__)
 
     def __getnewargs__(self):
-        return self._wrapped,
+        return (self._wrapped,)
 
     def _p_invalidate(self):
         # The superclass wants to clear the __dict__, which
@@ -80,10 +83,16 @@ class PyContainedProxyBase(AbstractPyProxyBase, Persistent):
             # activated
             return Persistent.__getattribute__(self, name)
 
-        if name in ('__reduce__', '__reduce_ex__', '__getstate__', '__setstate__', '__getnewargs__'):
+        if name in (
+                '__reduce__',
+                '__reduce_ex__',
+                '__getstate__',
+                '__setstate__',
+                '__getnewargs__',
+        ):
             return object.__getattribute__(self, name)
 
-        return super(PyContainedProxyBase,self).__getattribute__(name)
+        return super(ContainedProxyBase, self).__getattribute__(name)
 
     def __setattr__(self, name, value):
         if _special_name(name):
@@ -91,17 +100,19 @@ class PyContainedProxyBase(AbstractPyProxyBase, Persistent):
             # so that _p_changed gets set, in addition to the _p values themselves
             return Persistent.__setattr__(self, name, value)
 
-        return super(PyContainedProxyBase, self).__setattr__(name, value)
+        return super(ContainedProxyBase, self).__setattr__(name, value)
 
 
-def py_getProxiedObject(obj):
-    if isinstance(obj, PyContainedProxyBase):
+@use_c_impl
+def getProxiedObject(obj):
+    if isinstance(obj, ContainedProxyBase):
         return obj._wrapped
     return obj
 
 
-def py_setProxiedObject(obj, new_value):
-    if not isinstance(obj, PyContainedProxyBase):
+@use_c_impl
+def setProxiedObject(obj, new_value):
+    if not isinstance(obj, ContainedProxyBase):
         raise TypeError('Not a proxy')
     old, obj._wrapped = obj._wrapped, new_value
     return old

@@ -8,3 +8,9 @@ exclude_lines =
     raise NotImplementedError
     self.fail
     raise AssertionError
+
+[paths]
+source =
+    src/
+    .tox/*/lib/python*/site-packages/
+    .tox/pypy*/site-packages/
