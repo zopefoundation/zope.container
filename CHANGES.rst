@@ -21,11 +21,9 @@
   versions. See `issue 32
   <https://github.com/zopefoundation/zope.container/issues/32>`_.
 
-  .. caution::
+  .. note::
 
-     This change is somewhat experimental, especially for
-     buildout users on platforms that do not have ready-made binary
-     wheels available. The maintainers appreciate issue reports.
+     This adds those two dependencies to ``setup_requires``.
 
 
 4.3.0 (2019-11-11)

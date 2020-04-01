@@ -28,11 +28,16 @@ def read(*rnames):
     with open(os.path.join(os.path.dirname(__file__), *rnames)) as f:
         return f.read()
 
+
 def get_include_dirs():
     """
     Return additional include directories that might be needed to
     compile extensions. Specifically, we need the cPersistence.h from
     persistent, and the `_zope_proxy_proxy.c` from zope.proxy.
+
+    This is done lazily, because ``setup_requires`` will not have made
+    dependencies available at the time the Extension is defined, only when
+    ``setup`` actually runs.
     """
     # setuptools will put the normal include directory for Python.h on the
     # include path automatically. We don't want to override that with
@@ -93,6 +98,21 @@ def get_include_dirs():
         if p is not None and os.path.exists(p)
     ]
 
+class IncludeDirs(object):
+    dirs = None
+
+    def __getattribute__(self, name):
+        if object.__getattribute__(self, 'dirs') is None:
+            self.dirs = get_include_dirs()
+        dirs = object.__getattribute__(self, 'dirs')
+        if name == 'dirs':
+            return dirs
+        return getattr(dirs, name)
+
+    def __iter__(self):
+        return iter(self.dirs)
+
+
 if str is bytes and hasattr(sys, 'pypy_version_info'):
     # zope.proxy, as of 4.3.5, cannot compile on PyPy2 7.3.0
     # because it uses cl_dict in a PyClassObject, which does not exist.
@@ -103,14 +123,18 @@ else:
             "zope.container._zope_container_contained",
             [os.path.join("src", "zope", "container",
                           "_zope_container_contained.c")],
-            include_dirs=get_include_dirs(),
+            include_dirs=IncludeDirs(),
         ),
     ]
 
+setup_requires = [
+    'persistent >= 4.1.0',
+    'zope.proxy >= 4.1.5',
+]
 
-install_requires = [
+
+install_requires = setup_requires + [
     'BTrees',
-    'persistent>=4.1.0',
     'six',
     'zope.cachedescriptors',
     'zope.component',
@@ -121,7 +145,6 @@ install_requires = [
     'zope.interface',
     'zope.lifecycleevent>=3.5.2',
     'zope.location>=3.5.4',
-    'zope.proxy>=4.1.5',
     'zope.publisher',
     'zope.schema',
     'zope.security',
@@ -192,6 +215,7 @@ setup(name='zope.container',
       ext_modules=ext_modules,
       extras_require=extras,
       install_requires=install_requires,
+      setup_requires=setup_requires,
       tests_require=extras['test'],
       include_package_data=True,
       zip_safe=False,
