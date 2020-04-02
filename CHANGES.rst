@@ -2,7 +2,7 @@
  Changes
 =========
 
-4.4.0 (unreleased)
+4.4.0 (2020-04-02)
 ==================
 
 - Support the ``PURE_PYTHON`` environment variable at runtime instead
