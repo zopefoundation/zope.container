@@ -32,9 +32,16 @@
 
 
 #include "Python.h"
-#include "persistent/cPersistence.h"
+#include "cPersistence.h"
 
 static PyObject *str_p_deactivate;
+
+/* Now things get weird. We use _zope_proxy_proxy.c like a complex macro.
+   To do so, we define things that zope.proxy/proxy.h would define, and
+   suppress inclusion of that file, and then include the complete .c file. */
+
+/* Supress inclusion of the original proxy.h */
+#define _proxy_H_ 1
 
 #if PY_VERSION_HEX < 0x02050000 && !defined(PY_SSIZE_T_MIN)
 typedef int Py_ssize_t;
@@ -65,19 +72,17 @@ typedef struct {
 #define OBJECT(O) ((PyObject*)(O))
 #define Proxy_GET_OBJECT(ob)   (((ProxyObject *)(ob))->proxy_object)
 
-#define CLEAR(O) \
-  if (O) {PyObject *clr__tmp = O; O = NULL; Py_DECREF(clr__tmp); }
-
-/* Supress inclusion of the original proxy.h */
-#define _proxy_H_ 1
+#define CLEAR(O) Py_CLEAR(O)
 
 /* Incude the proxy C source */
 #include "_zope_proxy_proxy.c"
 
 #ifdef PY3K
   #define MAKE_PYSTRING(s) PyUnicode_FromString(s)
+  #define MAKE_STRING(name) PyBytes_AS_STRING(PyUnicode_AsUTF8String(name))
 #else
   #define MAKE_PYSTRING(s) PyString_FromString(s)
+  #define MAKE_STRING(name) PyString_AS_STRING(name)
 #endif
 
 #define SPECIAL(NAME) (                        \
@@ -317,7 +322,7 @@ MOD_INIT(_zope_container_contained)
     cPersistenceCAPI = (cPersistenceCAPIstruct *)PyCObject_Import(
                 "persistent.cPersistence", "CAPI");
 #endif
-  
+
   if (cPersistenceCAPI == NULL)
     return MOD_ERROR_VAL;
 

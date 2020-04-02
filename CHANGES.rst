@@ -16,6 +16,16 @@
   may slightly change the order of interfaces for ``ContainedProxy``
   objects. See `issue 34 <https://github.com/zopefoundation/zope.container/issues/34>`_.
 
+- Stop including outdated versions of ``zope.proxy`` (implementation)
+  and ``persistent`` headers. Instead, locate and use the installed
+  versions. See `issue 32
+  <https://github.com/zopefoundation/zope.container/issues/32>`_.
+
+  .. note::
+
+     This adds those two dependencies to ``setup_requires``.
+
+
 4.3.0 (2019-11-11)
 ==================
 
