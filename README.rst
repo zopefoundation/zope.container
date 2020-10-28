@@ -11,8 +11,8 @@
         :target: https://pypi.org/project/zope.container/
         :alt: Supported Python versions
 
-.. image:: https://travis-ci.org/zopefoundation/zope.container.svg?branch=master
-        :target: https://travis-ci.org/zopefoundation/zope.container
+.. image:: https://travis-ci.com/zopefoundation/zope.container.svg?branch=master
+        :target: https://travis-ci.com/zopefoundation/zope.container
 
 .. image:: https://ci.appveyor.com/api/projects/status/iawcghgqox42af70/branch/master?svg=true
         :target: https://ci.appveyor.com/project/mgedmin/zope-container
