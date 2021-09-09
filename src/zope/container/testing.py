@@ -49,7 +49,7 @@ checker = renormalizing.RENormalizing([
      r"NameReserved"),
     (re.compile("zope.schema._bootstrapinterfaces.ConstraintNotSatisfied"),
      r"ConstraintNotSatisfied"),
-    ])
+])
 
 
 # XXX we would like to swap the names of the *PlacelessSetup classes
@@ -62,6 +62,7 @@ class PlacelessSetup(object):
     def setUp(self):
         component.provideAdapter(NameChooser, (IWriteContainer,), INameChooser)
 
+
 class ContainerPlacelessSetup(CAPlacelessSetup,
                               EventPlacelessSetup,
                               PlacelessSetup):
@@ -71,18 +72,24 @@ class ContainerPlacelessSetup(CAPlacelessSetup,
         EventPlacelessSetup.setUp(self)
         PlacelessSetup.setUp(self)
 
+
 ps = ContainerPlacelessSetup()
 setUp = ps.setUp
 
+
 def tearDown():
-    tearDown_ = ps.tearDown
+    # `ps` is actually defined at the time this function is executed:
+    tearDown_ = ps.tearDown  # noqa: F821 undefined name 'ps'
+
     def tearDown(doctesttest=None):
         tearDown_()
     return tearDown
 
+
 tearDown = tearDown()
 
 del ps
+
 
 class ContainerPlacefulSetup(ContainerPlacelessSetup):
     def setUp(self, doctesttest=None):
@@ -93,7 +100,6 @@ class ContainerPlacefulSetup(ContainerPlacelessSetup):
 
     def tearDown(self, docttesttest=None):
         ContainerPlacelessSetup.tearDown(self)
-
 
     def buildFolders(self):
         root = self.rootFolder = SampleContainer()

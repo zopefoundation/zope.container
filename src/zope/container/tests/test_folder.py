@@ -5,6 +5,7 @@ from zope.container.tests.test_icontainer import TestSampleContainer
 
 import pickle
 
+
 class Test(TestSampleContainer, TestCase):
 
     def makeTestObject(self):
@@ -19,7 +20,8 @@ class Test(TestSampleContainer, TestCase):
     def testPickleCompatibility(self):
         folder = self.makeTestObject()
         folder['a'] = 1
-        self.assertEqual(folder.__getstate__()['data'], folder._SampleContainer__data)
+        self.assertEqual(folder.__getstate__()[
+                         'data'], folder._SampleContainer__data)
 
         folder_clone = pickle.loads(pickle.dumps(folder))
         self.assertEqual(folder_clone['a'], folder['a'])

@@ -24,6 +24,7 @@ from zope.container.contained import Contained, setitem, uncontained
 from zope.container.contained import notifyContainerModified
 from zope.container.contained import checkAndConvertName
 
+
 @implementer(IOrderedContainer)
 class OrderedContainer(Persistent, Contained):
     """ `OrderedContainer` maintains entries' order as added and moved.
@@ -34,6 +35,7 @@ class OrderedContainer(Persistent, Contained):
     >>> len(oc)
     0
     """
+
     def __init__(self):
 
         self._data = PersistentDict()

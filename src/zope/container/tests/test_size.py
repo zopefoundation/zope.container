@@ -19,6 +19,7 @@ from zope.interface import implementer
 from zope.size.interfaces import ISized
 from zope.container.interfaces import IContainer
 
+
 @implementer(IContainer)
 class DummyContainer(object):
 
@@ -59,8 +60,10 @@ class Test(unittest.TestCase):
         self.assertEqual(sized.sizeForDisplay(), u'${items} items')
         self.assertEqual(sized.sizeForDisplay().mapping['items'], '2')
 
+
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)
+
 
 if __name__ == '__main__':
     unittest.main()

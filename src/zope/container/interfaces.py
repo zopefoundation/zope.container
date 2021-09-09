@@ -18,36 +18,40 @@ __docformat__ = 'restructuredtext'
 from zope.interface import Interface, Invalid
 from zope.interface.common.mapping import IItemMapping
 from zope.interface.common.mapping import IReadMapping, IEnumerableMapping
-from zope.location.interfaces import ILocation
 from zope.schema import Set
 
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 
 # the following imports provide backwards compatibility for consumers;
 # do not remove them
-from zope.lifecycleevent.interfaces import IObjectMovedEvent
 from zope.lifecycleevent.interfaces import IObjectAddedEvent
+from zope.lifecycleevent.interfaces import IObjectMovedEvent
 from zope.lifecycleevent.interfaces import IObjectRemovedEvent
 from zope.location.interfaces import IContained
+from zope.location.interfaces import ILocation
 # /end backwards compatibility imports
 
 from zope.container.i18n import ZopeMessageFactory as _
 
+
 class DuplicateIDError(KeyError):
     pass
+
 
 class ContainerError(Exception):
     """An error of a container with one of its components."""
 
+
 class InvalidContainerType(Invalid, TypeError):
     """The type of a container is not valid."""
+
 
 class InvalidItemType(Invalid, TypeError):
     """The type of an item is not valid."""
 
+
 class InvalidType(Invalid, TypeError):
     """The type of an object is not valid."""
-
 
 
 class IItemContainer(IItemMapping):
@@ -182,7 +186,6 @@ class IBTreeContainer(IContainer):
 class IOrdered(Interface):
     """Objects whose contents are maintained in order."""
 
-
     def updateOrder(order):
         """Revise the order of keys, replacing the current ordering.
 
@@ -200,24 +203,26 @@ class IOrderedContainer(IOrdered, IContainer):
     """Containers whose contents are maintained in order."""
 
 
-
 class IContainerNamesContainer(IContainer):
     """Containers that always choose names for their items."""
 
+
 class IReservedNames(Interface):
     """A sequence of names that are reserved for that container"""
-    
+
     reservedNames = Set(
         title=_(u'Reserved Names'),
         description=_(u'Names that are not allowed for addable content'),
         required=True,
-        )
-    
+    )
+
+
 class NameReserved(ValueError):
     __doc__ = _("""The name is reserved for this container""")
 
 ##############################################################################
 # Adding objects
+
 
 class UnaddableError(ContainerError):
     """An object cannot be added to a container."""

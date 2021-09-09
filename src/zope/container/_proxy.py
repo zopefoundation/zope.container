@@ -20,12 +20,14 @@ from persistent import Persistent
 
 _MARKER = object()
 
+
 def _special_name(name):
     "attribute names we delegate to Persistent for"
     return (name.startswith('_Persistent')
             or name.startswith('_p_')
             or name.startswith('_v_')
             or name in ContainedProxyBase.__slots__)
+
 
 @use_c_impl
 class ContainedProxyBase(AbstractPyProxyBase, Persistent):
@@ -97,7 +99,8 @@ class ContainedProxyBase(AbstractPyProxyBase, Persistent):
     def __setattr__(self, name, value):
         if _special_name(name):
             # Our own attribute names need to go directly to Persistent
-            # so that _p_changed gets set, in addition to the _p values themselves
+            # so that _p_changed gets set, in addition to the _p values
+            # themselves
             return Persistent.__setattr__(self, name, value)
 
         return super(ContainedProxyBase, self).__setattr__(name, value)

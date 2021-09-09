@@ -17,6 +17,7 @@ __docformat__ = 'restructuredtext'
 from zope.interface import implementer
 from zope.container import btree, interfaces
 
+
 @implementer(interfaces.IContentContainer)
 class Folder(btree.BTreeContainer):
     """The standard Zope Folder implementation."""

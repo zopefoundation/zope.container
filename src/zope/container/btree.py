@@ -53,21 +53,21 @@ class BTreeContainer(Contained, Persistent):
 
     @Lazy
     def _BTreeContainer__len(self):
-        l = Length()
+        l_ = Length()
         ol = len(self._SampleContainer__data)
         if ol > 0:
-            l.change(ol)
+            l_.change(ol)
         self._p_changed = True
-        return l
+        return l_
 
     def __len__(self):
         return self.__len()
 
     def _setitemf(self, key, value):
         # make sure our lazy property gets set
-        l = self.__len
+        l_ = self.__len
         self._SampleContainer__data[key] = value
-        l.change(1)
+        l_.change(1)
 
     def __iter__(self):
         return iter(self._SampleContainer__data)
@@ -85,10 +85,10 @@ class BTreeContainer(Contained, Persistent):
 
     def __delitem__(self, key):
         # make sure our lazy property gets set
-        l = self.__len
+        l_ = self.__len
         item = self._SampleContainer__data[key]
         del self._SampleContainer__data[key]
-        l.change(-1)
+        l_.change(-1)
         uncontained(item, self, key)
 
     has_key = __contains__

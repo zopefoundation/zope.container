@@ -23,6 +23,7 @@ from zope.container.traversal import ContainerTraversable
 from zope.container.interfaces import IContainer
 import six
 
+
 @implementer(IContainer)
 class Container(object):
 
@@ -66,6 +67,7 @@ class Test(CleanUp, unittest.TestCase):
 
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)
+
 
 if __name__ == '__main__':
     unittest.main()

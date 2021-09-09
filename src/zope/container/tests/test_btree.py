@@ -34,8 +34,8 @@ class TestBTreeContainer(TestSampleContainer, unittest.TestCase):
 class TestBTreeSpecials(unittest.TestCase):
 
     def testStoredLength(self):
-        # This is a lazy property for backward compatibility.  If the len is not
-        # stored already we set it to the length of the underlying
+        # This is a lazy property for backward compatibility.  If the len is
+        # not stored already we set it to the length of the underlying
         # btree.
         lazy = BTreeContainer._BTreeContainer__len
         self.assertIs(lazy, BTreeContainer.__dict__['_BTreeContainer__len'])
@@ -53,7 +53,6 @@ class TestBTreeSpecials(unittest.TestCase):
         self.assertFalse('_BTreeContainer__len' in bc.__dict__)
         self.assertEqual(len(bc), 1)
         self.assertEqual(bc.__dict__['_BTreeContainer__len'](), 1)
-
 
     # The tests which follow test the additional signatures and declarations
     # for the BTreeContainer that allow it to provide the IBTreeContainer
@@ -161,7 +160,6 @@ class TestBTreeSpecials(unittest.TestCase):
         self.assertEqual(len(bc), 1)
         self.assertEqual(list(bc), [u'x'])
 
-
     def checkIterable(self, iterable):
         it = iter(iterable)
         self.assertTrue(callable(it.__iter__))
@@ -191,6 +189,7 @@ class TestBTreeEvents(unittest.TestCase):
         item = Contained()
         tree['42'] = item
         events = []
+
         def subscriber(event):
             events.append(event)
             # events should happen after the deletion, not before)
@@ -209,6 +208,7 @@ class TestBTreeEvents(unittest.TestCase):
 
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)
+
 
 if __name__ == '__main__':
     unittest.main(defaultTest='test_suite')

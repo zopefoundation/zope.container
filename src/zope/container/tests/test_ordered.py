@@ -18,7 +18,9 @@ from doctest import DocTestSuite
 
 from zope.component.eventtesting import getEvents, clearEvents
 from zope.container import testing
+from zope.container._compat import text_type
 from zope.container.tests.test_icontainer import TestSampleContainer
+
 
 class TestOrderedContainer(TestSampleContainer):
 
@@ -54,17 +56,16 @@ class TestOrderedContainer(TestSampleContainer):
         from zope.lifecycleevent.interfaces import IObjectModifiedEvent
         self.assertTrue(IObjectModifiedEvent.providedBy(events[0]))
 
-
     def test_order_all_items_available_at_object_added_event(self):
         # Now register an event subscriber to object added events.
         import zope.component
         from zope.lifecycleevent.interfaces import IObjectAddedEvent
 
         keys = []
+
         @zope.component.adapter(IObjectAddedEvent)
         def printContainerKeys(event):
             keys.extend(event.newParent.keys())
-
 
         zope.component.provideHandler(printContainerKeys)
 
@@ -105,7 +106,6 @@ class TestOrderedContainer(TestSampleContainer):
         # Updating with bytes keys...
         oc.updateOrder((b'b', b'a'))
         # still produces text keys
-        text_type = str if str is not bytes else unicode
         self.assertEqual(list(reversed(keys)), oc.keys())
         self.assertIsInstance(oc.keys()[0], text_type)
 
@@ -120,6 +120,3 @@ def test_suite():
                                checker=testing.checker))
 
     return suite
-
-if __name__ == '__main__':
-    unittest.main()

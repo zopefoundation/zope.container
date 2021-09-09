@@ -48,8 +48,8 @@ from zope.container._proxy import ContainedProxyBase
 
 try:
     from ZODB.interfaces import IBroken
-except ImportError: # pragma: no cover
-    class IBroken(Interface): # pylint:disable=inherit-non-class
+except ImportError:  # pragma: no cover
+    class IBroken(Interface):  # pylint:disable=inherit-non-class
         pass
 
 
@@ -68,8 +68,7 @@ class ContainerModifiedEvent(ObjectModifiedEvent):
     """The container has been modified."""
 
 
-
-def dispatchToSublocations(object, event): # pylint:disable=redefined-builtin
+def dispatchToSublocations(object, event):  # pylint:disable=redefined-builtin
     """Dispatch an event to sublocations of a given object
 
        When a move event happens for an object, it's important to notify
@@ -161,6 +160,7 @@ def dispatchToSublocations(object, event): # pylint:disable=redefined-builtin
         for sub in subs.sublocations():
             zope.component.handle(sub, event)
 
+
 class ContainerSublocations(object):
     """Get the sublocations for a container
 
@@ -192,7 +192,7 @@ class ContainerSublocations(object):
             yield container[key]
 
 
-def containedEvent(object, container, name=None): # pylint:disable=redefined-builtin
+def containedEvent(object, container, name=None):
     """Establish the containment of the object in the container
 
     The object and necessary event are returned. The object may be a
@@ -325,7 +325,8 @@ def containedEvent(object, container, name=None): # pylint:disable=redefined-bui
 
     return object, event
 
-def contained(object, container, name=None): # pylint:disable=redefined-builtin
+
+def contained(object, container, name=None):
     """Establish the containment of the object in the container
 
     Just return the contained object without an event. This is a convenience
@@ -337,11 +338,14 @@ def contained(object, container, name=None): # pylint:disable=redefined-builtin
     """
     return containedEvent(object, container, name)[0]
 
-def notifyContainerModified(object, *descriptions): # pylint:disable=redefined-builtin
+
+def notifyContainerModified(object, *descriptions):
     """Notify that the container was modified."""
     notify(ContainerModifiedEvent(object, *descriptions))
 
+
 _SENTINEL = object()
+
 
 def checkAndConvertName(name):
     # Basic name checks, including converting bytes to text.
@@ -359,7 +363,8 @@ def checkAndConvertName(name):
         raise ValueError("empty names are not allowed")
     return name
 
-def setitem(container, setitemf, name, object): # pylint:disable=redefined-builtin
+
+def setitem(container, setitemf, name, object):
     r"""Helper function to set an item and generate needed events
 
     This helper is needed, in part, because the events need to get
@@ -578,8 +583,11 @@ def setitem(container, setitemf, name, object): # pylint:disable=redefined-built
         notify(event)
         notifyContainerModified(container)
 
+
 fixing_up = False
-def uncontained(object, container, name=None): # pylint:disable=redefined-builtin
+
+
+def uncontained(object, container, name=None):
     """Clear the containment relationship between the *object* and
     the *container*.
 
@@ -702,13 +710,14 @@ def uncontained(object, container, name=None): # pylint:disable=redefined-builti
         object.__name__ = None
     notifyContainerModified(container)
 
+
 @zope.interface.implementer(INameChooser)
 class NameChooser(object):
 
     def __init__(self, context):
         self.context = context
 
-    def checkName(self, name, object): # pylint:disable=redefined-builtin
+    def checkName(self, name, object):  # pylint:disable=redefined-builtin
         """See zope.container.interfaces.INameChooser
 
         We create and populate a dummy container
@@ -771,12 +780,12 @@ class NameChooser(object):
         if not name:
             raise ValueError(
                 _("An empty name was provided. Names cannot be empty.")
-                )
+            )
 
         if name[:1] in '+@' or '/' in name:
             raise ValueError(
                 _("Names cannot begin with '+' or '@' or contain '/'")
-                )
+            )
 
         reserved = IReservedNames(self.context, None)
         if reserved is not None:
@@ -786,12 +795,11 @@ class NameChooser(object):
         if name in self.context:
             raise KeyError(
                 _("The given name is already being used")
-                )
+            )
 
         return True
 
-
-    def chooseName(self, name, object): # pylint:disable=redefined-builtin
+    def chooseName(self, name, object):  # pylint:disable=redefined-builtin
         """See zope.container.interfaces.INameChooser
 
         The name chooser is expected to choose a name without error
@@ -812,7 +820,8 @@ class NameChooser(object):
         >>> NameChooser(container).chooseName(b'foobar', object())
         u'foobar'
 
-        If it already exists, a number is appended but keeps the same extension:
+        If it already exists, a number is appended but keeps the same
+        extension:
 
         >>> NameChooser(container).chooseName('foobar.old', object())
         u'foobar-2.old'
@@ -831,7 +840,8 @@ class NameChooser(object):
 
         container = self.context
 
-        # convert to unicode and remove characters that checkName does not allow
+        # convert to unicode and remove characters that checkName does not
+        # allow
         if isinstance(name, bytes):
             name = name.decode('ascii')
         if not isinstance(name, text_type):
@@ -871,7 +881,7 @@ class DecoratorSpecificationDescriptor(
         zope.interface.declarations.ObjectSpecificationDescriptor):
     """Support for interface declarations on decorators
 
-    >>> from zope.interface import *
+    >>> from zope.interface import Interface, directlyProvides, implementer
     >>> class I1(Interface):
     ...     pass
     >>> class I2(Interface):
@@ -911,8 +921,9 @@ class DecoratorSpecificationDescriptor(
     >>> [interface.getName() for interface in list(providedBy(D2(D1(x))))]
     ['I4', 'I3', 'I1', 'I2', 'IContained', 'IPersistent']
     """
+
     def __get__(self, inst, cls=None):
-        if inst is None: # pragma: no cover (Not sure how we can get here)
+        if inst is None:  # pragma: no cover (Not sure how we can get here)
             return getObjectSpecification(cls)
 
         provided = providedBy(getProxiedObject(inst))
@@ -949,8 +960,9 @@ class DecoratedSecurityCheckerDescriptor(object):
     >>> d.__Security_checker__ # doctest: +ELLIPSIS
     <...CombinedChecker...>
     """
+
     def __get__(self, inst, cls=None):
-        if inst is None: # pragma: no cover (Not sure how we can get here)
+        if inst is None:  # pragma: no cover (Not sure how we can get here)
             return self
 
         proxied_object = getProxiedObject(inst)
@@ -958,11 +970,12 @@ class DecoratedSecurityCheckerDescriptor(object):
         if checker is None:
             checker = selectChecker(proxied_object)
         wrapper_checker = selectChecker(inst)
-        if wrapper_checker is None: # pragma: no cover
+        if wrapper_checker is None:  # pragma: no cover
             return checker
         if checker is None:
             return wrapper_checker
         return CombinedChecker(wrapper_checker, checker)
+
 
 class ContainedProxyClassProvides(zope.interface.declarations.ClassProvides):
     """
@@ -981,6 +994,7 @@ class ContainedProxyClassProvides(zope.interface.declarations.ClassProvides):
     >>> hasattr(base, '__provides__')
     False
     """
+
     def __set__(self, inst, value):
         inst = getProxiedObject(inst)
         inst.__provides__ = value
@@ -989,6 +1003,7 @@ class ContainedProxyClassProvides(zope.interface.declarations.ClassProvides):
         # CPython can hit this, PyPy/PURE_PYTHON cannot
         inst = getProxiedObject(inst)
         del inst.__provides__
+
 
 @zope.interface.implementer(IContained)
 class ContainedProxy(ContainedProxyBase):
@@ -1010,5 +1025,6 @@ class ContainedProxy(ContainedProxyBase):
 
     __Security_checker__ = zope.proxy.non_overridable(
         DecoratedSecurityCheckerDescriptor())
+
 
 ContainedProxy.__provides__ = ContainedProxyClassProvides(ContainedProxy, type)

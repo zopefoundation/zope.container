@@ -42,6 +42,7 @@ class ZCMLDependencies(ContainerPlacelessSetup, unittest.TestCase):
         self.assertTrue(isinstance(res, ItemTraverser))
         self.assertTrue(res.context is samplesimplereadcontainer)
 
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(ZCMLDependencies))
