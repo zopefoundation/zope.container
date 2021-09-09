@@ -1,22 +1,20 @@
-include *.txt
+# Generated from:
+# https://github.com/zopefoundation/meta/tree/master/config/c-code
 include *.rst
-include MANIFEST.in
-include bootstrap.py
+include *.txt
 include buildout.cfg
-include compat.cfg
 include tox.ini
-include .travis.yml
 include appveyor.yml
 include .coveragerc
-include *.sh
 
-recursive-include src *.py
-recursive-include src *.rst
-recursive-include src *.zcml
-recursive-include src *.c
-recursive-include include *.h *.txt
-
-recursive-include docs *.bat
 recursive-include docs *.py
 recursive-include docs *.rst
+recursive-include docs *.txt
 recursive-include docs Makefile
+
+recursive-include src *.py
+include *.sh
+include compat.cfg
+recursive-include docs *.bat
+recursive-include src *.rst
+recursive-include src *.zcml

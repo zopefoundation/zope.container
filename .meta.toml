@@ -1,0 +1,45 @@
+# Generated from:
+# https://github.com/zopefoundation/meta/tree/master/config/c-code
+[meta]
+template = "c-code"
+commit-id = "faa88a95a269ed8ceb1e390d55a1c192d73b7ffd"
+
+[python]
+with-appveyor = true
+with-windows = false
+with-pypy = true
+with-future-python = false
+with-legacy-python = true
+with-docs = true
+with-sphinx-doctests = false
+
+[tox]
+use-flake8 = true
+
+[coverage]
+fail-under = 0
+
+[appveyor]
+global-env-vars = [
+    "# Currently the builds use @mgedmin's Appveyor account.  The PyPI token belongs",
+    "# to zope.wheelbuilder, which is managed by @mgedmin and @dataflake.",
+    "TWINE_USERNAME: __token__",
+    "TWINE_PASSWORD:",
+    "  secure: aoZC/+rvJKg8B5GMGIxd1fvt+dprlV4HJWR5jyaXx8YqNVWD3QAB7iwQwQGXoDxV8kIN3dG+zhHhcSOLwWF8iEaEkEDPLhFxfbR0M5jBH2Tod4lXnWr/+GzkjF+IS3BQoVmShaM3zsIKot9TuUu+6bCE5YWE6jg1jl+WLCFBQB+O+c26chrxqw0/7S33MTZpamoWmGrDjTePWHceGNO5Cs5cwu6UL15bKgKW8VQf/90YE1HPfNeiGyhfPYGrLwGWSiQK/5kIUSTbLtY8KWbm+g==",
+    ]
+
+[flake8]
+additional-config = [
+    "# F401 imported but unused",
+    "per-file-ignores =",
+    "    src/zope/container/interfaces.py: F401",
+    ]
+
+[manifest]
+additional-rules = [
+    "include *.sh",
+    "include compat.cfg",
+    "recursive-include docs *.bat",
+    "recursive-include src *.rst",
+    "recursive-include src *.zcml",
+    ]
