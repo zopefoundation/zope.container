@@ -210,7 +210,7 @@ def containedEvent(object, container, name=None):
         >>> item.__parent__ is container
         True
         >>> item.__name__
-        u'foo'
+        'foo'
 
     We have an added event:
 
@@ -221,7 +221,7 @@ def containedEvent(object, container, name=None):
         >>> event.newParent is container
         True
         >>> event.newName
-        u'foo'
+        'foo'
         >>> event.oldParent
         >>> event.oldName
 
@@ -233,7 +233,7 @@ def containedEvent(object, container, name=None):
         >>> item.__parent__ is container
         True
         >>> item.__name__
-        u'foo'
+        'foo'
 
     We don't get a new added event:
 
@@ -250,17 +250,18 @@ def containedEvent(object, container, name=None):
         >>> event.newParent is container
         True
         >>> event.newName
-        u'foo2'
+        'foo2'
         >>> event.oldParent is container
         True
         >>> event.oldName
-        u'foo'
+        'foo'
 
     If the *object* implements `ILocation`, but not `IContained`, set its
     ``__parent__`` and ``__name__`` attributes *and* declare that it
     implements `IContained`:
 
         >>> from zope.location import Location
+        >>> from zope.location.interfaces import IContained
         >>> item = Location()
         >>> IContained.providedBy(item)
         False
@@ -396,11 +397,11 @@ def setitem(container, setitemf, name, object):
     >>> container = {}
     >>> setitem(container, container.__setitem__, u'c', item)
     >>> container[u'c'] is item
-    1
+    True
     >>> item.__parent__ is container
-    1
+    True
     >>> item.__name__
-    u'c'
+    'c'
 
     If we run this using the testing framework, we'll use `getEvents` to
     track the events generated:
@@ -414,11 +415,11 @@ def setitem(container, setitemf, name, object):
     1
     >>> event = getEvents(IObjectAddedEvent)[-1]
     >>> event.object is item
-    1
+    True
     >>> event.newParent is container
-    1
+    True
     >>> event.newName
-    u'c'
+    'c'
     >>> event.oldParent
     >>> event.oldName
 

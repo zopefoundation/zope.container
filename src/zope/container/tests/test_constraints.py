@@ -14,6 +14,7 @@
 """Container constraint tests
 """
 import unittest
+import six
 
 
 class TestUnaddableError(unittest.TestCase):
@@ -30,8 +31,8 @@ class TestCheckObject(unittest.TestCase):
     def test_non_container(self):
         from zope.container.constraints import checkObject
 
-        with self.assertRaisesRegexp(
-                TypeError, "Container is not a valid Zope container."):
+        with six.assertRaisesRegex(
+                self, TypeError, "Container is not a valid Zope container."):
             checkObject({}, 'foo', 42)
 
 

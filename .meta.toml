@@ -2,7 +2,7 @@
 # https://github.com/zopefoundation/meta/tree/master/config/c-code
 [meta]
 template = "c-code"
-commit-id = "faa88a95a269ed8ceb1e390d55a1c192d73b7ffd"
+commit-id = "2d2c0e59a7eea3f9e0b02da6e5e35ff98c3c5956"
 
 [python]
 with-appveyor = true
@@ -20,7 +20,7 @@ testenv-setenv = [
     ]
 
 [coverage]
-fail-under = 0
+fail-under = 97
 
 [appveyor]
 global-env-vars = [

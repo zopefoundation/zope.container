@@ -180,7 +180,7 @@ extras['test'] += (extras['zodb'] + extras['zcml'])
 
 
 setup(name='zope.container',
-      version='4.4.1.dev0',
+      version='4.5.0.dev0',
       author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Container',
@@ -204,6 +204,7 @@ setup(name='zope.container',
           'Programming Language :: Python :: 3.7',
           'Programming Language :: Python :: 3.8',
           'Programming Language :: Python :: 3.9',
+          'Programming Language :: Python :: 3.10',
           'Programming Language :: Python :: Implementation :: CPython',
           'Programming Language :: Python :: Implementation :: PyPy',
           'Natural Language :: English',
