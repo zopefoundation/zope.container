@@ -27,8 +27,10 @@ from zope.container.contained import ContainedProxy
 
 # pylint:disable=protected-access
 
+
 class MyOb(Persistent):
     ob = None
+
 
 class TestContainedZODB(unittest.TestCase):
 
@@ -108,7 +110,6 @@ class TestContainedZODB(unittest.TestCase):
         self.assertIs(o2.ob, p2.ob)
         self.assertEqual('test', o2.ob.__name__)
 
-
         # Now we'll change things around a bit. We'll move things around
         # a bit. We'll also add an attribute to ob
 
@@ -146,7 +147,8 @@ class TestContainedZODB(unittest.TestCase):
         conn = db.open()
         conn.root()['p'] = ContainedProxy(None)
 
-        # We need to create some filler objects to push our proxy out of the cache:
+        # We need to create some filler objects to push our proxy out of the
+        # cache:
 
         for i in range(10):
             conn.root()[i] = MyOb()
@@ -179,7 +181,6 @@ class TestContainedZODB(unittest.TestCase):
         # But it's a ghost:
 
         self.assertFalse(bool(conn.root()['p']._p_changed))
-
 
         # If we deactivate the root object:
 

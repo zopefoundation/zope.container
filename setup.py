@@ -42,7 +42,8 @@ def get_include_dirs():
     # setuptools will put the normal include directory for Python.h on the
     # include path automatically. We don't want to override that with
     # a different Python.h if we can avoid it: On older versions of Python,
-    # that can cause issues with debug builds (see https://github.com/gevent/gevent/issues/1461)
+    # that can cause issues with debug builds
+    # (see https://github.com/gevent/gevent/issues/1461)
     # so order matters here.
     #
     # sysconfig.get_path('include') will return the path to the main include
@@ -57,14 +58,15 @@ def get_include_dirs():
     #   distutils.sysconfig.get_python_inc() -> /pythondir/include/python3.8
     #
     # Neither sysconfig dir is not enough if we're in a virtualenv; the proxy.h
-    # header goes into a site/ subdir. See https://github.com/pypa/pip/issues/4610
+    # header goes into a site/ subdir.
+    # See https://github.com/pypa/pip/issues/4610
     import sysconfig
     from distutils import sysconfig as dist_sysconfig
 
-    dist_inc_dir = os.path.abspath(dist_sysconfig.get_python_inc()) # 1
-    sys_inc_dir = os.path.abspath(sysconfig.get_path("include")) # 2
+    dist_inc_dir = os.path.abspath(dist_sysconfig.get_python_inc())  # 1
+    sys_inc_dir = os.path.abspath(sysconfig.get_path("include"))  # 2
 
-    def header_dirs_for_dep(distname, headername): # 3 and 4
+    def header_dirs_for_dep(distname, headername):  # 3 and 4
 
         venv_include_dir = os.path.join(
             sys.prefix, 'include', 'site',
@@ -97,6 +99,7 @@ def get_include_dirs():
         )
         if p is not None and os.path.exists(p)
     ]
+
 
 class IncludeDirs(object):
     dirs = None
@@ -177,7 +180,7 @@ extras['test'] += (extras['zodb'] + extras['zcml'])
 
 
 setup(name='zope.container',
-      version='4.4.1.dev0',
+      version='4.5.0.dev0',
       author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Container',
@@ -200,6 +203,8 @@ setup(name='zope.container',
           'Programming Language :: Python :: 3.6',
           'Programming Language :: Python :: 3.7',
           'Programming Language :: Python :: 3.8',
+          'Programming Language :: Python :: 3.9',
+          'Programming Language :: Python :: 3.10',
           'Programming Language :: Python :: Implementation :: CPython',
           'Programming Language :: Python :: Implementation :: PyPy',
           'Natural Language :: English',
@@ -227,4 +232,4 @@ setup(name='zope.container',
           '!=3.3.*',
           '!=3.4.*',
       ]),
-)
+      )

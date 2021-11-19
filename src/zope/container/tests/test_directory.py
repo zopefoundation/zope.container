@@ -24,6 +24,7 @@ from zope.container import directory
 class Directory(object):
     a = None
 
+
 class TestCloner(unittest.TestCase):
 
     def test_Cloner(self):
@@ -47,14 +48,16 @@ class TestRootDirectoryFactory(unittest.TestCase):
         factory = directory.RootDirectoryFactory(None)
         self.assertIsInstance(factory(None), Folder)
 
+
 def test_suite():
-    flags = doctest.ELLIPSIS|doctest.NORMALIZE_WHITESPACE
+    flags = doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE
     return unittest.TestSuite((
         unittest.defaultTestLoader.loadTestsFromName(__name__),
         doctest.DocFileSuite("directory.rst",
                              setUp=testing.setUp, tearDown=testing.tearDown,
                              optionflags=flags),
-        ))
+    ))
+
 
 if __name__ == '__main__':
     unittest.main(defaultTest='test_suite')

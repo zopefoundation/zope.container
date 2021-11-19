@@ -19,6 +19,7 @@ import types
 from zope.interface import implementedBy
 from zope.interface import classImplements
 
+
 def _c_optimizations_required():
     """
     Return a true value if the C optimizations are required.
@@ -44,7 +45,7 @@ def _c_optimizations_available():
     try:
         from zope.container import _zope_container_contained as c_opt
         return c_opt
-    except catch: # pragma: no cover (they build everywhere)
+    except catch:  # pragma: no cover (they build everywhere)
         return False
 
 
@@ -123,14 +124,15 @@ def use_c_impl(py_impl, name=None, globs=None):
         GLOBAL_OBJECT = 2
     """
     name = name or py_impl.__name__
-    globs = globs or sys._getframe(1).f_globals # pylint:disable=protected-access
+    globs = globs or sys._getframe(
+        1).f_globals  # pylint:disable=protected-access
 
     def find_impl():
         if not _should_attempt_c_optimizations():
             return py_impl
 
         c_opts = _c_optimizations_available()
-        if not c_opts: # pragma: no cover (only Jython doesn't build extensions)
+        if not c_opts:  # pragma: no cover
             return py_impl
 
         __traceback_info__ = c_opts
@@ -171,7 +173,7 @@ def use_c_impl(py_impl, name=None, globs=None):
             v = types.FunctionType(
                 v.__code__,
                 new_globals,
-                k, # name
+                k,  # name
                 v.__defaults__,
                 v.__closure__,
             )
@@ -188,6 +190,6 @@ def use_c_impl(py_impl, name=None, globs=None):
             for iface in implements
             if not implemented_by_c.isOrExtends(iface)
         ]
-        if implements: # pragma: no cover
+        if implements:  # pragma: no cover
             classImplements(c_impl, *implements)
     return c_impl

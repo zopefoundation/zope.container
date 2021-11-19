@@ -59,8 +59,8 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
 
         container, data = self.__setUp()
         keys = container.keys()
-        keys = sorted(keys) # convert to sorted list
-        ikeys = sorted([k for k, _v in data]) # sort input keys
+        keys = sorted(keys)  # convert to sorted list
+        ikeys = sorted([k for k, _v in data])  # sort input keys
         self.assertEqual(keys, ikeys)
 
     def test_get(self):
@@ -115,8 +115,8 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
 
         container, data = self.__setUp()
         items = container.items()
-        items = sorted(items) # convert to sorted list
-        data.sort() # sort input data
+        items = sorted(items)  # convert to sorted list
+        data.sort()  # sort input data
         self.assertEqual(items, data)
 
     def test___contains__(self):
@@ -353,8 +353,10 @@ class TestSampleContainer(BaseTestIContainer, TestCase):
     def getBadKeyTypes(self):
         return [None, [b'foo'], 1, b'\xf3abc']
 
+
 def test_suite():
     return makeSuite(TestSampleContainer)
+
 
 if __name__ == '__main__':
     main(defaultTest='test_suite')

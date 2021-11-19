@@ -55,14 +55,15 @@ class ContainerTraverser(object):
 
     def browserDefault(self, request):
         """See zope.publisher.browser.interfaces.IBrowserPublisher"""
-        # XXX this re-implements zope.app.publisher.browser.getDefaultViewName()
+        # XXX this re-implements
+        # zope.app.publisher.browser.getDefaultViewName()
         # to break our only dependency on it.
         view_name = getSiteManager(None).adapters.lookup(
             map(providedBy, (self.context, request)), IDefaultViewName)
         if view_name is None:
             raise ComponentLookupError("Couldn't find default view name",
                                        self.context, request)
-        view_uri = "@@%s" %view_name
+        view_uri = "@@%s" % view_name
         return self.context, (view_uri,)
 
 
@@ -86,6 +87,7 @@ class ItemTraverser(ContainerTraverser):
 
 _marker = object()
 
+
 @implementer(ITraversable)
 class ContainerTraversable(object):
     """Traverses containers via `getattr` and `get`."""
@@ -94,7 +96,6 @@ class ContainerTraversable(object):
 
     def __init__(self, container):
         self._container = container
-
 
     def traverse(self, name, furtherPath):
         container = self._container

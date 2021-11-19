@@ -20,6 +20,7 @@ from zope.container.i18n import ZopeMessageFactory as _
 from zope.size.interfaces import ISized
 from zope.interface import implementer
 
+
 @implementer(ISized)
 class ContainerSized(object):
     """

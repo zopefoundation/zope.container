@@ -21,6 +21,7 @@ from zope.container.find import FindAdapter, SimpleIdFindFilter
 from zope.container.find import SimpleInterfacesFindFilter
 from zope.interface import implementer, Interface, directlyProvides
 
+
 @implementer(IReadContainer)
 class FakeContainer(object):
 
@@ -34,14 +35,18 @@ class FakeContainer(object):
     def __len__(self):
         return len(self._objects)
 
+
 class FakeInterfaceFoo(Interface):
     """Test interface Foo"""
+
 
 class FakeInterfaceBar(Interface):
     """Test interface Bar"""
 
+
 class FakeInterfaceSpam(Interface):
     """Test interface Spam"""
+
 
 @implementer(IObjectFindFilter)
 class TestObjectFindFilter(object):
@@ -145,8 +150,10 @@ class Test(unittest.TestCase):
         data = {'a': 42}
         self.assertEqual(FindAdapter(data).find(), [42])
 
+
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)
+
 
 if __name__ == '__main__':
     unittest.main(defaultTest='test_suite')

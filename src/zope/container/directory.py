@@ -35,6 +35,7 @@ from six.moves import map
 
 MARKER = object()
 
+
 def noop(container):
     """Adapt an `IContainer` to an `IWriteDirectory` by just returning it
 
@@ -54,6 +55,7 @@ class Cloner(object):
     This adapter provides a factory that creates a new empty container
     of the same class as it's context.
     """
+
     def __init__(self, context):
         self.context = context
 
@@ -108,10 +110,10 @@ class ReadDirectory(object):
         return map(self.get, self.keys())
 
     def __len__(self):
-        l = len(self.context)
+        l_ = len(self.context)
         if ISite.providedBy(self.context):
-            l += 1
-        return l
+            l_ += 1
+        return l_
 
     def items(self):
         get = self.get

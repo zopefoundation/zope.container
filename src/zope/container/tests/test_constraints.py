@@ -14,6 +14,8 @@
 """Container constraint tests
 """
 import unittest
+import six
+
 
 class TestUnaddableError(unittest.TestCase):
 
@@ -23,13 +25,14 @@ class TestUnaddableError(unittest.TestCase):
         self.assertEqual(str(e),
                          "'obj' cannot be added to 'container': Extra")
 
+
 class TestCheckObject(unittest.TestCase):
 
     def test_non_container(self):
         from zope.container.constraints import checkObject
 
-        with self.assertRaisesRegexp(TypeError,
-                                     "Container is not a valid Zope container."):
+        with six.assertRaisesRegex(
+                self, TypeError, "Container is not a valid Zope container."):
             checkObject({}, 'foo', 42)
 
 
@@ -60,6 +63,7 @@ class TestTypesBased(unittest.TestCase):
 
         t = _TypesBased.types
         self.assertTrue(hasattr(t, '__get__'))
+
 
 def test_suite():
     import doctest

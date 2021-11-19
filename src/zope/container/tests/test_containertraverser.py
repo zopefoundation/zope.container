@@ -26,6 +26,7 @@ from zope.container.traversal import ItemTraverser
 from zope.container.interfaces import IReadContainer
 from zope.container import testing
 
+
 @implementer(IReadContainer)
 class TestContainer(object):
 
@@ -42,6 +43,7 @@ class TestContainer(object):
         if o is v:
             raise KeyError(name)
         return o
+
 
 class View(object):
     def __init__(self, context, request):
@@ -111,6 +113,7 @@ class TestItemTraverser(TraverserTest):
 
     def _getTraverser(self, context, request):
         return ItemTraverser(context, request)
+
 
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)

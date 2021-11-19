@@ -31,6 +31,7 @@ from zope.container.sample import SampleContainer
 from zope.container import testing
 from zope.container.interfaces import NameReserved, IContainer, IReservedNames
 
+
 class MyOb(Persistent):
     pass
 
@@ -43,8 +44,8 @@ class TestContainedProxy(unittest.TestCase):
         # This is a picklable proxy that can be put around objects that
         # don't implement IContained.
 
-        l = [1, 2, 3]
-        p = ContainedProxy(l)
+        l_ = [1, 2, 3]
+        p = ContainedProxy(l_)
         p.__parent__ = 'Dad'
         p.__name__ = 'p'
         self.assertEqual([1, 2, 3], p)
@@ -62,8 +63,9 @@ class TestContainedProxy(unittest.TestCase):
         from zope.container.interfaces import IContained
         from persistent.interfaces import IPersistent
 
-        class I1(zope.interface.Interface): # pylint:disable=inherit-non-class
+        class I1(zope.interface.Interface):  # pylint:disable=inherit-non-class
             pass
+
         @zope.interface.implementer(I1)
         class C(object):
             pass
@@ -76,7 +78,6 @@ class TestContainedProxy(unittest.TestCase):
         self.assertEqual((),
                          tuple(zope.interface.providedBy(ContainedProxy)))
 
-
         # It implements IContained and IPersistent:
         self.assertEqual((IContained, IPersistent),
                          tuple(zope.interface.implementedBy(ContainedProxy)))
@@ -86,7 +87,7 @@ class TestContainedProxy(unittest.TestCase):
         self.assertEqual(tuple(zope.interface.providedBy(p)),
                          (I1, IContained, IPersistent))
 
-        class I2(zope.interface.Interface): # pylint:disable=inherit-non-class
+        class I2(zope.interface.Interface):  # pylint:disable=inherit-non-class
             pass
         zope.interface.directlyProvides(c, I2)
         self.assertEqual(tuple(zope.interface.providedBy(p)),
@@ -94,12 +95,11 @@ class TestContainedProxy(unittest.TestCase):
 
         # We can declare interfaces through the proxy:
 
-        class I3(zope.interface.Interface): # pylint:disable=inherit-non-class
+        class I3(zope.interface.Interface):  # pylint:disable=inherit-non-class
             pass
         zope.interface.directlyProvides(p, I3)
         self.assertEqual(tuple(zope.interface.providedBy(p)),
                          (I3, I1, IContained, IPersistent))
-
 
     def test_ContainedProxy_instances_have_no_instance_dictionaries(self):
         # Make sure that proxies don't introduce extra instance dictionaries
@@ -135,7 +135,6 @@ class TestContainedProxy(unittest.TestCase):
 
         with self.assertRaises(TypeError):
             setProxiedObject(self, 1)
-
 
 
 class TestNameChooser(unittest.TestCase):
@@ -221,6 +220,7 @@ class TestNameChooser(unittest.TestCase):
 
         self.assertEqual(nc.chooseName(BadBoy(), set()), u'set')
 
+
 class TestFunctions(unittest.TestCase):
 
     def test_contained(self):
@@ -246,13 +246,14 @@ class TestFunctions(unittest.TestCase):
 class TestPlacefulSetup(unittest.TestCase):
 
     def test_cover(self):
-        # We don't actually use this anywhere in this package, this just makes sure
-        # it's still around.
+        # We don't actually use this anywhere in this package, this just makes
+        # sure it's still around.
         from zope.container.testing import ContainerPlacefulSetup
         setup = ContainerPlacefulSetup()
         setup.setUp()
         setup.buildFolders()
         setup.tearDown()
+
 
 def test_suite():
     suite = unittest.defaultTestLoader.loadTestsFromName(__name__)
