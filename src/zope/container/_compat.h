@@ -7,6 +7,14 @@
 #  define PYCAPI_COMPAT_STATIC_INLINE(TYPE) static inline TYPE
 #endif
 
+// Cast argument to PyObject* type.
+#ifndef _PyObject_CAST
+#  define _PyObject_CAST(op) PYCAPI_COMPAT_CAST(PyObject*, op)
+#endif
+#ifndef _PyObject_CAST_CONST
+#  define _PyObject_CAST_CONST(op) PYCAPI_COMPAT_CAST(const PyObject*, op)
+#endif
+
 // bpo-39573 added Py_SET_TYPE() to Python 3.9.0a4
 #if PY_VERSION_HEX < 0x030900A4 && !defined(Py_SET_TYPE)
 PYCAPI_COMPAT_STATIC_INLINE(void)
