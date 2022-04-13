@@ -7,6 +7,15 @@
 #  define PYCAPI_COMPAT_STATIC_INLINE(TYPE) static inline TYPE
 #endif
 
+// C++ compatibility
+#ifdef __cplusplus
+#  define PYCAPI_COMPAT_CAST(TYPE, EXPR) reinterpret_cast<TYPE>(EXPR)
+#  define PYCAPI_COMPAT_NULL nullptr
+#else
+#  define PYCAPI_COMPAT_CAST(TYPE, EXPR) ((TYPE)(EXPR))
+#  define PYCAPI_COMPAT_NULL NULL
+#endif
+
 // Cast argument to PyObject* type.
 #ifndef _PyObject_CAST
 #  define _PyObject_CAST(op) PYCAPI_COMPAT_CAST(PyObject*, op)
