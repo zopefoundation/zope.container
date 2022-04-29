@@ -16,7 +16,10 @@
 __docformat__ = 'restructuredtext'
 
 from zope.interface import implementer
-from .interfaces import IFind, IIdFindFilter, IObjectFindFilter
+
+from .interfaces import IFind
+from .interfaces import IIdFindFilter
+from .interfaces import IObjectFindFilter
 from .interfaces import IReadContainer
 
 

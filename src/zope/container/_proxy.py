@@ -12,10 +12,10 @@
 #
 ##############################################################################
 
-from zope.proxy import AbstractPyProxyBase
-from zope.container._util import use_c_impl
-
 from persistent import Persistent
+from zope.proxy import AbstractPyProxyBase
+
+from zope.container._util import use_c_impl
 
 
 _MARKER = object()

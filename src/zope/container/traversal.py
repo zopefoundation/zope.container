@@ -15,17 +15,23 @@
 """
 __docformat__ = 'restructuredtext'
 
-from zope.interface import implementer, providedBy
-from zope.component import queryMultiAdapter, getSiteManager
+from six.moves import map
+
 from zope.component import ComponentLookupError
-from zope.traversing.interfaces import TraversalError, ITraversable
+from zope.component import getSiteManager
+from zope.component import queryMultiAdapter
+from zope.interface import implementer
+from zope.interface import providedBy
+from zope.publisher.interfaces import IDefaultViewName
+from zope.publisher.interfaces import NotFound
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from zope.publisher.interfaces.xmlrpc import IXMLRPCPublisher
-from zope.publisher.interfaces import IDefaultViewName, NotFound
+from zope.traversing.interfaces import ITraversable
+from zope.traversing.interfaces import TraversalError
 
-from zope.container.interfaces import ISimpleReadContainer, IItemContainer
+from zope.container.interfaces import IItemContainer
 from zope.container.interfaces import IReadContainer
-from six.moves import map
+from zope.container.interfaces import ISimpleReadContainer
 
 
 # Note that the next two classes are included here because they

@@ -20,9 +20,12 @@ need a very different implementation.
 """
 __docformat__ = 'restructuredtext'
 
-from zope.container.interfaces import IContainer
 from zope.interface import implementer
-from zope.container.contained import Contained, setitem, uncontained
+
+from zope.container.contained import Contained
+from zope.container.contained import setitem
+from zope.container.contained import uncontained
+from zope.container.interfaces import IContainer
 
 
 @implementer(IContainer)

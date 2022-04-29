@@ -13,11 +13,14 @@
 ##############################################################################
 """Test the IContainer interface.
 """
-from unittest import TestCase, main, makeSuite
+from unittest import TestCase
+from unittest import main
+from unittest import makeSuite
 
 from zope.interface.verify import verifyObject
-from zope.container.interfaces import IContainer
+
 from zope.container import testing
+from zope.container.interfaces import IContainer
 
 
 def DefaultTestData():

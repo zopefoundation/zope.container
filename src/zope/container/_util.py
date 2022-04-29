@@ -16,8 +16,8 @@ import os
 import sys
 import types
 
-from zope.interface import implementedBy
 from zope.interface import classImplements
+from zope.interface import implementedBy
 
 
 def _c_optimizations_required():

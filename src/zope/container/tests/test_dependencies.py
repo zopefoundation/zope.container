@@ -7,8 +7,8 @@ from zope.publisher.interfaces.browser import IBrowserPublisher
 
 from zope.container.interfaces import IItemContainer
 from zope.container.interfaces import ISimpleReadContainer
-from zope.container.traversal import ItemTraverser
 from zope.container.testing import ContainerPlacelessSetup
+from zope.container.traversal import ItemTraverser
 
 
 class ZCMLDependencies(ContainerPlacelessSetup, unittest.TestCase):

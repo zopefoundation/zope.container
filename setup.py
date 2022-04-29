@@ -21,7 +21,9 @@
 import os
 import sys
 
-from setuptools import setup, find_packages, Extension
+from setuptools import Extension
+from setuptools import find_packages
+from setuptools import setup
 
 
 def read(*rnames):
@@ -141,6 +143,7 @@ install_requires = setup_requires + [
     'six',
     'zope.cachedescriptors',
     'zope.component',
+    'zope.deferredimport',
     'zope.dottedname',
     'zope.event',
     'zope.filerepresentation',

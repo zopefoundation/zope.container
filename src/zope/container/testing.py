@@ -17,17 +17,20 @@ import re
 
 import zope.interface
 import zope.traversing.testing
-from zope import component
-from zope.component.testing import PlacelessSetup as CAPlacelessSetup
 from zope.component.eventtesting import PlacelessSetup as EventPlacelessSetup
-from zope.traversing.interfaces import ITraversable, IContainmentRoot
+from zope.component.testing import PlacelessSetup as CAPlacelessSetup
 from zope.testing import renormalizing
+from zope.traversing.interfaces import IContainmentRoot
+from zope.traversing.interfaces import ITraversable
 
-from zope.container.interfaces import IWriteContainer, INameChooser
+from zope import component
 from zope.container.contained import NameChooser
+from zope.container.interfaces import INameChooser
 from zope.container.interfaces import ISimpleReadContainer
-from zope.container.traversal import ContainerTraversable
+from zope.container.interfaces import IWriteContainer
 from zope.container.sample import SampleContainer
+from zope.container.traversal import ContainerTraversable
+
 
 checker = renormalizing.RENormalizing([
     # Python 3 unicode removed the "u".

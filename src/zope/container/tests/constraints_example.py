@@ -1,9 +1,9 @@
 from zope.interface import implementer
 from zope.location.interfaces import IContained
 
-from zope.container.interfaces import IContainer
 from zope.container.constraints import containers
 from zope.container.constraints import contains
+from zope.container.interfaces import IContainer
 
 
 class IBuddyFolder(IContainer):

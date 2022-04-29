@@ -15,7 +15,9 @@
 """
 __docformat__ = 'restructuredtext'
 from zope.interface import implementer
-from zope.container import btree, interfaces
+
+from zope.container import btree
+from zope.container import interfaces
 
 
 @implementer(interfaces.IContentContainer)

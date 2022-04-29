@@ -15,11 +15,15 @@
 """
 import unittest
 
-from zope.container.interfaces import IReadContainer
-from zope.container.interfaces import IObjectFindFilter
-from zope.container.find import FindAdapter, SimpleIdFindFilter
+from zope.interface import Interface
+from zope.interface import directlyProvides
+from zope.interface import implementer
+
+from zope.container.find import FindAdapter
+from zope.container.find import SimpleIdFindFilter
 from zope.container.find import SimpleInterfacesFindFilter
-from zope.interface import implementer, Interface, directlyProvides
+from zope.container.interfaces import IObjectFindFilter
+from zope.container.interfaces import IReadContainer
 
 
 @implementer(IReadContainer)

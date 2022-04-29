@@ -15,16 +15,19 @@
 """
 
 import unittest
-from zope.interface import Interface, implementer
-from zope import component
-from zope.publisher.interfaces import NotFound, IDefaultViewName
+
+from zope.interface import Interface
+from zope.interface import implementer
 from zope.publisher.browser import TestRequest
+from zope.publisher.interfaces import IDefaultViewName
+from zope.publisher.interfaces import NotFound
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
+from zope import component
+from zope.container import testing
+from zope.container.interfaces import IReadContainer
 from zope.container.traversal import ContainerTraverser
 from zope.container.traversal import ItemTraverser
-from zope.container.interfaces import IReadContainer
-from zope.container import testing
 
 
 @implementer(IReadContainer)

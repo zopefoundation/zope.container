@@ -16,7 +16,9 @@
 import unittest
 from doctest import DocTestSuite
 
-from zope.component.eventtesting import getEvents, clearEvents
+from zope.component.eventtesting import clearEvents
+from zope.component.eventtesting import getEvents
+
 from zope.container import testing
 from zope.container._compat import text_type
 from zope.container.tests.test_icontainer import TestSampleContainer
@@ -27,9 +29,7 @@ class TestOrderedContainer(TestSampleContainer):
     def test_order_events(self):
         # Prepare the setup::
         from zope.container.contained import ContainerModifiedEvent
-
         # Prepare some objects::
-
         from zope.container.ordered import OrderedContainer
         oc = OrderedContainer()
         oc['foo'] = 'bar'
