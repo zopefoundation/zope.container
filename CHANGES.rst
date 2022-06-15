@@ -5,7 +5,7 @@
 4.6 (unreleased)
 ================
 
-- Add support for Python 3.11 (as of 3.11.0a7).
+- Add support for Python 3.11 (as of 3.11.0b3).
 
 
 4.5.0 (2021-11-19)
