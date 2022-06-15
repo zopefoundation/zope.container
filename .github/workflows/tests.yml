@@ -146,7 +146,7 @@ jobs:
           pip install -U setuptools wheel twine cffi
 
       - name: Build zope.container 3.11.0-beta.3
-        if: startsWith(matrix.python-version, '3.11.0-beta.3')
+        if: ${{ startsWith(matrix.python-version, '3.11.0-beta.3') }}
         run: |
           # Next, build the wheel *in place*. This helps ccache, and also lets us cache the configure
           # output (pip install uses a random temporary directory, making this difficult).
@@ -156,7 +156,7 @@ jobs:
           pip install -U 'faulthandler; python_version == "2.7" and platform_python_implementation == "CPython"'
           pip install --pre .[test]
       - name: Build zope.container
-        if: !startsWith(matrix.python-version, '3.11.0-beta.3')
+        if: ${{ !startsWith(matrix.python-version, '3.11.0-beta.3') }}
         run: |
           # Next, build the wheel *in place*. This helps ccache, and also lets us cache the configure
           # output (pip install uses a random temporary directory, making this difficult).
@@ -260,7 +260,7 @@ jobs:
           unzip -n dist/zope.container-*whl -d src
           pip install --pre -U -e .[test]
       - name: Install zope.container
-        if: !startsWith(matrix.python-version, '3.11.0-beta.3')
+        if: ${{ !startsWith(matrix.python-version, '3.11.0-beta.3') }}
         run: |
           pip install -U wheel setuptools
           pip install -U coverage
