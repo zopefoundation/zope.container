@@ -17,8 +17,8 @@
 import doctest
 import unittest
 
-from zope.container import testing
 from zope.container import directory
+from zope.container import testing
 
 
 class Directory(object):

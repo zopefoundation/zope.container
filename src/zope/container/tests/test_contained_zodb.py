@@ -17,13 +17,13 @@
 import gc
 import unittest
 
-from ZODB.DemoStorage import DemoStorage
-from ZODB.DB import DB
 import transaction
-
 from persistent import Persistent
+from ZODB.DB import DB
+from ZODB.DemoStorage import DemoStorage
 
 from zope.container.contained import ContainedProxy
+
 
 # pylint:disable=protected-access
 

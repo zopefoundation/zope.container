@@ -14,22 +14,23 @@
 """Contained Tests
 """
 from __future__ import absolute_import
-import doctest
 
+import doctest
 import unittest
 
+import zope.component
+import zope.interface
 from persistent import Persistent
 
-import zope.interface
-import zope.component
-
+from zope.container import testing
 from zope.container.contained import ContainedProxy
 from zope.container.contained import NameChooser
 from zope.container.contained import contained
 from zope.container.contained import uncontained
+from zope.container.interfaces import IContainer
+from zope.container.interfaces import IReservedNames
+from zope.container.interfaces import NameReserved
 from zope.container.sample import SampleContainer
-from zope.container import testing
-from zope.container.interfaces import NameReserved, IContainer, IReservedNames
 
 
 class MyOb(Persistent):
@@ -60,8 +61,9 @@ class TestContainedProxy(unittest.TestCase):
 
     def test_declarations_on_ContainedProxy(self):
         # It is possible to make declarations on ContainedProxy objects.
-        from zope.container.interfaces import IContained
         from persistent.interfaces import IPersistent
+
+        from zope.container.interfaces import IContained
 
         class I1(zope.interface.Interface):  # pylint:disable=inherit-non-class
             pass

@@ -153,13 +153,15 @@ __docformat__ = 'restructuredtext'
 
 import sys
 
+import zope.schema
 from zope.cachedescriptors.property import readproperty
 from zope.dottedname.resolve import resolve
-import zope.schema
 from zope.interface import providedBy
-from zope.container.interfaces import InvalidItemType, InvalidContainerType
+
 from zope.container.i18n import ZopeMessageFactory as _
 from zope.container.interfaces import IContainer
+from zope.container.interfaces import InvalidContainerType
+from zope.container.interfaces import InvalidItemType
 
 
 def checkObject(container, name, object):

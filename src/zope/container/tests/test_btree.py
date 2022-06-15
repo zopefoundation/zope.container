@@ -16,13 +16,13 @@
 import unittest
 
 from zope.interface.verify import verifyObject
+from zope.lifecycleevent.interfaces import IObjectRemovedEvent
 
-from zope.container.tests.test_icontainer import TestSampleContainer
 from zope.container.btree import BTreeContainer
+from zope.container.contained import Contained
 from zope.container.interfaces import IBTreeContainer
 from zope.container.interfaces import IContainerModifiedEvent
-from zope.container.contained import Contained
-from zope.lifecycleevent.interfaces import IObjectRemovedEvent
+from zope.container.tests.test_icontainer import TestSampleContainer
 
 
 class TestBTreeContainer(TestSampleContainer, unittest.TestCase):

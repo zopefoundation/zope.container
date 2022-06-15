@@ -21,7 +21,9 @@
 import os
 import sys
 
-from setuptools import setup, find_packages, Extension
+from setuptools import Extension
+from setuptools import find_packages
+from setuptools import setup
 
 
 def read(*rnames):
@@ -141,6 +143,7 @@ install_requires = setup_requires + [
     'six',
     'zope.cachedescriptors',
     'zope.component',
+    'zope.deferredimport',
     'zope.dottedname',
     'zope.event',
     'zope.filerepresentation',
@@ -180,7 +183,7 @@ extras['test'] += (extras['zodb'] + extras['zcml'])
 
 
 setup(name='zope.container',
-      version='4.5.1.dev0',
+      version='4.6.dev0',
       author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Container',

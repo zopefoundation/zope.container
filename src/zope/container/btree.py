@@ -15,14 +15,16 @@
 """
 __docformat__ = 'restructuredtext'
 
-from persistent import Persistent
-from BTrees.OOBTree import OOBTree
 from BTrees.Length import Length
-
-from zope.container.interfaces import IBTreeContainer
-from zope.container.contained import Contained, setitem, uncontained
-from zope.interface import implementer
+from BTrees.OOBTree import OOBTree
+from persistent import Persistent
 from zope.cachedescriptors.property import Lazy
+from zope.interface import implementer
+
+from zope.container.contained import Contained
+from zope.container.contained import setitem
+from zope.container.contained import uncontained
+from zope.container.interfaces import IBTreeContainer
 
 
 @implementer(IBTreeContainer)

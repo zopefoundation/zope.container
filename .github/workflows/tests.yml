@@ -104,6 +104,7 @@ jobs:
           - "3.8"
           - "3.9"
           - "3.10"
+          - "3.11.0-alpha.7"
         os: [ubuntu-20.04, macos-latest]
         exclude:
           - os: macos-latest
@@ -143,7 +144,6 @@ jobs:
         run: |
           pip install -U pip
           pip install -U setuptools wheel twine cffi
-          pip install -U coveralls coverage
 
       - name: Build zope.container
         run: |
@@ -152,9 +152,8 @@ jobs:
           python setup.py build_ext -i
           python setup.py bdist_wheel
           # Also install it, so that we get dependencies in the (pip) cache.
-          pip install -U coverage
           pip install -U 'faulthandler; python_version == "2.7" and platform_python_implementation == "CPython"'
-          pip install .[test]
+          pip install --pre .[test]
 
       - name: Check zope.container build
         run: |
@@ -169,7 +168,12 @@ jobs:
         # We cannot 'uses: pypa/gh-action-pypi-publish@v1.4.1' because
         # that's apparently a container action, and those don't run on
         # the Mac.
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags') && startsWith(runner.os, 'Mac') && !startsWith(matrix.python-version, 'pypy')
+        if: >
+          github.event_name == 'push'
+          && startsWith(github.ref, 'refs/tags')
+          && startsWith(runner.os, 'Mac')
+          && !startsWith(matrix.python-version, 'pypy')
+          && !startsWith(matrix.python-version, '3.11.0-alpha.7')
         env:
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
         run: |
@@ -191,6 +195,7 @@ jobs:
           - "3.8"
           - "3.9"
           - "3.10"
+          - "3.11.0-alpha.7"
         os: [ubuntu-20.04, macos-latest]
         exclude:
           - os: macos-latest
@@ -234,13 +239,15 @@ jobs:
       - name: Install zope.container
         run: |
           pip install -U wheel setuptools
-          pip install -U coverage coverage-python-version
+          # coverage has a wheel on PyPI for a future python version which is
+          # not ABI compatible with the current one, so build it from sdist:
+          pip install -U --no-binary :all: coverage
           pip install -U 'faulthandler; python_version == "2.7" and platform_python_implementation == "CPython"'
           # Unzip into src/ so that testrunner can find the .so files
           # when we ask it to load tests from that directory. This
           # might also save some build time?
           unzip -n dist/zope.container-*whl -d src
-          pip install -U -e .[test]
+          pip install --pre -U -e .[test]
       - name: Run tests with C extensions
         if: ${{ !startsWith(matrix.python-version, 'pypy') }}
         run: |
@@ -318,6 +325,7 @@ jobs:
           ZOPE_INTERFACE_STRICT_IRO: 1
         run: |
           sphinx-build -b html -d docs/_build/doctrees docs docs/_build/html
+
   lint:
     needs: build-package
     runs-on: ${{ matrix.os }}
@@ -442,7 +450,9 @@ jobs:
         run: sudo chown -R $(whoami) ${{ steps.pip-cache.outputs.dir }}
       - name: Publish package to PyPI
         uses: pypa/gh-action-pypi-publish@v1.4.1
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+        if: >
+          github.event_name == 'push'
+          && startsWith(github.ref, 'refs/tags')
         with:
           user: __token__
           password: ${{ secrets.TWINE_PASSWORD }}

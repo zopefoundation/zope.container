@@ -17,6 +17,7 @@ import unittest
 
 from zope.interface import implementer
 from zope.size.interfaces import ISized
+
 from zope.container.interfaces import IContainer
 
 

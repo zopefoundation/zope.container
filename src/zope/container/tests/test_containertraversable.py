@@ -14,14 +14,17 @@
 """Container Traverser tests.
 """
 from __future__ import absolute_import
+
 import unittest
-from zope.testing.cleanup import CleanUp
+
+import six
+
 from zope.interface import implementer
+from zope.testing.cleanup import CleanUp
 from zope.traversing.interfaces import TraversalError
 
-from zope.container.traversal import ContainerTraversable
 from zope.container.interfaces import IContainer
-import six
+from zope.container.traversal import ContainerTraversable
 
 
 @implementer(IContainer)

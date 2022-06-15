@@ -14,6 +14,7 @@
 """Container constraint tests
 """
 import unittest
+
 import six
 
 
@@ -67,6 +68,7 @@ class TestTypesBased(unittest.TestCase):
 
 def test_suite():
     import doctest
+
     from zope.container import testing
     return unittest.TestSuite((
         unittest.defaultTestLoader.loadTestsFromName(__name__),

@@ -16,9 +16,10 @@
 """
 __docformat__ = 'restructuredtext'
 
-from zope.container.i18n import ZopeMessageFactory as _
-from zope.size.interfaces import ISized
 from zope.interface import implementer
+from zope.size.interfaces import ISized
+
+from zope.container.i18n import ZopeMessageFactory as _
 
 
 @implementer(ISized)

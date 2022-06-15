@@ -33,6 +33,7 @@
 
 #include "Python.h"
 #include "cPersistence.h"
+#include "_compat.h"
 
 static PyObject *str_p_deactivate;
 
@@ -327,7 +328,7 @@ MOD_INIT(_zope_container_contained)
     return MOD_ERROR_VAL;
 
   ProxyType.tp_name = "zope.container.contained.ContainedProxyBase";
-  Py_TYPE(&ProxyType) = &PyType_Type;
+  Py_SET_TYPE(&ProxyType, &PyType_Type);
   ProxyType.tp_base = cPersistenceCAPI->pertype;
   ProxyType.tp_getattro = CP_getattro;
   ProxyType.tp_setattro = CP_setattro;

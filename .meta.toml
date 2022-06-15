@@ -2,13 +2,13 @@
 # https://github.com/zopefoundation/meta/tree/master/config/c-code
 [meta]
 template = "c-code"
-commit-id = "2d2c0e59a7eea3f9e0b02da6e5e35ff98c3c5956"
+commit-id = "dbaca5f3c7785b7bca563dabc5f440544069a8f9"
 
 [python]
 with-appveyor = true
 with-windows = false
 with-pypy = true
-with-future-python = false
+with-future-python = true
 with-legacy-python = true
 with-docs = true
 with-sphinx-doctests = false
@@ -44,6 +44,7 @@ additional-rules = [
     "include *.sh",
     "include compat.cfg",
     "recursive-include docs *.bat",
+    "recursive-include src *.h",
     "recursive-include src *.rst",
     "recursive-include src *.zcml",
     ]

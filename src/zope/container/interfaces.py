@@ -15,23 +15,35 @@
 """
 __docformat__ = 'restructuredtext'
 
-from zope.interface import Interface, Invalid
+import zope.deferredimport
+from zope.interface import Interface
+from zope.interface import Invalid
+from zope.interface.common.mapping import IEnumerableMapping
 from zope.interface.common.mapping import IItemMapping
-from zope.interface.common.mapping import IReadMapping, IEnumerableMapping
+from zope.interface.common.mapping import IReadMapping
+from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 from zope.schema import Set
 
-from zope.lifecycleevent.interfaces import IObjectModifiedEvent
-
-# the following imports provide backwards compatibility for consumers;
-# do not remove them
-from zope.lifecycleevent.interfaces import IObjectAddedEvent
-from zope.lifecycleevent.interfaces import IObjectMovedEvent
-from zope.lifecycleevent.interfaces import IObjectRemovedEvent
-from zope.location.interfaces import IContained
-from zope.location.interfaces import ILocation
-# /end backwards compatibility imports
-
 from zope.container.i18n import ZopeMessageFactory as _
+
+
+zope.deferredimport.initialize()
+
+
+zope.deferredimport.deprecated(
+    "Some zope.container interfaces have been moved to"
+    " zope.lifecycleevent.interfaces, please import form there.",
+    IObjectAddedEvent='zope.lifecycleevent.interfaces:IObjectAddedEvent',
+    IObjectMovedEvent='zope.lifecycleevent.interfaces:IObjectMovedEvent',
+    IObjectRemovedEvent='zope.lifecycleevent.interfaces:IObjectRemovedEvent',
+)
+
+zope.deferredimport.deprecated(
+    "Some zope.container interfaces have been moved to"
+    " zope.location.interfaces, please import form there.",
+    IContained='zope.location.interfaces:IContained',
+    ILocation='zope.location.interfaces:ILocation',
+)
 
 
 class DuplicateIDError(KeyError):

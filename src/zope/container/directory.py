@@ -23,14 +23,14 @@ providing a file-system representation for containers:
 """
 __docformat__ = 'restructuredtext'
 
-from zope.interface import implementer
-
-from zope.component.interfaces import ISite
-from zope.container.folder import Folder
-from zope.security.proxy import removeSecurityProxy
-import zope.filerepresentation.interfaces
-
 from six.moves import map
+
+import zope.filerepresentation.interfaces
+from zope.component.interfaces import ISite
+from zope.interface import implementer
+from zope.security.proxy import removeSecurityProxy
+
+from zope.container.folder import Folder
 
 
 MARKER = object()

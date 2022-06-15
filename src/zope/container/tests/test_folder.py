@@ -1,9 +1,9 @@
-from unittest import TestCase, makeSuite
+import pickle
+from unittest import TestCase
+from unittest import makeSuite
 
 from zope.container.folder import Folder
 from zope.container.tests.test_icontainer import TestSampleContainer
-
-import pickle
 
 
 class Test(TestSampleContainer, TestCase):

@@ -18,11 +18,14 @@ __docformat__ = 'restructuredtext'
 from persistent import Persistent
 from persistent.dict import PersistentDict
 from persistent.list import PersistentList
-from zope.container.interfaces import IOrderedContainer
 from zope.interface import implementer
-from zope.container.contained import Contained, setitem, uncontained
-from zope.container.contained import notifyContainerModified
+
+from zope.container.contained import Contained
 from zope.container.contained import checkAndConvertName
+from zope.container.contained import notifyContainerModified
+from zope.container.contained import setitem
+from zope.container.contained import uncontained
+from zope.container.interfaces import IOrderedContainer
 
 
 @implementer(IOrderedContainer)

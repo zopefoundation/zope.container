@@ -17,33 +17,29 @@
 from six import text_type
 
 import zope.component
-
-from zope.interface import providedBy
+from zope.event import notify
 from zope.interface import Interface
 from zope.interface import implementedBy
-from zope.interface.declarations import getObjectSpecification
+from zope.interface import providedBy
 from zope.interface.declarations import Provides
-
-from zope.event import notify
-
-from zope.location.interfaces import ILocation, ISublocations
-from zope.location.interfaces import IContained
-
-from zope.security.checker import selectChecker, CombinedChecker
-
+from zope.interface.declarations import getObjectSpecification
+from zope.lifecycleevent import ObjectAddedEvent
 from zope.lifecycleevent import ObjectModifiedEvent
 from zope.lifecycleevent import ObjectMovedEvent
-from zope.lifecycleevent import ObjectAddedEvent
 from zope.lifecycleevent import ObjectRemovedEvent
+from zope.location.interfaces import IContained
+from zope.location.interfaces import ILocation
+from zope.location.interfaces import ISublocations
+from zope.security.checker import CombinedChecker
+from zope.security.checker import selectChecker
 
-
-from zope.container.i18n import ZopeMessageFactory as _
-from zope.container.interfaces import INameChooser
-from zope.container.interfaces import IReservedNames, NameReserved
-from zope.container.interfaces import IContainerModifiedEvent
-
-from zope.container._proxy import getProxiedObject
 from zope.container._proxy import ContainedProxyBase
+from zope.container._proxy import getProxiedObject
+from zope.container.i18n import ZopeMessageFactory as _
+from zope.container.interfaces import IContainerModifiedEvent
+from zope.container.interfaces import INameChooser
+from zope.container.interfaces import IReservedNames
+from zope.container.interfaces import NameReserved
 
 
 try:
