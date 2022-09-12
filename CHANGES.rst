@@ -5,7 +5,8 @@
 4.7 (unreleased)
 ================
 
-- Nothing changed yet.
+- Disable unsafe math optimizations in C code.  See `pull request 46
+  <https://github.com/zopefoundation/zope.container/pull/46>`_.
 
 
 4.6 (2022-07-14)
