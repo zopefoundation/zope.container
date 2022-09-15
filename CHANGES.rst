@@ -2,7 +2,7 @@
  Changes
 =========
 
-4.7 (unreleased)
+4.7 (2022-09-15)
 ================
 
 - Disable unsafe math optimizations in C code.  See `pull request 46
