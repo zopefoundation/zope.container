@@ -5,6 +5,7 @@
 4.9 (unreleased)
 ================
 
+- Add support for building arm64 wheels on macOS.
 
 4.8 (2022-11-06)
 ================
