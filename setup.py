@@ -183,7 +183,7 @@ extras['test'] += (extras['zodb'] + extras['zcml'])
 
 
 setup(name='zope.container',
-      version='4.9.dev0',
+      version='4.9',
       author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Container',
@@ -217,6 +217,12 @@ setup(name='zope.container',
           'Framework :: Zope :: 3',
       ],
       url='https://github.com/zopefoundation/zope.container',
+      project_urls={
+        'Documentation': 'https://zopecontainer.readthedocs.io',
+        'Issue Tracker': ('https://github.com/zopefoundation'
+                          '/zope.container/issues'),
+        'Sources': 'https://github.com/zopefoundation/zope.container',
+      },
       license='ZPL 2.1',
       packages=find_packages('src'),
       package_dir={'': 'src'},

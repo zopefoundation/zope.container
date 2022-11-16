@@ -274,8 +274,8 @@ texinfo_documents = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
-    'https://docs.python.org/': None,
-    'https://zodb.readthedocs.io/en/latest/': None,
+    'https://docs.python.org/3/': None,
+    'https://zodb.org/en/latest/': None,
     'https://persistent.readthedocs.io/en/latest/': None,
     'https://zopesize.readthedocs.io/en/latest/': None,
     'https://zopesite.readthedocs.io/en/latest/': None,
