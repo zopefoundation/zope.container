@@ -2,8 +2,10 @@
  Changes
 =========
 
-4.10 (unreleased)
+4.10 (2022-11-17)
 =================
+
+- Release to rebuild a full set of binary wheels.
 
 
 4.9 (2022-11-16)
