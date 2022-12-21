@@ -189,7 +189,7 @@ class OrderedContainer(Persistent, Contained):
         >>> oc['foo'] = 'baz'
         Traceback (most recent call last):
         ...
-        KeyError: u'foo'
+        KeyError: 'foo'
         >>> oc._order
         ['foo', 'baz']
         """

@@ -22,7 +22,7 @@ from zope.container.interfaces import IContainer
 
 
 @implementer(IContainer)
-class DummyContainer(object):
+class DummyContainer:
 
     def __init__(self, numitems):
         self._numitems = numitems
@@ -43,7 +43,7 @@ class Test(unittest.TestCase):
         obj = DummyContainer(0)
         sized = ContainerSized(obj)
         self.assertEqual(sized.sizeForSorting(), ('item', 0))
-        self.assertEqual(sized.sizeForDisplay(), u'${items} items')
+        self.assertEqual(sized.sizeForDisplay(), '${items} items')
         self.assertEqual(sized.sizeForDisplay().mapping['items'], '0')
 
     def testOneItem(self):
@@ -51,14 +51,14 @@ class Test(unittest.TestCase):
         obj = DummyContainer(1)
         sized = ContainerSized(obj)
         self.assertEqual(sized.sizeForSorting(), ('item', 1))
-        self.assertEqual(sized.sizeForDisplay(), u'1 item')
+        self.assertEqual(sized.sizeForDisplay(), '1 item')
 
     def testSeveralItems(self):
         from zope.container.size import ContainerSized
         obj = DummyContainer(2)
         sized = ContainerSized(obj)
         self.assertEqual(sized.sizeForSorting(), ('item', 2))
-        self.assertEqual(sized.sizeForDisplay(), u'${items} items')
+        self.assertEqual(sized.sizeForDisplay(), '${items} items')
         self.assertEqual(sized.sizeForDisplay().mapping['items'], '2')
 
 

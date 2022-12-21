@@ -78,13 +78,8 @@ typedef struct {
 /* Incude the proxy C source */
 #include "_zope_proxy_proxy.c"
 
-#ifdef PY3K
-  #define MAKE_PYSTRING(s) PyUnicode_FromString(s)
-  #define MAKE_STRING(name) PyBytes_AS_STRING(PyUnicode_AsUTF8String(name))
-#else
-  #define MAKE_PYSTRING(s) PyString_FromString(s)
-  #define MAKE_STRING(name) PyString_AS_STRING(name)
-#endif
+#define MAKE_PYSTRING(s) PyUnicode_FromString(s)
+#define MAKE_STRING(name) PyBytes_AS_STRING(PyUnicode_AsUTF8String(name))
 
 #define SPECIAL(NAME) (                        \
     *(NAME) == '_' &&                          \
@@ -316,13 +311,8 @@ MOD_INIT(_zope_container_contained)
     empty_tuple = PyTuple_New(0);
 
   /* Initialize the PyPersist_C_API and the type objects. */
-#ifdef PY3K
-    cPersistenceCAPI = (cPersistenceCAPIstruct *)PyCapsule_Import(
-                "persistent.cPersistence.CAPI", 0);
-#else
-    cPersistenceCAPI = (cPersistenceCAPIstruct *)PyCObject_Import(
-                "persistent.cPersistence", "CAPI");
-#endif
+  cPersistenceCAPI = (cPersistenceCAPIstruct *)PyCapsule_Import(
+              "persistent.cPersistence.CAPI", 0);
 
   if (cPersistenceCAPI == NULL)
     return MOD_ERROR_VAL;

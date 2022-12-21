@@ -59,7 +59,7 @@ If we try to use other containers or folders, we'll get errors:
     >>> checkObject(Container(), 'x', Buddy())
     ... # doctest: +ELLIPSIS
     Traceback (most recent call last):
-    InvalidContainerType: ...
+    zope.container.interfaces.InvalidContainerType: ...
 
     >>> checkFactory(Container(), 'x', Factory(Buddy))
     False
@@ -67,7 +67,7 @@ If we try to use other containers or folders, we'll get errors:
     >>> checkObject(BuddyFolder(), 'x', Contained())
     ... # doctest: +ELLIPSIS
     Traceback (most recent call last):
-    InvalidItemType: ...
+    zope.container.interfaces.InvalidItemType: ...
 
     >>> checkFactory(BuddyFolder(), 'x', Factory(Contained))
     False
@@ -90,7 +90,7 @@ could have defined these in the opposite order:
     >>> checkObject(Contacts(), 'x', Buddy())
     ... # doctest: +ELLIPSIS
     Traceback (most recent call last):
-    InvalidItemType: ...
+    zope.container.interfaces.InvalidItemType: ...
 
     >>> checkFactory(Contacts(), 'x', Factory(Buddy))
     False

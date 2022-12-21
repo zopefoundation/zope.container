@@ -223,8 +223,8 @@ class IReservedNames(Interface):
     """A sequence of names that are reserved for that container"""
 
     reservedNames = Set(
-        title=_(u'Reserved Names'),
-        description=_(u'Names that are not allowed for addable content'),
+        title=_('Reserved Names'),
+        description=_('Names that are not allowed for addable content'),
         required=True,
     )
 

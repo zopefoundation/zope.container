@@ -23,7 +23,6 @@ providing a file-system representation for containers:
 """
 __docformat__ = 'restructuredtext'
 
-from six.moves import map
 
 import zope.filerepresentation.interfaces
 from zope.component.interfaces import ISite
@@ -46,7 +45,7 @@ def noop(container):
 
 
 @implementer(zope.filerepresentation.interfaces.IDirectoryFactory)
-class Cloner(object):
+class Cloner:
     """
     `IContainer` to
     :class:`zope.filerepresentation.interfaces.IDirectoryFactory` adapter
@@ -71,7 +70,7 @@ class Cloner(object):
         return removeSecurityProxy(self.context).__class__()
 
 
-class RootDirectoryFactory(object):
+class RootDirectoryFactory:
 
     def __init__(self, context):
         pass
@@ -80,7 +79,7 @@ class RootDirectoryFactory(object):
         return Folder()
 
 
-class ReadDirectory(object):
+class ReadDirectory:
     """Adapter to provide a file-system rendition of folders."""
 
     def __init__(self, context):

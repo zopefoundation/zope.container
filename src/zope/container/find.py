@@ -24,7 +24,7 @@ from .interfaces import IReadContainer
 
 
 @implementer(IFind)
-class FindAdapter(object):
+class FindAdapter:
     """Adapts :class:`zope.container.interfaces.IReadContainer`"""
 
     __used_for__ = IReadContainer
@@ -68,7 +68,7 @@ def _find_helper(id, object, container, id_filters, object_filters, result):
 
 
 @implementer(IIdFindFilter)
-class SimpleIdFindFilter(object):
+class SimpleIdFindFilter:
     """Filter objects by ID"""
 
     def __init__(self, ids):
@@ -80,7 +80,7 @@ class SimpleIdFindFilter(object):
 
 
 @implementer(IObjectFindFilter)
-class SimpleInterfacesFindFilter(object):
+class SimpleInterfacesFindFilter:
     """Filter objects on the provided interfaces"""
 
     def __init__(self, *interfaces):

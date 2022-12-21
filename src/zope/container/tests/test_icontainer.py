@@ -14,8 +14,6 @@
 """Test the IContainer interface.
 """
 from unittest import TestCase
-from unittest import main
-from unittest import makeSuite
 
 from zope.interface.verify import verifyObject
 
@@ -155,9 +153,9 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
         # https://github.com/zopefoundation/zope.container/issues/17
         container = self.makeTestObject()
         container[b'abc'] = 1
-        self.assertIn(u'abc', container)
-        del container[u'abc']
-        self.assertNotIn(u'abc', container)
+        self.assertIn('abc', container)
+        del container['abc']
+        self.assertNotIn('abc', container)
 
     def test_exception_in_subscriber_leaves_item_in_place(self):
         # Now register an event subscriber to object added events that
@@ -355,11 +353,3 @@ class TestSampleContainer(BaseTestIContainer, TestCase):
 
     def getBadKeyTypes(self):
         return [None, [b'foo'], 1, b'\xf3abc']
-
-
-def test_suite():
-    return makeSuite(TestSampleContainer)
-
-
-if __name__ == '__main__':
-    main(defaultTest='test_suite')

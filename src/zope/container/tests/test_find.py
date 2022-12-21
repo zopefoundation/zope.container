@@ -27,7 +27,7 @@ from zope.container.interfaces import IReadContainer
 
 
 @implementer(IReadContainer)
-class FakeContainer(object):
+class FakeContainer:
 
     def __init__(self, id, objects):
         self._id = id
@@ -53,7 +53,7 @@ class FakeInterfaceSpam(Interface):
 
 
 @implementer(IObjectFindFilter)
-class TestObjectFindFilter(object):
+class TestObjectFindFilter:
 
     def __init__(self, count):
         self._count = count

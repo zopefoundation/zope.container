@@ -13,11 +13,8 @@
 ##############################################################################
 """Container Traverser tests.
 """
-from __future__ import absolute_import
 
 import unittest
-
-import six
 
 from zope.interface import implementer
 from zope.testing.cleanup import CleanUp
@@ -28,14 +25,14 @@ from zope.container.traversal import ContainerTraversable
 
 
 @implementer(IContainer)
-class Container(object):
+class Container:
 
     def __init__(self, attrs=None, objs=None):
-        for attr, value in six.iteritems(attrs or {}):
+        for attr, value in (attrs or {}).items():
             setattr(self, attr, value)
 
         self.__objs = {}
-        for name, value in six.iteritems(objs or {}):
+        for name, value in (objs or {}).items():
             self.__objs[name] = value
 
     def get(self, name, default=None):
@@ -58,14 +55,14 @@ class Test(CleanUp, unittest.TestCase):
     def test_unicode_obj(self):
         # test traversal with unicode
         voila = Container()
-        c = Container({}, {u'voil\xe0': voila})
-        self.assertIs(ContainerTraversable(c).traverse(u'voil\xe0', []),
+        c = Container({}, {'voil\xe0': voila})
+        self.assertIs(ContainerTraversable(c).traverse('voil\xe0', []),
                       voila)
 
     def test_unicode_attr(self):
         c = Container()
         with self.assertRaises(TraversalError):
-            ContainerTraversable(c).traverse(u'voil\xe0', [])
+            ContainerTraversable(c).traverse('voil\xe0', [])
 
 
 def test_suite():

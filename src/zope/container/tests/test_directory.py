@@ -21,7 +21,7 @@ from zope.container import directory
 from zope.container import testing
 
 
-class Directory(object):
+class Directory:
     a = None
 
 

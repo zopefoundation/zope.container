@@ -14,7 +14,6 @@
 """Classes to support implementing `IContained`
 """
 # pylint:disable=too-many-lines
-from six import text_type
 
 import zope.component
 from zope.event import notify
@@ -50,7 +49,7 @@ except ImportError:  # pragma: no cover
 
 
 @zope.interface.implementer(IContained)
-class Contained(object):
+class Contained:
     """
     Simple mix-in that defines ``__parent__`` and ``__name__``
     attributes and implements `IContained`.
@@ -157,7 +156,7 @@ def dispatchToSublocations(object, event):  # pylint:disable=redefined-builtin
             zope.component.handle(sub, event)
 
 
-class ContainerSublocations(object):
+class ContainerSublocations:
     """Get the sublocations for a container
 
        Obviously, this is the container values:
@@ -200,7 +199,7 @@ def containedEvent(object, container, name=None):
 
         >>> container = {}
         >>> item = Contained()
-        >>> x, event = containedEvent(item, container, u'foo')
+        >>> x, event = containedEvent(item, container, 'foo')
         >>> x is item
         True
         >>> item.__parent__ is container
@@ -223,7 +222,7 @@ def containedEvent(object, container, name=None):
 
     Now if we call contained again:
 
-        >>> x2, event = containedEvent(item, container, u'foo')
+        >>> x2, event = containedEvent(item, container, 'foo')
         >>> x2 is item
         True
         >>> item.__parent__ is container
@@ -238,7 +237,7 @@ def containedEvent(object, container, name=None):
     If the object already had a parent but the parent or name was
     different, we get a moved event:
 
-        >>> x, event = containedEvent(item, container, u'foo2')
+        >>> x, event = containedEvent(item, container, 'foo2')
         >>> event.__class__.__name__
         'ObjectMovedEvent'
         >>> event.object is item
@@ -353,7 +352,7 @@ def checkAndConvertName(name):
             name = name.decode('ascii')
         except UnicodeError:
             raise TypeError("name not unicode or ascii string")
-    elif not isinstance(name, text_type):
+    elif not isinstance(name, str):
         raise TypeError("name not unicode or ascii string")
 
     if not name:
@@ -391,8 +390,8 @@ def setitem(container, setitemf, name, object):
     >>> item = Item()
 
     >>> container = {}
-    >>> setitem(container, container.__setitem__, u'c', item)
-    >>> container[u'c'] is item
+    >>> setitem(container, container.__setitem__, 'c', item)
+    >>> container['c'] is item
     True
     >>> item.__parent__ is container
     True
@@ -438,7 +437,7 @@ def setitem(container, setitemf, name, object):
 
     >>> item = Item()
     >>> item.__parent__, item.__name__ = container, 'c2'
-    >>> setitem(container, container.__setitem__, u'c2', item)
+    >>> setitem(container, container.__setitem__, 'c2', item)
     >>> len(container)
     2
     >>> len(getEvents(IObjectAddedEvent))
@@ -452,7 +451,7 @@ def setitem(container, setitemf, name, object):
     If the item had a parent or name (as in a move or rename),
     we generate a move event, rather than an add event:
 
-    >>> setitem(container, container.__setitem__, u'c3', item)
+    >>> setitem(container, container.__setitem__, 'c3', item)
     >>> len(container)
     3
     >>> len(getEvents(IObjectAddedEvent))
@@ -474,14 +473,14 @@ def setitem(container, setitemf, name, object):
     If we try to replace an item without deleting it first, we'll get
     an error:
 
-    >>> setitem(container, container.__setitem__, u'c', [])
+    >>> setitem(container, container.__setitem__, 'c', [])
     Traceback (most recent call last):
     ...
-    KeyError: u'c'
+    KeyError: 'c'
 
 
-    >>> del container[u'c']
-    >>> setitem(container, container.__setitem__, u'c', [])
+    >>> del container['c']
+    >>> setitem(container, container.__setitem__, 'c', [])
     >>> len(getEvents(IObjectAddedEvent))
     2
     >>> len(getEvents(IObjectModifiedEvent))
@@ -496,13 +495,13 @@ def setitem(container, setitemf, name, object):
     >>> item = Location()
     >>> IContained.providedBy(item)
     0
-    >>> setitem(container, container.__setitem__, u'l', item)
-    >>> container[u'l'] is item
+    >>> setitem(container, container.__setitem__, 'l', item)
+    >>> container['l'] is item
     1
     >>> item.__parent__ is container
     1
     >>> item.__name__
-    u'l'
+    'l'
     >>> IContained.providedBy(item)
     1
 
@@ -517,16 +516,16 @@ def setitem(container, setitemf, name, object):
     `ContainedProxy` around it:
 
     >>> item = []
-    >>> setitem(container, container.__setitem__, u'i', item)
-    >>> container[u'i']
+    >>> setitem(container, container.__setitem__, 'i', item)
+    >>> container['i']
     []
-    >>> container[u'i'] is item
+    >>> container['i'] is item
     0
-    >>> item = container[u'i']
+    >>> item = container['i']
     >>> item.__parent__ is container
     1
     >>> item.__name__
-    u'i'
+    'i'
     >>> IContained.providedBy(item)
     1
 
@@ -559,7 +558,7 @@ def setitem(container, setitemf, name, object):
     ...
     ValueError: empty names are not allowed
 
-    >>> setitem(container, container.__setitem__, u'', item)
+    >>> setitem(container, container.__setitem__, '', item)
     Traceback (most recent call last):
     ...
     ValueError: empty names are not allowed
@@ -601,16 +600,16 @@ def uncontained(object, container, name=None):
     ...     pass
 
     >>> item = Item()
-    >>> container = {u'foo': item}
-    >>> x, event = containedEvent(item, container, u'foo')
+    >>> container = {'foo': item}
+    >>> x, event = containedEvent(item, container, 'foo')
     >>> item.__parent__ is container
     1
     >>> item.__name__
-    u'foo'
+    'foo'
 
     Now we'll remove the item. It's parent and name are cleared:
 
-    >>> uncontained(item, container, u'foo')
+    >>> uncontained(item, container, 'foo')
     >>> item.__parent__
     >>> item.__name__
 
@@ -624,7 +623,7 @@ def uncontained(object, container, name=None):
     >>> event.oldParent is container
     1
     >>> event.oldName
-    u'foo'
+    'foo'
     >>> event.newParent
     >>> event.newName
 
@@ -637,7 +636,7 @@ def uncontained(object, container, name=None):
 
     Now if we call uncontained again:
 
-    >>> uncontained(item, container, u'foo')
+    >>> uncontained(item, container, 'foo')
 
     We won't get any new events, because __parent__ and __name__ are None:
 
@@ -651,14 +650,14 @@ def uncontained(object, container, name=None):
     event.
 
     >>> item.__parent__, item.__name__ = container, None
-    >>> uncontained(item, container, u'foo')
+    >>> uncontained(item, container, 'foo')
     >>> len(getEvents(IObjectRemovedEvent))
     1
     >>> len(getEvents(IObjectModifiedEvent))
     2
 
-    >>> item.__parent__, item.__name__ = None, u'bar'
-    >>> uncontained(item, container, u'foo')
+    >>> item.__parent__, item.__name__ = None, 'bar'
+    >>> uncontained(item, container, 'foo')
     >>> len(getEvents(IObjectRemovedEvent))
     1
     >>> len(getEvents(IObjectModifiedEvent))
@@ -670,10 +669,10 @@ def uncontained(object, container, name=None):
     >>> class Broken(object):
     ...     __Broken_state__ = {}
     >>> broken = Broken()
-    >>> broken.__Broken_state__['__name__'] = u'bar'
+    >>> broken.__Broken_state__['__name__'] = 'bar'
     >>> broken.__Broken_state__['__parent__'] = container
-    >>> container[u'bar'] = broken
-    >>> uncontained(broken, container, u'bar')
+    >>> container['bar'] = broken
+    >>> uncontained(broken, container, 'bar')
     >>> len(getEvents(IObjectRemovedEvent))
     2
 
@@ -709,7 +708,7 @@ def uncontained(object, container, name=None):
 
 
 @zope.interface.implementer(INameChooser)
-class NameChooser(object):
+class NameChooser:
 
     def __init__(self, context):
         self.context = context
@@ -736,14 +735,14 @@ class NameChooser(object):
         >>> NameChooser(container).checkName('foo', object())
         Traceback (most recent call last):
         ...
-        KeyError: u'The given name is already being used'
+        KeyError: 'The given name is already being used'
 
         A name must be a string or unicode string:
 
         >>> NameChooser(container).checkName(2, object())
         Traceback (most recent call last):
         ...
-        TypeError: ('Invalid name type', <type 'int'>)
+        TypeError: ('Invalid name type', <class 'int'>)
 
         A correct name returns True:
 
@@ -766,12 +765,12 @@ class NameChooser(object):
         >>> NameChooser(container).checkName('reserved', None)
         Traceback (most recent call last):
         ...
-        NameReserved: reserved
+        zope.container.interfaces.NameReserved: reserved
         """
 
         if isinstance(name, bytes):
             name = name.decode('ascii')
-        elif not isinstance(name, text_type):
+        elif not isinstance(name, str):
             raise TypeError("Invalid name type", type(name))
 
         if not name:
@@ -811,27 +810,27 @@ class NameChooser(object):
 
         the suggested name is converted to unicode:
 
-        >>> NameChooser(container).chooseName(u'foobar', object())
-        u'foobar'
+        >>> NameChooser(container).chooseName('foobar', object())
+        'foobar'
 
         >>> NameChooser(container).chooseName(b'foobar', object())
-        u'foobar'
+        'foobar'
 
         If it already exists, a number is appended but keeps the same
         extension:
 
         >>> NameChooser(container).chooseName('foobar.old', object())
-        u'foobar-2.old'
+        'foobar-2.old'
 
         Bad characters are turned into dashes:
 
         >>> NameChooser(container).chooseName('foo/foo', object())
-        u'foo-foo'
+        'foo-foo'
 
         If no name is suggested, it is based on the object type:
 
         >>> NameChooser(container).chooseName('', [])
-        u'list'
+        'list'
 
         """
 
@@ -841,11 +840,11 @@ class NameChooser(object):
         # allow
         if isinstance(name, bytes):
             name = name.decode('ascii')
-        if not isinstance(name, text_type):
+        if not isinstance(name, str):
             try:
-                name = text_type(name)
+                name = str(name)
             except Exception:
-                name = u''
+                name = ''
         name = name.replace('/', '-').lstrip('+@')
 
         if not name:
@@ -866,7 +865,7 @@ class NameChooser(object):
         i = 1
         while n in container:
             i += 1
-            n = name + u'-' + str(i) + suffix
+            n = name + '-' + str(i) + suffix
 
         # Make sure the name is valid.  We may have started with something bad.
         self.checkName(n, object)
@@ -935,7 +934,7 @@ class DecoratorSpecificationDescriptor(
         return Provides(cls, provided)
 
 
-class DecoratedSecurityCheckerDescriptor(object):
+class DecoratedSecurityCheckerDescriptor:
     """
     Descriptor for a Decorator that provides a decorated security
     checker.

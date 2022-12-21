@@ -36,13 +36,13 @@ class ContainedProxyBase(AbstractPyProxyBase, Persistent):
     __slots__ = ('_wrapped', '__parent__', '__name__', '__weakref__')
 
     def __new__(cls, obj):
-        inst = super(ContainedProxyBase, cls).__new__(cls, obj)
+        inst = super().__new__(cls, obj)
         inst.__parent__ = None
         inst.__name__ = None
         return inst
 
     def __init__(self, obj):
-        super(ContainedProxyBase, self).__init__(obj)
+        super().__init__(obj)
         self.__parent__ = None
         self.__name__ = None
 
@@ -94,7 +94,7 @@ class ContainedProxyBase(AbstractPyProxyBase, Persistent):
         ):
             return object.__getattribute__(self, name)
 
-        return super(ContainedProxyBase, self).__getattribute__(name)
+        return super().__getattribute__(name)
 
     def __setattr__(self, name, value):
         if _special_name(name):
@@ -103,7 +103,7 @@ class ContainedProxyBase(AbstractPyProxyBase, Persistent):
             # themselves
             return Persistent.__setattr__(self, name, value)
 
-        return super(ContainedProxyBase, self).__setattr__(name, value)
+        return super().__setattr__(name, value)
 
 
 @use_c_impl

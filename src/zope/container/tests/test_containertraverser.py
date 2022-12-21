@@ -31,7 +31,7 @@ from zope.container.traversal import ItemTraverser
 
 
 @implementer(IReadContainer)
-class TestContainer(object):
+class TestContainer:
 
     def __init__(self, **kw):
         for name, value in kw.items():
@@ -48,7 +48,7 @@ class TestContainer(object):
         return o
 
 
-class View(object):
+class View:
     def __init__(self, context, request):
         self.context = context
         self.request = request
@@ -65,7 +65,7 @@ class TraverserTest(testing.ContainerPlacelessSetup, unittest.TestCase):
         return TestContainer(**kw)
 
     def setUp(self):
-        super(TraverserTest, self).setUp()
+        super().setUp()
         # Create a small object tree
         self.container = self._getContainer()
         self.subcontainer = self._getContainer(Foo=self.container)

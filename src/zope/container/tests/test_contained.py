@@ -13,7 +13,6 @@
 ##############################################################################
 """Contained Tests
 """
-from __future__ import absolute_import
 
 import doctest
 import unittest
@@ -62,14 +61,13 @@ class TestContainedProxy(unittest.TestCase):
     def test_declarations_on_ContainedProxy(self):
         # It is possible to make declarations on ContainedProxy objects.
         from persistent.interfaces import IPersistent
-
-        from zope.container.interfaces import IContained
+        from zope.location.interfaces import IContained
 
         class I1(zope.interface.Interface):  # pylint:disable=inherit-non-class
             pass
 
         @zope.interface.implementer(I1)
-        class C(object):
+        class C:
             pass
 
         c = C()
@@ -105,7 +103,7 @@ class TestContainedProxy(unittest.TestCase):
 
     def test_ContainedProxy_instances_have_no_instance_dictionaries(self):
         # Make sure that proxies don't introduce extra instance dictionaries
-        class C(object):
+        class C:
             def __init__(self, x):
                 self.x = x
 
@@ -159,27 +157,27 @@ class TestNameChooser(unittest.TestCase):
 
         # existing names
         self.assertRaises(KeyError, checkName, 'foo', object())
-        self.assertRaises(KeyError, checkName, u'foo', object())
+        self.assertRaises(KeyError, checkName, 'foo', object())
 
         # correct names
         self.assertEqual(True, checkName('2', object()))
-        self.assertEqual(True, checkName(u'2', object()))
+        self.assertEqual(True, checkName('2', object()))
         self.assertEqual(True, checkName('other', object()))
-        self.assertEqual(True, checkName(u'reserved', object()))
-        self.assertEqual(True, checkName(u'r\xe9served', object()))
+        self.assertEqual(True, checkName('reserved', object()))
+        self.assertEqual(True, checkName('r\xe9served', object()))
 
         # reserved names
         @zope.component.adapter(IContainer)
         @zope.interface.implementer(IReservedNames)
-        class ReservedNames(object):
+        class ReservedNames:
             def __init__(self, context):
-                self.reservedNames = set(('reserved', 'other'))
+                self.reservedNames = {'reserved', 'other'}
         zope.component.getSiteManager().registerAdapter(ReservedNames)
 
         self.assertRaises(NameReserved, checkName, 'reserved', object())
         self.assertRaises(NameReserved, checkName, 'other', object())
-        self.assertRaises(NameReserved, checkName, u'reserved', object())
-        self.assertRaises(NameReserved, checkName, u'other', object())
+        self.assertRaises(NameReserved, checkName, 'reserved', object())
+        self.assertRaises(NameReserved, checkName, 'other', object())
 
     def test_chooseName(self):
         container = SampleContainer()
@@ -188,39 +186,37 @@ class TestNameChooser(unittest.TestCase):
 
         # correct name without changes
         self.assertEqual(nc.chooseName('foobar.rst', None),
-                         u'foobar.rst')
-        self.assertEqual(nc.chooseName(u'\xe9', None),
-                         u'\xe9')
+                         'foobar.rst')
+        self.assertEqual(nc.chooseName('\xe9', None),
+                         '\xe9')
 
         # automatically modified named
         self.assertEqual(nc.chooseName('foo.old.rst', None),
-                         u'foo.old-2.rst')
+                         'foo.old-2.rst')
         self.assertEqual(nc.chooseName('+@+@foo.old.rst', None),
-                         u'foo.old-2.rst')
+                         'foo.old-2.rst')
         self.assertEqual(nc.chooseName('+@+@foo/foo+@', None),
-                         u'foo-foo+@')
+                         'foo-foo+@')
 
         # empty name
-        self.assertEqual(nc.chooseName('', None), u'NoneType')
-        self.assertEqual(nc.chooseName('@+@', []), u'list')
+        self.assertEqual(nc.chooseName('', None), 'NoneType')
+        self.assertEqual(nc.chooseName('@+@', []), 'list')
 
         # if the name is not a string it is converted
-        self.assertEqual(nc.chooseName(None, None), u'None')
-        self.assertEqual(nc.chooseName(2, None), u'2')
-        self.assertEqual(nc.chooseName([], None), u'[]')
+        self.assertEqual(nc.chooseName(None, None), 'None')
+        self.assertEqual(nc.chooseName(2, None), '2')
+        self.assertEqual(nc.chooseName([], None), '[]')
         container['None'] = 'something'
-        self.assertEqual(nc.chooseName(None, None), u'None-2')
+        self.assertEqual(nc.chooseName(None, None), 'None-2')
         container['None-2'] = 'something'
-        self.assertEqual(nc.chooseName(None, None), u'None-3')
+        self.assertEqual(nc.chooseName(None, None), 'None-3')
 
-        # even if the given name cannot be converted to unicode
-        class BadBoy(object):
-            def __unicode__(self):
+        # even if the given name cannot be converted to str
+        class BadBoy:
+            def __str__(self):
                 raise Exception
-            # Py3: Support
-            __str__ = __unicode__
 
-        self.assertEqual(nc.chooseName(BadBoy(), set()), u'set')
+        self.assertEqual(nc.chooseName(BadBoy(), set()), 'set')
 
 
 class TestFunctions(unittest.TestCase):
@@ -261,6 +257,5 @@ def test_suite():
     suite = unittest.defaultTestLoader.loadTestsFromName(__name__)
     suite.addTest(doctest.DocTestSuite(
         'zope.container.contained',
-        setUp=testing.setUp, tearDown=testing.tearDown,
-        checker=testing.checker))
+        setUp=testing.setUp, tearDown=testing.tearDown))
     return suite

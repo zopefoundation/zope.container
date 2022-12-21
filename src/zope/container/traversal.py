@@ -15,7 +15,6 @@
 """
 __docformat__ = 'restructuredtext'
 
-from six.moves import map
 
 from zope.component import ComponentLookupError
 from zope.component import getSiteManager
@@ -38,7 +37,7 @@ from zope.container.interfaces import ISimpleReadContainer
 # can be used for multiple view types.
 
 @implementer(IBrowserPublisher, IXMLRPCPublisher)
-class ContainerTraverser(object):
+class ContainerTraverser:
     """A traverser that knows how to look up objects by name in a container."""
 
     __used_for__ = ISimpleReadContainer
@@ -95,7 +94,7 @@ _marker = object()
 
 
 @implementer(ITraversable)
-class ContainerTraversable(object):
+class ContainerTraversable:
     """Traverses containers via `getattr` and `get`."""
 
     __used_for__ = IReadContainer
