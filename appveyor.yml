@@ -9,9 +9,6 @@ environment:
       secure: aoZC/+rvJKg8B5GMGIxd1fvt+dprlV4HJWR5jyaXx8YqNVWD3QAB7iwQwQGXoDxV8kIN3dG+zhHhcSOLwWF8iEaEkEDPLhFxfbR0M5jBH2Tod4lXnWr/+GzkjF+IS3BQoVmShaM3zsIKot9TuUu+6bCE5YWE6jg1jl+WLCFBQB+O+c26chrxqw0/7S33MTZpamoWmGrDjTePWHceGNO5Cs5cwu6UL15bKgKW8VQf/90YE1HPfNeiGyhfPYGrLwGWSiQK/5kIUSTbLtY8KWbm+g==
 
   matrix:
-    - python: 27-x64
-    - python: 35-x64
-    - python: 36-x64
     - python: 37-x64
     - python: 38-x64
     - python: 39-x64
