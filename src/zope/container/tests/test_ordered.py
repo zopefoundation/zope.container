@@ -20,7 +20,6 @@ from zope.component.eventtesting import clearEvents
 from zope.component.eventtesting import getEvents
 
 from zope.container import testing
-from zope.container._compat import text_type
 from zope.container.tests.test_icontainer import TestSampleContainer
 
 
@@ -96,7 +95,7 @@ class TestOrderedContainer(TestSampleContainer):
     def test_order_updateOrder_bytes(self):
         # https://github.com/zopefoundation/zope.container/issues/21
         from zope.container.ordered import OrderedContainer
-        keys = [u'a', u'b']
+        keys = ['a', 'b']
         oc = OrderedContainer()
         oc[keys[0]] = 0
         oc[keys[1]] = 1
@@ -107,7 +106,7 @@ class TestOrderedContainer(TestSampleContainer):
         oc.updateOrder((b'b', b'a'))
         # still produces text keys
         self.assertEqual(list(reversed(keys)), oc.keys())
-        self.assertIsInstance(oc.keys()[0], text_type)
+        self.assertIsInstance(oc.keys()[0], str)
 
 
 def test_suite():
@@ -116,7 +115,6 @@ def test_suite():
     ])
     suite.addTest(DocTestSuite("zope.container.ordered",
                                setUp=testing.setUp,
-                               tearDown=testing.tearDown,
-                               checker=testing.checker))
+                               tearDown=testing.tearDown))
 
     return suite

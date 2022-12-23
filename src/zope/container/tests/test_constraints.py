@@ -13,9 +13,8 @@
 ##############################################################################
 """Container constraint tests
 """
+import doctest
 import unittest
-
-import six
 
 
 class TestUnaddableError(unittest.TestCase):
@@ -32,8 +31,8 @@ class TestCheckObject(unittest.TestCase):
     def test_non_container(self):
         from zope.container.constraints import checkObject
 
-        with six.assertRaisesRegex(
-                self, TypeError, "Container is not a valid Zope container."):
+        with self.assertRaisesRegex(
+                TypeError, "Container is not a valid Zope container."):
             checkObject({}, 'foo', 42)
 
 
@@ -43,7 +42,7 @@ class TestCheckFactory(unittest.TestCase):
         # Does nothing if no constraints are provided
         from zope.container.constraints import checkFactory
 
-        class Factory(object):
+        class Factory:
             def getInterfaces(self):
                 return {}
 
@@ -67,15 +66,10 @@ class TestTypesBased(unittest.TestCase):
 
 
 def test_suite():
-    import doctest
-
-    from zope.container import testing
     return unittest.TestSuite((
         unittest.defaultTestLoader.loadTestsFromName(__name__),
         doctest.DocTestSuite(
-            'zope.container.constraints',
-            checker=testing.checker),
+            'zope.container.constraints'),
         doctest.DocFileSuite(
-            '../constraints.rst',
-            checker=testing.checker),
+            '../constraints.rst'),
     ))

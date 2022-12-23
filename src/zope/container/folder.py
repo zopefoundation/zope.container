@@ -35,7 +35,7 @@ class Folder(btree.BTreeContainer):
         self._SampleContainer__data = value
 
     def __getstate__(self):
-        state = super(Folder, self).__getstate__()
+        state = super().__getstate__()
         data = state.pop('_SampleContainer__data')
         state['data'] = data
         return state
@@ -43,4 +43,4 @@ class Folder(btree.BTreeContainer):
     def __setstate__(self, state):
         if 'data' in state and '_SampleContainer__data' not in state:
             state['_SampleContainer__data'] = state.pop('data')
-        super(Folder, self).__setstate__(state)
+        super().__setstate__(state)

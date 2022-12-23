@@ -1,6 +1,5 @@
 import pickle
 from unittest import TestCase
-from unittest import makeSuite
 
 from zope.container.folder import Folder
 from zope.container.tests.test_icontainer import TestSampleContainer
@@ -25,7 +24,3 @@ class Test(TestSampleContainer, TestCase):
 
         folder_clone = pickle.loads(pickle.dumps(folder))
         self.assertEqual(folder_clone['a'], folder['a'])
-
-
-def test_suite():
-    return makeSuite(Test)

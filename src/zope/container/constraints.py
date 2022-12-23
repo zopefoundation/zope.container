@@ -47,7 +47,7 @@
    >>> checkObject(c1, "Zbob", None)
    Traceback (most recent call last):
    ...
-   Invalid: Names can not start with Z
+   zope.interface.exceptions.Invalid: Names can not start with Z
 
    We can also express constaints on the containers an object can be
    added to. We do this by setting a field constraint on an object's
@@ -76,7 +76,7 @@
    >>> checkObject(c1, "bob", O())
    Traceback (most recent call last):
    ...
-   ConstraintNotSatisfied: (C1, '__parent__')
+   zope.schema._bootstrapinterfaces.ConstraintNotSatisfied: (C1, '__parent__')
 
    Note that the validation error isn't very informative. For that
    reason, it's better for constraints to raise Invalid errors when they
@@ -98,7 +98,7 @@
    >>> checkObject(c1, "bob", O())
    Traceback (most recent call last):
    ...
-   Invalid: What, no x?
+   zope.interface.exceptions.Invalid: What, no x?
 
    >>> c1.x = 1
    >>> checkObject(c1, "bob", O())
@@ -246,7 +246,7 @@ class IItemTypePrecondition(zope.interface.Interface):
         """
 
 
-class _TypesBased(object):
+class _TypesBased:
 
     @readproperty
     def types(self):

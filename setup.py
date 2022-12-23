@@ -103,7 +103,7 @@ def get_include_dirs():
     ]
 
 
-class IncludeDirs(object):
+class IncludeDirs:
     dirs = None
 
     def __getattribute__(self, name):
@@ -118,19 +118,14 @@ class IncludeDirs(object):
         return iter(self.dirs)
 
 
-if str is bytes and hasattr(sys, 'pypy_version_info'):
-    # zope.proxy, as of 4.3.5, cannot compile on PyPy2 7.3.0
-    # because it uses cl_dict in a PyClassObject, which does not exist.
-    ext_modules = []
-else:
-    ext_modules = [
-        Extension(
-            "zope.container._zope_container_contained",
-            [os.path.join("src", "zope", "container",
-                          "_zope_container_contained.c")],
-            include_dirs=IncludeDirs(),
-        ),
-    ]
+ext_modules = [
+    Extension(
+        "zope.container._zope_container_contained",
+        [os.path.join("src", "zope", "container",
+                      "_zope_container_contained.c")],
+        include_dirs=IncludeDirs(),
+    ),
+]
 
 setup_requires = [
     'persistent >= 4.1.0',
@@ -140,7 +135,6 @@ setup_requires = [
 
 install_requires = setup_requires + [
     'BTrees',
-    'six',
     'zope.cachedescriptors',
     'zope.component',
     'zope.deferredimport',
@@ -183,7 +177,7 @@ extras['test'] += (extras['zodb'] + extras['zcml'])
 
 
 setup(name='zope.container',
-      version='4.11.dev0',
+      version='5.0.dev0',
       author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Container',
@@ -199,11 +193,7 @@ setup(name='zope.container',
           'Intended Audience :: Developers',
           'License :: OSI Approved :: Zope Public License',
           'Programming Language :: Python',
-          'Programming Language :: Python :: 2',
-          'Programming Language :: Python :: 2.7',
           'Programming Language :: Python :: 3',
-          'Programming Language :: Python :: 3.5',
-          'Programming Language :: Python :: 3.6',
           'Programming Language :: Python :: 3.7',
           'Programming Language :: Python :: 3.8',
           'Programming Language :: Python :: 3.9',
@@ -234,12 +224,5 @@ setup(name='zope.container',
       tests_require=extras['test'],
       include_package_data=True,
       zip_safe=False,
-      python_requires=', '.join([
-          '>=2.7',
-          '!=3.0.*',
-          '!=3.1.*',
-          '!=3.2.*',
-          '!=3.3.*',
-          '!=3.4.*',
-      ]),
+      python_requires='>=3.7',
       )

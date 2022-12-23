@@ -1,4 +1,3 @@
-
 ##############################################################################
 #
 # Copyright (c) 2002 Zope Foundation and Contributors.
@@ -23,7 +22,7 @@ from zope.container.i18n import ZopeMessageFactory as _
 
 
 @implementer(ISized)
-class ContainerSized(object):
+class ContainerSized:
     """
     Implements :class:`zope.size.interfaces.ISize` for
     :class:`zope.container.interfaces.IReadContainer`

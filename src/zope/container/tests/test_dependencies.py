@@ -23,7 +23,7 @@ class ZCMLDependencies(ContainerPlacelessSetup, unittest.TestCase):
         request = TestRequest()
 
         @implementer(IItemContainer)
-        class SampleItemContainer(object):
+        class SampleItemContainer:
             pass
 
         sampleitemcontainer = SampleItemContainer()
@@ -33,7 +33,7 @@ class ZCMLDependencies(ContainerPlacelessSetup, unittest.TestCase):
         self.assertTrue(res.context is sampleitemcontainer)
 
         @implementer(ISimpleReadContainer)
-        class SampleSimpleReadContainer(object):
+        class SampleSimpleReadContainer:
             pass
 
         samplesimplereadcontainer = SampleSimpleReadContainer()
@@ -41,13 +41,3 @@ class ZCMLDependencies(ContainerPlacelessSetup, unittest.TestCase):
             (samplesimplereadcontainer, request), IBrowserPublisher)
         self.assertTrue(isinstance(res, ItemTraverser))
         self.assertTrue(res.context is samplesimplereadcontainer)
-
-
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(ZCMLDependencies))
-    return suite
-
-
-if __name__ == '__main__':
-    unittest.main()
