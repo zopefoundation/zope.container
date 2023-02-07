@@ -2,8 +2,8 @@
  zope.container
 ================
 
-.. image:: https://travis-ci.org/zopefoundation/zope.container.png?branch=master
-        :target: https://travis-ci.org/zopefoundation/zope.container
+.. image:: https://github.com/zopefoundation/zope.container/actions/workflows/tests.yml/badge.svg
+        :target: https://github.com/zopefoundation/zope.container/actions/workflows/tests.yml
 
 .. image:: https://readthedocs.org/projects/zopecontainer/badge/?version=latest
         :target: http://zopecontainer.readthedocs.io/en/latest/?badge=latest
