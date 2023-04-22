@@ -5,7 +5,9 @@
 5.1 (unreleased)
 ================
 
-- Add preliminary support for Python 3.12a5.
+- Drop using ``setup_requires`` due to constant problems on GHA.
+
+- Add preliminary support for Python 3.12a7.
 
 
 5.0 (2023-01-24)

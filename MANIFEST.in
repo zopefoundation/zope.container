@@ -15,8 +15,12 @@ recursive-include docs Makefile
 
 recursive-include src *.py
 include *.sh
+include .readthedocs.yaml
 include compat.cfg
 recursive-include docs *.bat
+recursive-include include/persistent *.h
+recursive-include include/zope.proxy *.c
+recursive-include include/zope.proxy *.h
 recursive-include src *.h
 recursive-include src *.rst
 recursive-include src *.zcml

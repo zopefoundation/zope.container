@@ -32,7 +32,7 @@
 
 
 #include "Python.h"
-#include "cPersistence.h"
+#include "persistent/cPersistence.h"
 #include "_compat.h"
 
 static PyObject *str_p_deactivate;
@@ -76,7 +76,7 @@ typedef struct {
 #define CLEAR(O) Py_CLEAR(O)
 
 /* Incude the proxy C source */
-#include "_zope_proxy_proxy.c"
+#include "zope/proxy/_zope_proxy_proxy.c"
 
 #define MAKE_PYSTRING(s) PyUnicode_FromString(s)
 #define MAKE_STRING(name) PyBytes_AS_STRING(PyUnicode_AsUTF8String(name))
