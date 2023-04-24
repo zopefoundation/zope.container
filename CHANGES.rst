@@ -2,7 +2,7 @@
  Changes
 =========
 
-5.1 (unreleased)
+5.1 (2023-04-24)
 ================
 
 - Drop using ``setup_requires`` due to constant problems on GHA.
