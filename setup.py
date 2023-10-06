@@ -65,7 +65,7 @@ extras['test'] += (extras['zodb'] + extras['zcml'])
 
 
 setup(name='zope.container',
-      version='5.2',
+      version='5.3.dev0',
       author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Container',
