@@ -157,11 +157,14 @@ jobs:
         run: |
           pip install -U pip
           pip install -U setuptools wheel twine
+          # Remove this hack once 'cffi' has a release supporting Python 3.13.
+          pip install -e "git+https://github.com/python-cffi/cffi.git#egg=cffi"
       - name: Install Build Dependencies
         if: matrix.python-version != '3.13.0-alpha - 3.13.0'
         run: |
           pip install -U pip
           pip install -U setuptools wheel twine
+          pip install cffi
           pip install -U zope.proxy
           pip install -U persistent
 
@@ -334,6 +337,8 @@ jobs:
         if: matrix.python-version == '3.13.0-alpha - 3.13.0'
         run: |
           pip install -U wheel setuptools
+          # Remove this hack once 'cffi' has a release supporting Python 3.13.
+          pip install -e "git+https://github.com/python-cffi/cffi.git#egg=cffi"
           # coverage might have a wheel on PyPI for a future python version which is
           # not ABI compatible with the current one, so build it from sdist:
           pip install -U --no-binary :all: coverage

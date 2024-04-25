@@ -59,4 +59,6 @@ additional-build-dependencies = [
     "zope.proxy",
     "persistent",
     ]
+
+[c-code]
 require-cffi = true
