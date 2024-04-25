@@ -59,3 +59,4 @@ additional-build-dependencies = [
     "zope.proxy",
     "persistent",
     ]
+require-cffi = true
