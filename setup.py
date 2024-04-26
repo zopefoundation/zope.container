@@ -24,6 +24,11 @@ from setuptools import Extension
 from setuptools import find_packages
 from setuptools import setup
 
+PY313_CFFI_GH_DEP = (
+    "cffi @ git+https://github.com/python-cffi/cffi.git ; "
+    "platform_python_implementation == 'CPython' and "
+    "python_version >= '3.13a0'"
+)
 
 def read(*rnames):
     with open(os.path.join(os.path.dirname(__file__), *rnames)) as f:
@@ -127,7 +132,9 @@ setup(name='zope.container',
         'zope.size',
         'zope.traversing>=4.0.0a1',
         'setuptools',
+        PY313_CFFI_GH_DEP,
       ],
+      setup_requires=[PY313_CFFI_GH_DEP],
       extras_require=extras,
       tests_require=extras['test'],
       include_package_data=True,
