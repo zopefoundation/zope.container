@@ -5,9 +5,12 @@
 5.3 (unreleased)
 ================
 
+- Drop support for Python 3.7.
+
 - Build Windows wheels on GHA.
 
 - Add preliminary support for Python 3.13 as of 3.13a6.
+
 
 5.2 (2023-10-05)
 ================
