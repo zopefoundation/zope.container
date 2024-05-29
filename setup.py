@@ -65,7 +65,7 @@ extras['test'] += (extras['zodb'] + extras['zcml'])
 
 
 setup(name='zope.container',
-      version='5.3.dev0',
+      version='6.0.dev0',
       author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Container',
@@ -82,7 +82,6 @@ setup(name='zope.container',
           'License :: OSI Approved :: Zope Public License',
           'Programming Language :: Python',
           'Programming Language :: Python :: 3',
-          'Programming Language :: Python :: 3.7',
           'Programming Language :: Python :: 3.8',
           'Programming Language :: Python :: 3.9',
           'Programming Language :: Python :: 3.10',
@@ -132,5 +131,5 @@ setup(name='zope.container',
       tests_require=extras['test'],
       include_package_data=True,
       zip_safe=False,
-      python_requires='>=3.7',
+      python_requires='>=3.8',
       )
