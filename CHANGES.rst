@@ -5,6 +5,8 @@
 6.1 (unreleased)
 ================
 
+- Update to ``persistent`` 6.0 API usage
+
 
 6.0 (2024-05-29)
 ================
