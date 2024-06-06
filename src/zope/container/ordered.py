@@ -16,7 +16,7 @@
 __docformat__ = 'restructuredtext'
 
 from persistent import Persistent
-from persistent.dict import PersistentDict
+from persistent.mapping import PersistentMapping
 from persistent.list import PersistentList
 from zope.interface import implementer
 
@@ -41,7 +41,7 @@ class OrderedContainer(Persistent, Contained):
 
     def __init__(self):
 
-        self._data = PersistentDict()
+        self._data = PersistentMapping()
         self._order = PersistentList()
 
     def keys(self):
