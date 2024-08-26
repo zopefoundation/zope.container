@@ -195,7 +195,7 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
         self.assertFalse(folder.values())
         self.assertFalse(folder.items())
         self.assertFalse(len(folder))
-        self.assertFalse(data[6][0] in folder)
+        self.assertNotIn(data[6][0], folder)
 
         self.assertEqual(folder.get(data[6][0], None), None)
         self.assertRaises(KeyError, folder.__getitem__, data[6][0])
@@ -225,10 +225,10 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
         self.assertEqual(list(folder.items())[0], (name, foo))
         self.assertEqual(len(folder), 1)
 
-        self.assertTrue(name in folder)
+        self.assertIn(name, folder)
         # Use an arbitrary id frpm the data set; don;t just use any id, since
         # there might be restrictions on their form
-        self.assertFalse(data[6][0] in folder)
+        self.assertNotIn(data[6][0], folder)
 
         self.assertEqual(folder.get(name, None), foo)
         self.assertEqual(folder[name], foo)
@@ -255,7 +255,7 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
         self.assertFalse(folder.values())
         self.assertFalse(folder.items())
         self.assertFalse(len(folder))
-        self.assertFalse(name in folder)
+        self.assertNotIn(name, folder)
 
         self.assertRaises(KeyError, folder.__getitem__, name)
         self.assertEqual(folder.get(name, None), None)
@@ -275,30 +275,30 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
         folder[name3] = objects[3]
 
         self.assertEqual(len(folder.keys()), len(objects))
-        self.assertTrue(name0 in folder.keys())
-        self.assertTrue(name1 in folder.keys())
-        self.assertTrue(name2 in folder.keys())
-        self.assertTrue(name3 in folder.keys())
+        self.assertIn(name0, folder.keys())
+        self.assertIn(name1, folder.keys())
+        self.assertIn(name2, folder.keys())
+        self.assertIn(name3, folder.keys())
 
         self.assertEqual(len(folder.values()), len(objects))
-        self.assertTrue(objects[0] in folder.values())
-        self.assertTrue(objects[1] in folder.values())
-        self.assertTrue(objects[2] in folder.values())
-        self.assertTrue(objects[3] in folder.values())
+        self.assertIn(objects[0], folder.values())
+        self.assertIn(objects[1], folder.values())
+        self.assertIn(objects[2], folder.values())
+        self.assertIn(objects[3], folder.values())
 
         self.assertEqual(len(folder.items()), len(objects))
-        self.assertTrue((name0, objects[0]) in folder.items())
-        self.assertTrue((name1, objects[1]) in folder.items())
-        self.assertTrue((name2, objects[2]) in folder.items())
-        self.assertTrue((name3, objects[3]) in folder.items())
+        self.assertIn((name0, objects[0]), folder.items())
+        self.assertIn((name1, objects[1]), folder.items())
+        self.assertIn((name2, objects[2]), folder.items())
+        self.assertIn((name3, objects[3]), folder.items())
 
         self.assertEqual(len(folder), len(objects))
 
-        self.assertTrue(name0 in folder)
-        self.assertTrue(name1 in folder)
-        self.assertTrue(name2 in folder)
-        self.assertTrue(name3 in folder)
-        self.assertFalse(data[5][0] in folder)
+        self.assertIn(name0, folder)
+        self.assertIn(name1, folder)
+        self.assertIn(name2, folder)
+        self.assertIn(name3, folder)
+        self.assertNotIn(data[5][0], folder)
 
         self.assertEqual(folder.get(name0, None), objects[0])
         self.assertEqual(folder[name0], objects[0])
@@ -314,11 +314,11 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
 
         del folder[name0]
         self.assertEqual(len(folder), len(objects) - 1)
-        self.assertFalse(name0 in folder)
-        self.assertFalse(name0 in folder.keys())
+        self.assertNotIn(name0, folder)
+        self.assertNotIn(name0, folder.keys())
 
-        self.assertFalse(objects[0] in folder.values())
-        self.assertFalse((name0, objects[0]) in folder.items())
+        self.assertNotIn(objects[0], folder.values())
+        self.assertNotIn((name0, objects[0]), folder.items())
 
         self.assertEqual(folder.get(name0, None), None)
         self.assertRaises(KeyError, folder.__getitem__, name0)
@@ -333,10 +333,10 @@ class BaseTestIContainer(testing.ContainerPlacelessSetup):
         self.assertFalse(folder.values())
         self.assertFalse(folder.items())
         self.assertFalse(len(folder))
-        self.assertFalse(name0 in folder)
-        self.assertFalse(name1 in folder)
-        self.assertFalse(name2 in folder)
-        self.assertFalse(name3 in folder)
+        self.assertNotIn(name0, folder)
+        self.assertNotIn(name1, folder)
+        self.assertNotIn(name2, folder)
+        self.assertNotIn(name3, folder)
 
 
 class TestSampleContainer(BaseTestIContainer, TestCase):

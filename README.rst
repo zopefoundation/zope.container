@@ -5,9 +5,6 @@
 .. image:: https://github.com/zopefoundation/zope.container/actions/workflows/tests.yml/badge.svg
         :target: https://github.com/zopefoundation/zope.container/actions/workflows/tests.yml
 
-.. image:: https://ci.appveyor.com/api/projects/status/github/zopefoundation/zope.container?branch=master&svg=true
-        :target: https://ci.appveyor.com/project/mgedmin/zope-container
-
 .. image:: https://coveralls.io/repos/github/zopefoundation/zope.container/badge.svg?branch=master
         :target: https://coveralls.io/github/zopefoundation/zope.container?branch=master
 
