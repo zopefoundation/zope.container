@@ -258,8 +258,8 @@ texinfo_documents = [
      'zope.container Documentation',
      'Zope Foundation and Contributors',
      'zopecontainer',
-     'Interfaces for object container components, and implementations '
-     'such as a BTreeContainer and OrderedContainer',
+     'Interfaces for object container components, and implementations'
+     ' such as a BTreeContainer and OrderedContainer',
      'Miscellaneous'),
 ]
 
