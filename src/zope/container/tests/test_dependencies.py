@@ -29,8 +29,8 @@ class ZCMLDependencies(ContainerPlacelessSetup, unittest.TestCase):
         sampleitemcontainer = SampleItemContainer()
         res = zope.component.getMultiAdapter(
             (sampleitemcontainer, request), IBrowserPublisher)
-        self.assertTrue(isinstance(res, ItemTraverser))
-        self.assertTrue(res.context is sampleitemcontainer)
+        self.assertIsInstance(res, ItemTraverser)
+        self.assertIs(res.context, sampleitemcontainer)
 
         @implementer(ISimpleReadContainer)
         class SampleSimpleReadContainer:
@@ -39,5 +39,5 @@ class ZCMLDependencies(ContainerPlacelessSetup, unittest.TestCase):
         samplesimplereadcontainer = SampleSimpleReadContainer()
         res = zope.component.getMultiAdapter(
             (samplesimplereadcontainer, request), IBrowserPublisher)
-        self.assertTrue(isinstance(res, ItemTraverser))
-        self.assertTrue(res.context is samplesimplereadcontainer)
+        self.assertIsInstance(res, ItemTraverser)
+        self.assertIs(res.context, samplesimplereadcontainer)

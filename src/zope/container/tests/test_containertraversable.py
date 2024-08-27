@@ -48,8 +48,8 @@ class Test(CleanUp, unittest.TestCase):
         c = Container({'foo': foo}, {'bar': bar, 'foo': baz})
 
         T = ContainerTraversable(c)
-        self.assertTrue(T.traverse('foo', []) is baz)
-        self.assertTrue(T.traverse('bar', []) is bar)
+        self.assertIs(T.traverse('foo', []), baz)
+        self.assertIs(T.traverse('bar', []), bar)
         self.assertRaises(TraversalError, T.traverse, 'morebar', [])
 
     def test_unicode_obj(self):
