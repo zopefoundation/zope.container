@@ -25,6 +25,9 @@ from setuptools import find_packages
 from setuptools import setup
 
 
+version = '6.1'
+
+
 def read(*rnames):
     with open(os.path.join(os.path.dirname(__file__), *rnames)) as f:
         return f.read()
@@ -65,7 +68,7 @@ extras['test'] += (extras['zodb'] + extras['zcml'])
 
 
 setup(name='zope.container',
-      version='6.1.dev0',
+      version=version,
       author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Container',
