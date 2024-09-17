@@ -5,6 +5,8 @@
 6.1 (unreleased)
 ================
 
+- Add final support for Python 3.13.
+
 - Update to ``persistent`` 6.0 API usage
 
 
