@@ -278,14 +278,30 @@ texinfo_documents = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
-    'https://docs.python.org/3/': None,
-    'https://zodb.org/en/latest/': None,
-    'https://persistent.readthedocs.io/en/latest/': None,
-    'https://zopesize.readthedocs.io/en/latest/': None,
-    'https://zopesite.readthedocs.io/en/latest/': None,
-    'https://zopefilerepresentation.readthedocs.io/en/latest/': None,
-    'https://zopelifecycleevent.readthedocs.io/en/latest/': None,
-    'https://zopeinterface.readthedocs.io/en/latest/': None,
+    'python': (
+        'https://docs.python.org/3/',
+        None),
+    'zodb': (
+        'https://zodb.org/en/latest/',
+        None),
+    'persistent': (
+        'https://persistent.readthedocs.io/en/latest/',
+        None),
+    'zopesize': (
+        'https://zopesize.readthedocs.io/en/latest/',
+        None),
+    'zopesite': (
+        'https://zopesite.readthedocs.io/en/latest/',
+        None),
+    'zopefilerepresentation': (
+        'https://zopefilerepresentation.readthedocs.io/en/latest/',
+        None),
+    'zopelifecycleevent': (
+        'https://zopelifecycleevent.readthedocs.io/en/latest/',
+        None),
+    'zopeinterface': (
+        'https://zopeinterface.readthedocs.io/en/latest/',
+        None),
 }
 
 extlinks = {

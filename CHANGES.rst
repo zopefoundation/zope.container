@@ -5,6 +5,7 @@
 6.2 (unreleased)
 ================
 
+- Update docs config to ``Sphinx >=8``.
 
 6.1 (2024-09-18)
 ================
