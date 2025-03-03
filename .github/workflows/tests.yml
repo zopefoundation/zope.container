@@ -320,7 +320,7 @@ jobs:
           # Unzip into src/ so that testrunner can find the .so files
           # when we ask it to load tests from that directory. This
           # might also save some build time?
-          unzip -n dist/zope.container-*whl -d src
+          unzip -n dist/*whl -d src
           pip install -e .[test]
       - name: Run tests with C extensions
         if: ${{ !startsWith(matrix.python-version, 'pypy') }}
