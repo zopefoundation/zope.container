@@ -42,9 +42,3 @@ additional-rules = [
     "recursive-include src *.rst",
     "recursive-include src *.zcml",
     ]
-
-[github-actions]
-additional-build-dependencies = [
-    "zope.proxy",
-    "persistent",
-    ]
