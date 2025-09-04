@@ -21,7 +21,6 @@
 import os
 
 from setuptools import Extension
-from setuptools import find_packages
 from setuptools import setup
 
 
@@ -52,7 +51,7 @@ extras = {
     ],
     'test': [
         'zope.testing',
-        'zope.testrunner',
+        'zope.testrunner >= 6.4',
     ],
     'zcml': [
         'zope.component[zcml]',
@@ -105,9 +104,6 @@ setup(name='zope.container',
           'Sources': 'https://github.com/zopefoundation/zope.container',
       },
       license='ZPL-2.1',
-      packages=find_packages('src'),
-      package_dir={'': 'src'},
-      namespace_packages=['zope'],
       ext_modules=ext_modules,
       install_requires=[
           'BTrees',
