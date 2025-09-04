@@ -104,6 +104,10 @@ setup(name='zope.container',
           'Sources': 'https://github.com/zopefoundation/zope.container',
       },
       license='ZPL-2.1',
+      # we need the following two parameters because we compile C code,
+      # otherwise only the shared library is installed:
+      package_dir={'': 'src'},
+      packages=['zope.container'],
       ext_modules=ext_modules,
       install_requires=[
           'BTrees',
