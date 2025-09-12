@@ -21,11 +21,10 @@
 import os
 
 from setuptools import Extension
-from setuptools import find_packages
 from setuptools import setup
 
 
-version = '6.2.dev0'
+version = '7.0.dev0'
 
 
 def read(*rnames):
@@ -52,7 +51,7 @@ extras = {
     ],
     'test': [
         'zope.testing',
-        'zope.testrunner',
+        'zope.testrunner >= 6.4',
     ],
     'zcml': [
         'zope.component[zcml]',
@@ -105,9 +104,10 @@ setup(name='zope.container',
           'Sources': 'https://github.com/zopefoundation/zope.container',
       },
       license='ZPL-2.1',
-      packages=find_packages('src'),
+      # we need the following two parameters because we compile C code,
+      # otherwise only the shared library is installed:
       package_dir={'': 'src'},
-      namespace_packages=['zope'],
+      packages=['zope.container'],
       ext_modules=ext_modules,
       install_requires=[
           'BTrees',
