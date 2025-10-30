@@ -93,12 +93,12 @@ jobs:
       matrix:
         python-version:
           - "pypy-3.11"
-          - "3.9"
           - "3.10"
           - "3.11"
           - "3.12"
           - "3.13"
           - "3.14"
+          - "3.15"
         os: [ubuntu-latest, macos-latest, windows-latest]
         exclude:
           - os: macos-latest
@@ -110,7 +110,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
           allow-prereleases: true
@@ -150,16 +150,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - name: Install Build Dependencies (3.14)
-        if: matrix.python-version == '3.14'
+      - name: Install Build Dependencies (3.15)
+        if: matrix.python-version == '3.15'
         run: |
           pip install -U pip
-          pip install -U "setuptools == 78.1.1" wheel twine
+          pip install -U "setuptools >= 78.1.1,< 81" wheel twine
       - name: Install Build Dependencies
-        if: matrix.python-version != '3.14'
+        if: matrix.python-version != '3.15'
         run: |
           pip install -U pip
-          pip install -U "setuptools == 78.1.1" wheel twine
+          pip install -U "setuptools >= 78.1.1,< 81" wheel twine
 
       - name: Build zope.container (macOS x86_64)
         if: >
@@ -197,18 +197,18 @@ jobs:
           python setup.py build_ext -i
           python setup.py bdist_wheel
 
-      - name: Install zope.container and dependencies (3.14)
-        if: matrix.python-version == '3.14'
+      - name: Install zope.container and dependencies (3.15)
+        if: matrix.python-version == '3.15'
         run: |
           # Install to collect dependencies into the (pip) cache.
           # Use "--pre" here because dependencies with support for this future
           # Python release may only be available as pre-releases
           pip install --pre .[test]
       - name: Install zope.container and dependencies
-        if: matrix.python-version != '3.14'
+        if: matrix.python-version != '3.15'
         run: |
           # Install to collect dependencies into the (pip) cache.
-          pip install -U pip "setuptools == 78.1.1"
+          pip install -U pip "setuptools >= 78.1.1,< 81"
           pip install .[test]
 
       - name: Check zope.container build
@@ -249,7 +249,7 @@ jobs:
           && startsWith(github.ref, 'refs/tags')
           && !startsWith(runner.os, 'Linux')
           && !startsWith(matrix.python-version, 'pypy')
-          && !startsWith(matrix.python-version, '3.14')
+          && !startsWith(matrix.python-version, '3.15')
         env:
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
         run: |
@@ -263,12 +263,12 @@ jobs:
       matrix:
         python-version:
           - "pypy-3.11"
-          - "3.9"
           - "3.10"
           - "3.11"
           - "3.12"
           - "3.13"
           - "3.14"
+          - "3.15"
         os: [ubuntu-latest, macos-latest, windows-latest]
         exclude:
           - os: macos-latest
@@ -280,7 +280,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
           allow-prereleases: true
@@ -326,9 +326,9 @@ jobs:
           name: zope.container-${{ runner.os }}-${{ matrix.python-version }}.whl
           path: dist/
       - name: Install zope.container ${{ matrix.python-version }}
-        if: matrix.python-version == '3.14'
+        if: matrix.python-version == '3.15'
         run: |
-          pip install -U wheel "setuptools == 78.1.1"
+          pip install -U wheel "setuptools >= 78.1.1,< 81"
           # coverage might have a wheel on PyPI for a future python version which is
           # not ABI compatible with the current one, so build it from sdist:
           pip install -U --no-binary :all: coverage[toml]
@@ -341,9 +341,9 @@ jobs:
           # Python release may only be available as pre-releases
           pip install --pre -e .[test]
       - name: Install zope.container
-        if: matrix.python-version != '3.14'
+        if: matrix.python-version != '3.15'
         run: |
-          pip install -U wheel "setuptools == 78.1.1"
+          pip install -U wheel "setuptools >= 78.1.1,< 81"
           pip install -U coverage[toml]
           pip install -U 'cffi; platform_python_implementation == "CPython"'
           # Unzip into src/ so that testrunner can find the .so files
@@ -396,7 +396,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
           allow-prereleases: true
@@ -466,7 +466,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
           allow-prereleases: true
@@ -537,7 +537,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
           allow-prereleases: true
@@ -612,7 +612,7 @@ jobs:
       - name: Restore pip cache permissions
         run: sudo chown -R $(whoami) ${{ steps.pip-cache-default.outputs.dir }}
       - name: Prevent publishing wheels for unreleased Python versions
-        run: VER=$(echo '3.14' | tr -d .) && ls -al wheelhouse && sudo rm -f wheelhouse/*-cp${VER}*.whl && ls -al wheelhouse
+        run: VER=$(echo '3.15' | tr -d .) && ls -al wheelhouse && sudo rm -f wheelhouse/*-cp${VER}*.whl && ls -al wheelhouse
       - name: Publish package to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         if: >

@@ -43,7 +43,7 @@ from zope.container.interfaces import NameReserved
 
 try:
     from ZODB.interfaces import IBroken
-except ImportError:  # pragma: no cover
+except ModuleNotFoundError:  # pragma: no cover
     class IBroken(Interface):  # pylint:disable=inherit-non-class
         pass
 
