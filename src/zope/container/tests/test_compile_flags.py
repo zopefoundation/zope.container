@@ -18,7 +18,7 @@ import unittest
 try:
     # try to load a C module for side effects
     from zope.container import _zope_container_contained  # noqa
-except (ImportError, AttributeError):  # pragma: no cover
+except (ModuleNotFoundError, AttributeError):  # pragma: no cover
     # AttributeError: module 'persistent' has no attribute 'cPersistence'
     # is what you get if you try this when PURE_PYTHON=1 exists in the
     # environment.
