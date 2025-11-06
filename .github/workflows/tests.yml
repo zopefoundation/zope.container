@@ -387,7 +387,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ["3.11"]
+        python-version: ["3.13"]
         os: [ubuntu-latest]
 
     steps:
@@ -457,7 +457,7 @@ jobs:
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        python-version: ["3.11"]
+        python-version: ["3.13"]
         os: [ubuntu-latest]
 
     steps:
@@ -523,14 +523,21 @@ jobs:
           tox -e release-check
 
   manylinux:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
-    # We use a regular Python matrix entry to share as much code as possible.
+    # We use a matrix to share as much code as possible.
     strategy:
       matrix:
-        python-version: ["3.11"]
-        image: [manylinux2014_x86_64, manylinux2014_i686, manylinux2014_aarch64]
-
+        include:
+          - os: ubuntu-latest
+            image: manylinux2014_x86_64
+            python-version: "3.13"
+          - os: ubuntu-latest
+            image: manylinux2014_i686
+            python-version: "3.13"
+          - os: ubuntu-24.04-arm
+            image: manylinux2014_aarch64
+            python-version: "3.13"
     steps:
       - name: checkout
         uses: actions/checkout@v5
@@ -579,8 +586,9 @@ jobs:
 
       - name: Update pip
         run: pip install -U pip
-      - name: Build zope.container (x86_64)
-        if: matrix.image == 'manylinux2014_x86_64'
+
+      - name: Build zope.container
+        if: matrix.image != 'manylinux2014_i686'
         # An alternate way to do this is to run the container directly with a uses:
         # and then the script runs inside it. That may work better with caching.
         # See https://github.com/pyca/bcrypt/blob/f6b5ee2eda76d077c531362ac65e16f045cf1f29/.github/workflows/wheel-builder.yml
@@ -595,24 +603,19 @@ jobs:
           PRE_CMD: linux32
         run: |
           bash .manylinux.sh
-      - name: Build zope.container (aarch64)
-        if: matrix.image == 'manylinux2014_aarch64'
-        env:
-          DOCKER_IMAGE: quay.io/pypa/${{ matrix.image }}
-        run: |
-          # First we must enable emulation
-          docker run --rm --privileged hypriot/qemu-register
-          bash .manylinux.sh
 
       - name: Upload zope.container wheels
         uses: actions/upload-artifact@v4
         with:
           path: wheelhouse/*whl
           name: manylinux_${{ matrix.image }}_wheels.zip
+
       - name: Restore pip cache permissions
         run: sudo chown -R $(whoami) ${{ steps.pip-cache-default.outputs.dir }}
+
       - name: Prevent publishing wheels for unreleased Python versions
         run: VER=$(echo '3.15' | tr -d .) && ls -al wheelhouse && sudo rm -f wheelhouse/*-cp${VER}*.whl && ls -al wheelhouse
+
       - name: Publish package to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         if: >
