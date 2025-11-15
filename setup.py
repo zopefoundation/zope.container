@@ -24,7 +24,7 @@ from setuptools import Extension
 from setuptools import setup
 
 
-version = '7.2'
+version = '7.3.dev0'
 
 
 def read(*rnames):
