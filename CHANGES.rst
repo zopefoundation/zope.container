@@ -2,10 +2,11 @@
  Changes
 =========
 
-7.2 (unreleased)
+7.2 (2025-11-15)
 ================
 
-- Nothing changed yet.
+- Fix the GitHub workflow for publishing wheels, which failed for Linux/arm64.
+  (`#348 <https://github.com/zopefoundation/zope.interface/issues/348>`_)
 
 
 7.1 (2025-11-06)
