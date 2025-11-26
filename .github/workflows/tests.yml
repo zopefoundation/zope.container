@@ -577,16 +577,6 @@ jobs:
     permissions:
       contents: read
 
-  publish:
-    name: Publish to PyPI
-    runs-on: ubuntu-latest
-    # Only publish on tag pushes
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
-    # Wait for both build jobs to complete
-    needs: [build-package, manylinux]
-    permissions:
-      contents: read
-
     steps:
       - name: Download all wheel artifacts
         uses: actions/download-artifact@v4
