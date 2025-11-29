@@ -16,7 +16,7 @@ name = "zope.container"
 version = "7.3.dev0"
 description = "Zope Container"
 keywords = ["zope", "container"]
-readme = "README.rst"
+dynamic = ["readme"]
 requires-python = ">=3.10"
 license = "ZPL-2.1"
 authors = [
@@ -121,3 +121,6 @@ source = [
     ".tox/*/lib/python*/site-packages/",
     ".tox/pypy*/site-packages/",
 ]
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.rst", "CHANGES.rst"]}
