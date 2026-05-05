@@ -4,6 +4,10 @@ Change log
 7.3 (unreleased)
 ----------------
 
+- Add support for automatically building and publishing Windows/ARM64 wheels.
+
+- Add support for automatically building and publishing source distributions.
+
 - Move all supported package metadata into ``pyproject.toml``.
 
 
