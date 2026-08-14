@@ -2,7 +2,7 @@
 # https://github.com/zopefoundation/meta/tree/master/src/zope/meta/c-code
 [meta]
 template = "c-code"
-commit-id = "21b3fb2e"
+commit-id = "732b6ec9"
 
 [python]
 with-windows = true
@@ -20,6 +20,11 @@ testenv-setenv = [
 
 [coverage]
 fail-under = 97
+
+[check-manifest]
+additional-ignores = [
+    "docs/_build/html/_static/*/*",
+    ]
 
 [flake8]
 additional-config = [
