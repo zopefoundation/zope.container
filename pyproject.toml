@@ -11,7 +11,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "zope.container"
-version = "7.3"
+version = "7.4.dev0"
 description = "Zope Container"
 keywords = ["zope", "container"]
 dynamic = ["readme"]
