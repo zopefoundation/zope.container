@@ -4,6 +4,14 @@ Change log
 7.4 (unreleased)
 ----------------
 
+- Fix ``ContainedProxy`` so that ``providedBy()`` of a proxy returns a
+  stable, consistent object across repeated calls when the proxied
+  object's interfaces overlap with the ones ``ContainedProxy`` itself
+  implements (``IContained``, ``IPersistent``). Previously each access
+  built a brand new specification object, which defeated
+  ``zope.interface``'s own caching of instance declarations.
+  (`#38 <https://github.com/zopefoundation/zope.container/issues/38>`_)
+
 
 7.3 (2026-08-20)
 ----------------

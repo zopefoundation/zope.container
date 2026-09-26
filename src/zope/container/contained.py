@@ -15,6 +15,8 @@
 """
 # pylint:disable=too-many-lines
 
+from weakref import WeakKeyDictionary
+
 import zope.component
 from zope.event import notify
 from zope.interface import Interface
@@ -918,6 +920,16 @@ class DecoratorSpecificationDescriptor(
     ['I4', 'I3', 'I1', 'I2', 'IContained', 'IPersistent']
     """
 
+    # Maps the specification of the proxied object to a dict that maps
+    # the proxy's class to the filtered specification we hand to
+    # ``Provides``. Without this cache, every access would build a new
+    # (but equal-looking) specification object by repeatedly
+    # subtracting interfaces, one for each interface removed; that
+    # defeats ``Provides``'s own weak-value cache (which keys on
+    # object identity) and means ``providedBy(proxy)`` is a fresh,
+    # never-equal object on every call instead of a stable one.
+    _cache = WeakKeyDictionary()
+
     def __get__(self, inst, cls=None):
         if inst is None:  # pragma: no cover (Not sure how we can get here)
             return getObjectSpecification(cls)
@@ -927,11 +939,21 @@ class DecoratorSpecificationDescriptor(
         # Use type rather than __class__ because inst is a proxy and
         # will return the proxied object's class.
         cls = type(inst)
-        implemented_by_cls = implementedBy(cls)
-        for iface in list(provided):
-            if implemented_by_cls.isOrExtends(iface):
-                provided = provided - iface
-        return Provides(cls, provided)
+
+        by_class = self._cache.get(provided)
+        filtered = by_class.get(cls) if by_class is not None else None
+        if filtered is None:
+            implemented_by_cls = implementedBy(cls)
+            filtered = provided
+            for iface in list(provided):
+                if implemented_by_cls.isOrExtends(iface):
+                    filtered = filtered - iface
+            if by_class is None:
+                by_class = {}
+                self._cache[provided] = by_class
+            by_class[cls] = filtered
+
+        return Provides(cls, filtered)
 
 
 class DecoratedSecurityCheckerDescriptor:

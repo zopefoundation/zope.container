@@ -101,6 +101,27 @@ class TestContainedProxy(unittest.TestCase):
         self.assertEqual(tuple(zope.interface.providedBy(p)),
                          (I3, I1, IContained, IPersistent))
 
+    def test_providedBy_is_stable_when_interfaces_overlap(self):
+        # https://github.com/zopefoundation/zope.container/issues/38
+        # When the proxied object provides interfaces that overlap with
+        # what ContainedProxy itself implements (IContained, IPersistent),
+        # the descriptor has to filter those out to avoid an inconsistent
+        # resolution order. Asking for providedBy() of the same proxy
+        # twice must keep returning the very same object, exactly like it
+        # does when there's no overlap to filter.
+        p = ContainedProxy(MyOb())
+        self.assertIs(zope.interface.providedBy(p),
+                      zope.interface.providedBy(p))
+
+        # And two different proxies of the same class wrapping the same
+        # underlying object should end up sharing that same specification
+        # too, just as they would without any filtering.
+        underlying = MyOb()
+        p1 = ContainedProxy(underlying)
+        p2 = ContainedProxy(underlying)
+        self.assertIs(zope.interface.providedBy(p1),
+                      zope.interface.providedBy(p2))
+
     def test_ContainedProxy_instances_have_no_instance_dictionaries(self):
         # Make sure that proxies don't introduce extra instance dictionaries
         class C:
