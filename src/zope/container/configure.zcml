@@ -93,7 +93,7 @@
       permission="zope.Public"
       />
 
-  <view 
+  <view
       for="zope.container.interfaces.IItemContainer"
       type="zope.publisher.interfaces.xmlrpc.IXMLRPCRequest"
       provides="zope.publisher.interfaces.xmlrpc.IXMLRPCPublisher"
@@ -101,7 +101,7 @@
       permission="zope.Public"
       />
 
-  <view 
+  <view
       for="zope.container.interfaces.IReadContainer"
       type="zope.publisher.interfaces.xmlrpc.IXMLRPCRequest"
       provides="zope.publisher.interfaces.xmlrpc.IXMLRPCPublisher"
